@@ -22,17 +22,30 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         html, body { height: 100dvh; max-height: 100dvh; background-color: var(--bg-dark); color: var(--text-main); display: flex; flex-direction: column; overflow: hidden; }
         
-        /* Encabezado compacto */
-        header { background-color: var(--bg-card); padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3942; flex-shrink: 0; gap: 8px; }
-        .brand-wrap { display: flex; align-items: center; gap: 8px; min-width: 0; }
+        /* Encabezado con Banner Central de Descarga */
+        header { background-color: var(--bg-card); padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3942; flex-shrink: 0; gap: 10px; }
+        .brand-wrap { display: flex; align-items: center; gap: 8px; min-width: 0; flex-shrink: 0; }
         .brand-logo { width: 38px; height: 38px; border-radius: 9px; object-fit: cover; border: 1.5px solid var(--accent-gold); background: #000; flex-shrink: 0; }
-        .brand { min-width: 0; }
-        .brand h1 { font-size: 0.98rem; color: #fff; font-weight: 800; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .brand span { font-size: 0.62rem; color: var(--accent-gold); font-weight: 700; letter-spacing: 0.3px; display: block; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .brand h1 { font-size: 0.98rem; color: #fff; font-weight: 800; line-height: 1.1; white-space: nowrap; }
+        .brand span { font-size: 0.62rem; color: var(--accent-gold); font-weight: 700; letter-spacing: 0.3px; display: block; margin-top: 2px; white-space: nowrap; }
+
+        /* Banner Central APK / App */
+        .app-banner { flex: 1; max-width: 480px; background: linear-gradient(90deg, rgba(0,168,132,0.18), rgba(245,158,11,0.22)); border: 1px solid rgba(245,158,11,0.5); border-radius: 10px; padding: 5px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer; transition: 0.2s; min-width: 0; }
+        .app-banner:hover { border-color: var(--accent-gold); transform: translateY(-1px); }
+        .app-banner-text { font-size: 0.74rem; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .app-banner-text strong { color: var(--accent-gold); }
+        .btn-download-apk { background: var(--accent-green); color: #fff; border: none; padding: 4px 10px; border-radius: 7px; font-size: 0.7rem; font-weight: 800; white-space: nowrap; cursor: pointer; flex-shrink: 0; }
+
         .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
         .sound-btn { background: rgba(245, 158, 11, 0.18); color: var(--accent-gold); border: 1px solid rgba(245, 158, 11, 0.4); padding: 4px 9px; border-radius: 12px; font-size: 0.68rem; font-weight: bold; cursor: pointer; white-space: nowrap; }
         .sound-btn.active { background: rgba(0, 168, 132, 0.2); color: var(--accent-green); border-color: rgba(0, 168, 132, 0.4); }
         .status-badge { background: rgba(0, 168, 132, 0.2); color: var(--accent-green); padding: 4px 9px; border-radius: 12px; font-size: 0.68rem; font-weight: bold; white-space: nowrap; }
+
+        @media (max-width: 768px) {
+            .brand span { display: none; }
+            .app-banner-text span { display: none; }
+            .status-badge { display: none; }
+        }
 
         nav { display: flex; background-color: var(--bg-card); border-bottom: 2px solid #2a3942; flex-shrink: 0; }
         .tab-btn { flex: 1; padding: 10px 4px; background: none; border: none; color: var(--text-muted); font-weight: 700; font-size: 0.78rem; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; position: relative; }
@@ -71,17 +84,14 @@
         /* CHAT CONTENEDOR PRINCIPAL */
         #chat-wrapper { flex: 1; display: none; flex-direction: column; overflow: hidden; background: #0b141a; }
         
-        /* Registro rápido del cliente */
         .client-setup { padding: 20px; display: flex; flex-direction: column; gap: 12px; justify-content: center; flex: 1; max-width: 400px; margin: 0 auto; width: 100%; }
         .client-setup h3 { color: var(--accent-gold); text-align: center; font-size: 1.1rem; }
         .client-setup p { color: var(--text-muted); font-size: 0.85rem; text-align: center; }
         .client-setup input { background: var(--bg-card); border: 1px solid #374151; padding: 12px; border-radius: 10px; color: #fff; font-size: 0.95rem; outline: none; }
         .client-setup button { background: var(--accent-green); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 0.95rem; cursor: pointer; }
 
-        /* DISEÑO SPLIT TIPO WHATSAPP WEB PARA ADMIN */
         .whatsapp-layout { display: flex; flex: 1; overflow: hidden; width: 100%; height: 100%; }
         
-        /* Columna Izquierda: Lista de Contactos */
         .admin-sidebar { width: 34%; min-width: 280px; max-width: 400px; border-right: 1px solid #2a3942; display: flex; flex-direction: column; background: var(--bg-panel); }
         .admin-bar { background: #075e54; padding: 9px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: bold; flex-shrink: 0; }
         .sidebar-search { padding: 8px; background: var(--bg-panel); border-bottom: 1px solid #1f2c33; }
@@ -96,7 +106,6 @@
         .chat-row-info p { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .badge-new { background: var(--accent-green); color: #000; font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 10px; display: inline-block; }
 
-        /* Columna Derecha: Sala de Conversación */
         .chat-main-pane { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #0b141a; position: relative; }
         .empty-chat-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); text-align: center; padding: 20px; }
         .empty-chat-placeholder img { width: 70px; height: 70px; border-radius: 16px; margin-bottom: 12px; opacity: 0.8; border: 2px solid var(--accent-gold); }
@@ -117,7 +126,6 @@
         .icon-btn { background: #2a3942; border: none; width: 38px; height: 38px; border-radius: 50%; color: var(--text-main); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .send-btn { background: var(--accent-green); border: none; width: 38px; height: 38px; border-radius: 50%; color: #fff; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-        /* Adaptación automática para pantallas pequeñas (móvil) */
         @media (max-width: 768px) {
             .admin-sidebar { width: 100%; max-width: none; border-right: none; }
             .mobile-hide { display: none !important; }
@@ -134,6 +142,15 @@
                 <span>SEGURIDAD • CONFIANZA • EXPERIENCIA</span>
             </div>
         </div>
+
+        <!-- BANNER CENTRAL DE DESCARGA APK / APP -->
+        <div class="app-banner" onclick="descargarOInstalarApp()" title="Instalar aplicación en tu teléfono">
+            <div class="app-banner-text">
+                📲 <strong>App Oficial Android</strong> <span>• Resultados y jugadas al instante</span>
+            </div>
+            <button class="btn-download-apk">⬇ DESCARGAR APK</button>
+        </div>
+
         <div class="header-actions">
             <button class="sound-btn" id="btn-sound" onclick="activarNotificaciones()">🔔 Activar Sonido</button>
             <div class="status-badge" id="sync-status">● EN VIVO</div>
@@ -177,10 +194,9 @@
         </section>
     </main>
 
-    <!-- PESTAÑA 3: CHAT EN TIEMPO REAL (CLIENTE Y ADMIN SPLIT VIEW) -->
+    <!-- PESTAÑA 3: CHAT EN TIEMPO REAL -->
     <div id="chat-wrapper">
         
-        <!-- VISTA REGISTRO RÁPIDO DEL CLIENTE -->
         <div id="client-login" class="client-setup" style="display:none;">
             <h3>🍀 Atención Directa en Taquilla</h3>
             <p>Ingresa tu nombre o teléfono para iniciar tu chat y enviar tus jugadas en vivo:</p>
@@ -189,10 +205,8 @@
             <button onclick="iniciarChatCliente()">Entrar al Chat en Vivo ➤</button>
         </div>
 
-        <!-- ESTRUCTURA DIVIDIDA TIPO WHATSAPP WEB -->
         <div id="whatsapp-workspace" class="whatsapp-layout" style="display:none;">
             
-            <!-- MITAD IZQUIERDA: LISTA DE CONTACTOS (SOLO ADMIN) -->
             <div class="admin-sidebar" id="admin-sidebar">
                 <div class="admin-bar">
                     <span>👑 TAQUILLA EN VIVO</span>
@@ -206,17 +220,14 @@
                 </div>
             </div>
 
-            <!-- MITAD DERECHA: CONVERSACIÓN ACTIVA -->
             <div class="chat-main-pane" id="chat-main-pane">
                 
-                <!-- Pantalla vacía cuando el admin aún no selecciona contacto en PC -->
                 <div id="no-chat-selected" class="empty-chat-placeholder" style="display:none;">
                     <img src="logo.png" alt="Logo">
                     <h3 style="color:#fff; margin-bottom:6px;">Panel de Atención Agencia Harold José</h3>
                     <p style="font-size:0.85rem; max-width:320px;">Selecciona un cliente de la lista izquierda para ver sus jugadas, comprobantes de Pago Móvil y responderle en tiempo real.</p>
                 </div>
 
-                <!-- Sala activa con mensajes -->
                 <div id="active-room" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
                     <div class="admin-bar" id="room-header" style="background:#1c272e; border-bottom:1px solid #2a3942;">
                         <span id="room-title">🟢 Taquilla Agencia Harold José</span>
@@ -258,6 +269,37 @@
         let miTelefono = localStorage.getItem("harold_chat_tlf");
         let adminChatActivo = null;
         let intervaloChat = null;
+
+        // Instalación / Descarga APK
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        async function descargarOInstalarApp() {
+            // 1. Verificar si ya subiste el archivo AgenciaHaroldJose.apk a GitHub
+            try {
+                const check = await fetch("AgenciaHaroldJose.apk", { method: "HEAD" });
+                if (check.ok) {
+                    const a = document.createElement("a");
+                    a.href = "AgenciaHaroldJose.apk";
+                    a.download = "AgenciaHaroldJose.apk";
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    return;
+                }
+            } catch (e) {}
+
+            // 2. Si aún no subes el .apk, instala la App directa del navegador
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt = null;
+            } else {
+                alert("📲 Para instalar la App en tu teléfono:\n\n1. Toca los 3 puntitos (⋮) arriba a la derecha de tu navegador.\n2. Selecciona 'Instalar aplicación' o 'Agregar a la pantalla principal'.");
+            }
+        }
 
         // Control de sonido y notificaciones
         let audioCtx = null;
@@ -607,8 +649,6 @@
                 if (data.ok && data.loterias) {
                     todasLasLoterias = data.loterias;
                     renderizarLoterias(todasLasLoterias);
-                    const activasCount = todasLasLoterias.filter(l => l.sorteos.some(s => !s.animal.toUpperCase().includes('PENDIENTE'))).length;
-                    badge.textContent = `● ${activasCount} LOTERÍAS`;
                 }
             } catch (err) { badge.textContent = "● OFFLINE"; }
         }
@@ -634,22 +674,36 @@
 
         function renderizarLoterias(lista) {
             const container = document.getElementById('loterias-container');
-            const activas = lista.filter(lot => lot.sorteos.some(s => !s.animal.toUpperCase().includes('PENDIENTE')));
-            if (!activas.length) {
-                container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 20px;">No se encontraron loterías.</p>`;
+            const badge = document.getElementById('sync-status');
+
+            // Verificar si ya empezó a jugar el día (alguna lotería tiene al menos 1 resultado)
+            const hayAlgunResultadoHoy = todasLasLoterias.some(lot =>
+                lot.sorteos.some(s => !s.animal.toUpperCase().includes('PENDIENTE'))
+            );
+
+            // Si ya empezó el día, ocultar las inactivas (como Cazaloton); si es madrugada, mostrar todas por salir
+            const visibles = hayAlgunResultadoHoy
+                ? lista.filter(lot => lot.sorteos.some(s => !s.animal.toUpperCase().includes('PENDIENTE')))
+                : lista;
+
+            badge.textContent = `● ${visibles.length} LOTERÍAS`;
+
+            if (!visibles.length) {
+                container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 20px;">No se encontraron loterías con ese nombre.</p>`;
                 return;
             }
-            container.innerHTML = activas.map(lot => `
+
+            container.innerHTML = visibles.map(lot => `
                 <div class="loteria-block">
                     <div class="loteria-header">
                         <h2>${lot.nombre}</h2>
-                        <span class="loteria-tag">● ACTIVA</span>
+                        <span class="loteria-tag">${hayAlgunResultadoHoy ? '● ACTIVA' : '⏳ PRÓXIMAMENTE'}</span>
                     </div>
                     <div class="sorteos-grid">
                         ${lot.sorteos.map(s => {
                             const esPendiente = s.animal.toUpperCase().includes('PENDIENTE') || s.img.includes('logowin');
                             return `
-                                <div class="sorteo-cell" style="${esPendiente ? 'opacity: 0.7;' : ''}">
+                                <div class="sorteo-cell" style="${esPendiente ? 'opacity: 0.72;' : ''}">
                                     <span class="num-pill" style="${esPendiente ? 'background:#374151; color:#e5e7eb;' : ''}">${esPendiente ? '⏳' : s.numero}</span>
                                     <img src="${esPendiente ? 'logo.png' : s.img}" alt="${s.animal}" loading="lazy" onerror="this.src='logo.png'" style="${esPendiente ? 'border-color: #f59e0b;' : ''}">
                                     <div class="sorteo-time">${s.hora}</div>
