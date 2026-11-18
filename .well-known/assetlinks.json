@@ -1,1 +1,8 @@
-
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "dev.pages.portal_agencia_harold.twa",
+        "sha256_cert_fingerprints": ["E2:F2:E0:60:0C:E0:78:36:3A:9B:1D:33:CA:37:F5:41:FC:98:2A:CB:4F:76:33:3A:8D:CB:9D:AA:A0:FE:86:06"]
+      }
+    }]
