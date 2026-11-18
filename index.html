@@ -6,6 +6,8 @@
     <title>Agencia Harold José - Seguridad, Confianza y Experiencia</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00a884">
     <style>
         :root {
             --bg-dark: #0b141a;
@@ -280,7 +282,6 @@
             } catch (e) {}
         }
 
-        // Genera un tono doble suave tipo notificación de WhatsApp sin archivos externos
         function tocarSonidoWhatsApp() {
             if (!sonidoActivo || !audioCtx) return;
             try {
@@ -290,8 +291,8 @@
                 const osc1 = audioCtx.createOscillator();
                 const gain1 = audioCtx.createGain();
                 osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(587.33, now); // Re5
-                osc1.frequency.setValueAtTime(880, now + 0.09); // La5
+                osc1.frequency.setValueAtTime(587.33, now);
+                osc1.frequency.setValueAtTime(880, now + 0.09);
                 gain1.gain.setValueAtTime(0.18, now);
                 gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
                 osc1.connect(gain1);
@@ -315,7 +316,6 @@
             document.title = TITULO_ORIGINAL;
         });
 
-        // Desbloquear audio automáticamente al primer clic en cualquier parte de la página
         document.addEventListener("click", () => {
             if (!sonidoActivo) activarNotificaciones();
         }, { once: true });
@@ -419,7 +419,6 @@
 
                 listaContactosCache = data.chats || [];
 
-                // Detectar si llegó un mensaje nuevo de algún cliente para sonar alerta
                 const conSinLeer = listaContactosCache.find(c => c.sinLeer);
                 if (conSinLeer && conSinLeer.ts !== ultimoTimestampAdmin) {
                     ultimoTimestampAdmin = conSinLeer.ts;
@@ -495,7 +494,6 @@
 
                 const msgs = data.hilo.mensajes || [];
 
-                // Si es cliente y llegó respuesta nueva de taquilla, sonar alerta
                 if (!ES_ADMIN && ultimoTotalMensajes !== -1 && msgs.length > ultimoTotalMensajes) {
                     const ultimo = msgs[msgs.length - 1];
                     if (ultimo.sender === "admin") {
