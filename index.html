@@ -22,7 +22,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         html, body { height: 100dvh; max-height: 100dvh; background-color: var(--bg-dark); color: var(--text-main); display: flex; flex-direction: column; overflow: hidden; }
 
-        /* PANTALLA DE BIENVENIDA / BLOQUEO POR INACTIVIDAD */
+        /* PANTALLA DE BIENVENIDA / VERIFICACIÓN / BLOQUEO */
         #welcome-overlay {
             position: fixed;
             inset: 0;
@@ -32,38 +32,50 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 20px;
             text-align: center;
+            overflow-y: auto;
         }
         .welcome-box {
             background: var(--bg-card);
             border: 1px solid #2a3942;
             border-radius: 18px;
-            padding: 26px 22px;
-            max-width: 400px;
+            padding: 24px 20px;
+            max-width: 410px;
             width: 100%;
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
         }
         .welcome-logo {
-            width: 82px;
-            height: 82px;
+            width: 78px;
+            height: 78px;
             border-radius: 18px;
             border: 2px solid var(--accent-gold);
             object-fit: cover;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             box-shadow: 0 0 18px rgba(245, 158, 11, 0.3);
         }
-        .welcome-greeting { font-size: 1.15rem; font-weight: 800; color: var(--accent-gold); margin-bottom: 6px; }
-        .welcome-sub { font-size: 0.84rem; color: var(--text-main); line-height: 1.4; margin-bottom: 18px; }
+        .welcome-greeting { font-size: 1.12rem; font-weight: 800; color: var(--accent-gold); margin-bottom: 6px; }
+        .welcome-sub { font-size: 0.83rem; color: var(--text-main); line-height: 1.4; margin-bottom: 14px; }
+        .promo-badge-reg {
+            background: rgba(245, 158, 11, 0.14);
+            border: 1px dashed var(--accent-gold);
+            color: #fbbf24;
+            padding: 8px 10px;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.35;
+        }
         .loader-bar-wrap { width: 100%; height: 6px; background: #0b141a; border-radius: 10px; overflow: hidden; margin-top: 10px; }
         .loader-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-green), var(--accent-gold)); border-radius: 10px; transition: width 1.4s ease-out; }
-        .welcome-form { display: flex; flex-direction: column; gap: 11px; text-align: left; }
+        .welcome-form { display: flex; flex-direction: column; gap: 10px; text-align: left; }
         .welcome-form input[type="text"],
         .welcome-form input[type="tel"],
         .welcome-form input[type="password"] {
             background: var(--bg-panel);
             border: 1px solid #374151;
-            padding: 12px 14px;
+            padding: 11px 13px;
             border-radius: 10px;
             color: #fff;
             font-size: 0.92rem;
@@ -71,13 +83,37 @@
             width: 100%;
         }
         .welcome-form input:focus { border-color: var(--accent-green); }
+        .otp-input {
+            text-align: center;
+            letter-spacing: 6px;
+            font-size: 1.2rem !important;
+            font-weight: 900;
+            color: var(--accent-gold) !important;
+        }
+        .btn-tg-otp {
+            background: #229ED9;
+            color: #fff;
+            border: none;
+            padding: 11px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 0.88rem;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-decoration: none;
+        }
         .pass-wrap { position: relative; display: flex; align-items: center; }
         .pass-wrap input { padding-right: 42px; }
         .toggle-pass-btn { position: absolute; right: 10px; background: none; border: none; color: var(--text-muted); font-size: 1.05rem; cursor: pointer; }
         .remember-row { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-main); cursor: pointer; user-select: none; }
         .remember-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent-green); cursor: pointer; }
-        .btn-enter-portal { background: var(--accent-green); color: #fff; border: none; padding: 13px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer; margin-top: 4px; width: 100%; }
-        .admin-link-btn { background: none; border: none; color: var(--text-muted); font-size: 0.75rem; margin-top: 14px; cursor: pointer; text-decoration: underline; align-self: center; }
+        .btn-enter-portal { background: var(--accent-green); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.94rem; cursor: pointer; margin-top: 2px; width: 100%; }
+        .btn-enter-portal:disabled { opacity: 0.6; cursor: wait; }
+        .admin-link-btn { background: none; border: none; color: var(--text-muted); font-size: 0.75rem; margin-top: 12px; cursor: pointer; text-decoration: underline; align-self: center; }
 
         /* ENCABEZADO Y NAVEGACIÓN */
         header { background-color: var(--bg-card); padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3942; flex-shrink: 0; gap: 8px; }
@@ -386,7 +422,7 @@
 </head>
 <body>
 
-    <!-- PANTALLA DE BIENVENIDA / BLOQUEO POR INACTIVIDAD -->
+    <!-- PANTALLA DE BIENVENIDA / VERIFICACIÓN TELEGRAM / BLOQUEO -->
     <div id="welcome-overlay">
         <div class="welcome-box">
             <img src="logo.png" alt="Agencia Harold José" class="welcome-logo">
@@ -400,9 +436,18 @@
             </div>
 
             <div id="welcome-register" class="welcome-form" style="display:none;">
-                <input type="text" id="reg-nombre" placeholder="Tu Nombre y Apellido (ej: Carlos Pérez)">
-                <input type="tel" id="reg-tlf" placeholder="Tu Teléfono (ej: 0414-1234567)">
-                <button class="btn-enter-portal" onclick="registrarUsuarioInicial()">Entrar a la Agencia ➤</button>
+                <div class="promo-badge-reg">
+                    🎁 ¡PROMO DE BIENVENIDA! Verifica tu teléfono real en Telegram, entra al chat y recibe <strong>1.000,00 Bs</strong> para jugar.
+                </div>
+                <input type="text" id="reg-nombre" placeholder="1. Tu Nombre y Apellido (ej: Carlos Pérez)">
+                <input type="tel" id="reg-tlf" placeholder="2. Tu Teléfono (ej: 04141234567)">
+                
+                <button type="button" class="btn-tg-otp" onclick="abrirTelegramParaCodigo()">
+                    📲 3. Obtener Código en Telegram
+                </button>
+
+                <input type="text" id="reg-otp" class="otp-input" maxlength="6" inputmode="numeric" placeholder="CÓDIGO 6 DÍGITOS">
+                <button class="btn-enter-portal" id="btn-verificar-entrar" onclick="verificarCodigoYEntrar()">Verificar y Entrar ➤</button>
             </div>
 
             <form id="welcome-admin-login" class="welcome-form" style="display:none;" onsubmit="event.preventDefault(); validarClaveAdmin();">
@@ -486,7 +531,6 @@
 
     <main id="main-scroll">
         <section id="resultados" class="section active">
-            <!-- CINTILLO EN MOVIMIENTO: LOTERÍA (HORA  NÚMERO - ANIMAL) + IMAGEN -->
             <div class="ticker-wrap" id="ultimos-ticker-wrap" style="display:none;">
                 <div class="ticker-label">🔥 ÚLTIMOS</div>
                 <div class="ticker-viewport">
@@ -494,7 +538,6 @@
                 </div>
             </div>
 
-            <!-- BUSCADOR DE LOTERÍAS DEBAJO DEL CINTILLO -->
             <div class="search-bar">
                 <input type="text" id="filtro-loteria" placeholder="🔍 Filtrar lotería (ej: Lotto Activo, Granjita)..." oninput="filtrarLoterias()">
                 <button class="refresh-btn" onclick="cargarResultados()">↻</button>
@@ -545,11 +588,10 @@
                         </div>
                     </div>
 
-                    <!-- BARRA FINANCIERA PRIVADA (SOLO VISIBLE PARA EL ADMIN) -->
                     <div class="admin-finance-strip" id="admin-finance-strip">
                         <div class="fin-metrics">
                             <span class="fin-pill retirable" id="fin-lbl-disp">💰 Retirable: 0,00 Bs.</span>
-                            <span class="fin-pill cashea" id="fin-lbl-cashea">💳 Cashea (No retirable): 0,00 Bs.</span>
+                            <span class="fin-pill cashea" id="fin-lbl-cashea">💳 Cashea/Promo (No retirable): 0,00 Bs.</span>
                             <span class="fin-pill" id="fin-lbl-dep">📥 Dep: 0,00</span>
                             <span class="fin-pill" id="fin-lbl-jug">🎲 Jug: 0,00</span>
                             <span class="fin-pill" id="fin-lbl-ret">📤 Ret: 0,00</span>
@@ -587,6 +629,7 @@
 
     <script>
         const API_URL = "https://api-resultados-harold.agharoldjose.workers.dev";
+        const BOT_TELEGRAM_USER = "AgenciaHaroldRegistroBot";
         const TITULO_ORIGINAL = "Agencia Harold José - Seguridad, Confianza y Experiencia";
         const TIEMPO_EXPIRACION_MS = 15 * 60 * 1000;
         const ROLLERCOIN_REF_URL = "https://rollercoin.com/?r=kqmow2ag";
@@ -627,12 +670,36 @@ Harold Eliezer Galea Sanchez
 0102 / 18274410 / 04124489363
 0134 / 18274410 / 04124489363`;
 
+        // Huella única del navegador/equipo para evitar múltiples cobros de bono en el mismo celular
+        function obtenerDeviceId() {
+            let saved = localStorage.getItem("harold_device_fp");
+            if (saved) return saved;
+            const raw = [
+                navigator.userAgent,
+                screen.width + "x" + screen.height,
+                screen.colorDepth,
+                Intl.DateTimeFormat().resolvedOptions().timeZone,
+                navigator.language,
+                navigator.hardwareConcurrency || "0"
+            ].join("|");
+            let hash = 0;
+            for (let i = 0; i < raw.length; i++) {
+                hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+                hash |= 0;
+            }
+            saved = "dev_" + Math.abs(hash).toString(36) + "_" + (screen.width * screen.height).toString(36);
+            localStorage.setItem("harold_device_fp", saved);
+            return saved;
+        }
+
+        const DEVICE_ID = obtenerDeviceId();
         let todasLasLoterias = [];
         let listaContactosCache = [];
         let miChatId = localStorage.getItem("harold_chat_id");
         let miClientToken = localStorage.getItem("harold_client_token");
         let miNombre = localStorage.getItem("harold_chat_nombre");
         let miTelefono = localStorage.getItem("harold_chat_tlf");
+        let miVerificado = localStorage.getItem("harold_verificado") === "1";
         let adminKey = localStorage.getItem("harold_admin_key") || sessionStorage.getItem("harold_admin_key") || "";
         let ES_ADMIN = Boolean(adminKey);
         let sesionBloqueada = false;
@@ -673,7 +740,7 @@ Harold Eliezer Galea Sanchez
                 sessionStorage.removeItem("harold_admin_key");
                 mostrarLoginAdmin("🔒 Sesión cerrada tras 15 min fuera de la app. Ingresa tu clave para continuar:");
             } else {
-                mostrarRegistroCliente("🔒 Sesión cerrada tras 15 min fuera de la app. Ingresa tu usuario para continuar:");
+                mostrarRegistroCliente("🔒 Sesión cerrada tras 15 min fuera de la app. Verifica tu número para continuar:");
             }
         }
 
@@ -683,11 +750,8 @@ Harold Eliezer Galea Sanchez
         }
 
         document.addEventListener("visibilitychange", () => {
-            if (document.hidden) {
-                registrarSalidaApp();
-            } else {
-                verificarExpiracionAlVolver();
-            }
+            if (document.hidden) registrarSalidaApp();
+            else verificarExpiracionAlVolver();
         });
         window.addEventListener("pagehide", registrarSalidaApp);
         window.addEventListener("beforeunload", registrarSalidaApp);
@@ -742,9 +806,7 @@ Harold Eliezer Galea Sanchez
             document.getElementById('welcome-title').textContent = saludo.titulo;
             document.getElementById('welcome-msg').textContent = saludo.mensaje;
 
-            if (verificarExpiracionAlVolver()) {
-                return;
-            }
+            if (verificarExpiracionAlVolver()) return;
 
             const quiereAdmin = new URLSearchParams(window.location.search).has("admin");
 
@@ -760,7 +822,7 @@ Harold Eliezer Galea Sanchez
                 }, 900);
             } else if (quiereAdmin) {
                 mostrarLoginAdmin();
-            } else if (miChatId && miClientToken && miNombre) {
+            } else if (miChatId && miClientToken && miNombre && miVerificado) {
                 sesionBloqueada = false;
                 document.getElementById('btn-show-admin').style.display = 'none';
                 document.getElementById('welcome-loader').style.display = 'block';
@@ -773,41 +835,83 @@ Harold Eliezer Galea Sanchez
             }
         }
 
-        function registrarUsuarioInicial() {
+        function abrirTelegramParaCodigo() {
             const nom = document.getElementById('reg-nombre').value.trim();
-            const tlf = document.getElementById('reg-tlf').value.trim();
-            if (!nom || nom.length < 2) return alert("Por favor ingresa tu nombre.");
-            if (!tlf || tlf.length < 7) return alert("Por favor ingresa un número de teléfono válido.");
-
-            const tlfNormalizado = tlf.replace(/\D/g, "");
-            const tlfGuardadoNorm = (miTelefono || "").replace(/\D/g, "");
-
-            if (!miChatId || !miClientToken || tlfNormalizado !== tlfGuardadoNorm) {
-                miChatId = "cli_" + tlfNormalizado + "_" + Math.floor(Math.random() * 1000);
-                miClientToken = "tok_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+            const tlf = document.getElementById('reg-tlf').value.replace(/\D/g, "");
+            if (!nom || nom.length < 2) return alert("Primero escribe tu Nombre y Apellido.");
+            if (!/^0(412|414|424|416|426)\d{7}$/.test(tlf)) {
+                return alert("Escribe un número venezolano válido de 11 dígitos (ej: 04141234567).");
             }
+            const urlBot = `https://t.me/${BOT_TELEGRAM_USER}?start=${tlf}`;
+            window.open(urlBot, "_blank");
+        }
 
-            miNombre = nom;
-            miTelefono = tlf;
-            sesionBloqueada = false;
-            localStorage.removeItem("harold_last_exit_ts");
+        async function verificarCodigoYEntrar() {
+            const nom = document.getElementById('reg-nombre').value.trim();
+            const tlf = document.getElementById('reg-tlf').value.replace(/\D/g, "");
+            const codigo = document.getElementById('reg-otp').value.trim();
 
-            localStorage.setItem("harold_chat_id", miChatId);
-            localStorage.setItem("harold_client_token", miClientToken);
-            localStorage.setItem("harold_chat_nombre", miNombre);
-            localStorage.setItem("harold_chat_tlf", miTelefono);
+            if (!nom || nom.length < 2) return alert("Ingresa tu nombre y apellido.");
+            if (!/^0(412|414|424|416|426)\d{7}$/.test(tlf)) return alert("Ingresa un teléfono venezolano válido (ej: 04141234567).");
+            if (!/^\d{6}$/.test(codigo)) return alert("Ingresa el código de 6 dígitos que recibiste en Telegram.");
 
-            activarNotificaciones();
+            const btn = document.getElementById('btn-verificar-entrar');
+            btn.disabled = true;
+            btn.textContent = "Verificando...";
 
-            document.getElementById('welcome-register').style.display = 'none';
-            document.getElementById('btn-show-admin').style.display = 'none';
-            const saludo = obtenerSaludoHorario(miNombre);
-            document.getElementById('welcome-title').textContent = saludo.titulo;
-            document.getElementById('welcome-loader').style.display = 'block';
-            setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
-            setTimeout(() => {
-                document.getElementById('welcome-overlay').style.display = 'none';
-            }, 900);
+            try {
+                const res = await fetch(`${API_URL}/auth/verify-otp`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Device-Id": DEVICE_ID
+                    },
+                    body: JSON.stringify({
+                        nombre: nom,
+                        telefono: tlf,
+                        codigo,
+                        deviceId: DEVICE_ID
+                    })
+                });
+                const data = await res.json();
+                btn.disabled = false;
+                btn.textContent = "Verificar y Entrar ➤";
+
+                if (!data.ok) {
+                    return alert(`❌ ${data.error || "Código inválido"}`);
+                }
+
+                miChatId = data.chatId;
+                miClientToken = data.clientToken;
+                miNombre = data.nombre;
+                miTelefono = data.telefono;
+                miVerificado = true;
+                sesionBloqueada = false;
+                localStorage.removeItem("harold_last_exit_ts");
+
+                localStorage.setItem("harold_chat_id", miChatId);
+                localStorage.setItem("harold_client_token", miClientToken);
+                localStorage.setItem("harold_chat_nombre", miNombre);
+                localStorage.setItem("harold_chat_tlf", miTelefono);
+                localStorage.setItem("harold_verificado", "1");
+
+                activarNotificaciones();
+
+                document.getElementById('welcome-register').style.display = 'none';
+                document.getElementById('btn-show-admin').style.display = 'none';
+                const saludo = obtenerSaludoHorario(miNombre);
+                document.getElementById('welcome-title').textContent = saludo.titulo;
+                document.getElementById('welcome-msg').textContent = "¡Cuenta verificada! Entra al chat y envíanos un saludo para activar tu bono.";
+                document.getElementById('welcome-loader').style.display = 'block';
+                setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
+                setTimeout(() => {
+                    document.getElementById('welcome-overlay').style.display = 'none';
+                }, 900);
+            } catch (e) {
+                btn.disabled = false;
+                btn.textContent = "Verificar y Entrar ➤";
+                alert("Error de conexión verificando el código.");
+            }
         }
 
         function mostrarLoginAdmin(mensajePersonalizado = null) {
@@ -1128,7 +1232,7 @@ Harold Eliezer Galea Sanchez
         }
 
         async function borrarChatPorId(chatId, nombre) {
-            if (!confirm(`¿Seguro que deseas borrar todo el chat de "${nombre}"?\n\nCuando vuelva a escribirte recibirá automáticamente las reglas y datos de pago.`)) return;
+            if (!confirm(`¿Seguro que deseas borrar todo el chat de "${nombre}"?\n\nNota: El candado del bono de 1.000 Bs permanece activo para evitar cobros repetidos.`)) return;
             await fetch(`${API_URL}/chat/delete`, {
                 method: "POST",
                 headers: {
@@ -1162,7 +1266,7 @@ Harold Eliezer Galea Sanchez
                 lblDisp.className = "fin-pill retirable";
                 lblDisp.textContent = `💰 Retirable: ${fmtBs(finanzasActivas.disponible)}`;
             }
-            document.getElementById('fin-lbl-cashea').textContent = `💳 Cashea (No retirable): ${fmtBs(finanzasActivas.cashea)}`;
+            document.getElementById('fin-lbl-cashea').textContent = `💳 Cashea/Promo (No retirable): ${fmtBs(finanzasActivas.cashea)}`;
             document.getElementById('fin-lbl-dep').textContent = `📥 Dep: ${fmtBs(finanzasActivas.depositado)}`;
             document.getElementById('fin-lbl-jug').textContent = `🎲 Jug: ${fmtBs(finanzasActivas.jugado)}`;
             document.getElementById('fin-lbl-ret').textContent = `📤 Ret: ${fmtBs(finanzasActivas.retirado)}`;
@@ -1179,7 +1283,7 @@ Harold Eliezer Galea Sanchez
                 jugada: "🎟️ Descontar Jugada del Saldo",
                 premio: "🏆 Acreditar Premio Ganador",
                 retiro: "💸 Liquidar Retiro (Calcula 0,3%)",
-                cashea_sumar: "💳 Asignar Crédito Cashea (No Retirable)"
+                cashea_sumar: "💳 Asignar Crédito Cashea / Promo (No Retirable)"
             };
             document.getElementById('modal-mov-titulo').textContent = titulos[accion] || "Registrar Movimiento";
 
@@ -1234,7 +1338,7 @@ Harold Eliezer Galea Sanchez
             const monto = parseFloat(document.getElementById('modal-mov-monto').value) || 0;
             if (monto <= 0) return alert("Ingresa un monto mayor a 0.");
             if (accionModalActual === "retiro" && monto > finanzasActivas.disponible) {
-                return alert(`Solo puedes retirar hasta ${fmtBs(Math.max(0, finanzasActivas.disponible))}. El saldo Cashea no es retirable.`);
+                return alert(`Solo puedes retirar hasta ${fmtBs(Math.max(0, finanzasActivas.disponible))}. El saldo promocional/Cashea no es retirable.`);
             }
 
             const notificarChat = document.getElementById('modal-mov-notif').checked;
@@ -1401,7 +1505,7 @@ Harold Eliezer Galea Sanchez
                 let html = `
                     <div class="msg in">
                         ¡Bienvenido a <strong>Agencia Harold José</strong>! 🍀<br>
-                        Escribe tu jugada, envía <strong>saldo</strong> para ver tu estado de cuenta o adjunta tu capture con el clip 📎.
+                        Envíanos un saludo para activar automáticamente tu bono de bienvenida (si aún no lo has cobrado), escribe <strong>saldo</strong> para ver tu cuenta o adjunta tu capture con el clip 📎.
                     </div>
                 `;
 
@@ -1432,22 +1536,34 @@ Harold Eliezer Galea Sanchez
 
             if (textoForzado === null) input.value = '';
 
-            const headers = { "Content-Type": "application/json" };
+            const headers = {
+                "Content-Type": "application/json",
+                "X-Device-Id": DEVICE_ID
+            };
             if (ES_ADMIN) headers["X-Admin-Key"] = adminKey;
             else headers["X-Client-Token"] = miClientToken;
 
-            await fetch(`${API_URL}/chat/send`, {
+            const res = await fetch(`${API_URL}/chat/send`, {
                 method: "POST",
                 headers,
                 body: JSON.stringify({
                     chatId: destinoId,
                     nombre: ES_ADMIN ? null : miNombre,
                     telefono: ES_ADMIN ? null : miTelefono,
+                    deviceId: DEVICE_ID,
                     texto: texto,
                     imagen: imagenBase64,
                     sender: ES_ADMIN ? "admin" : "client"
                 })
             });
+
+            if (res.status === 403 && !ES_ADMIN) {
+                localStorage.removeItem("harold_verificado");
+                miVerificado = false;
+                mostrarRegistroCliente("⚠️ Tu sesión requiere verificar tu teléfono nuevamente en Telegram.");
+                document.getElementById('welcome-overlay').style.display = 'flex';
+                return;
+            }
 
             cargarHistorial(destinoId, ES_ADMIN ? "admin" : "client");
             if (ES_ADMIN) cargarListaAdmin();
@@ -1492,7 +1608,6 @@ Harold Eliezer Galea Sanchez
             fileInput.value = '';
         }
 
-        // GENERADOR DEL CINTILLO: LOTERÍA (HORA  NÚMERO - ANIMAL) + IMAGEN
         function actualizarTickerUltimosResultados(loterias) {
             const wrap = document.getElementById('ultimos-ticker-wrap');
             const track = document.getElementById('ultimos-ticker-track');
