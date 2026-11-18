@@ -413,14 +413,6 @@
             <div id="flyers-container" class="flyers-grid">
                 <p style="color: var(--text-muted); text-align: center; grid-column: 1/-1; padding: 30px;">Cargando promociones...</p>
             </div>
-            <div class="flyer-card">
-                <div class="flyer-body" style="flex-direction: column; align-items: flex-start; gap: 5px;">
-                    <strong style="color: var(--accent-gold);">📲 DATOS DE PAGO OFICIALES</strong>
-                    <span>Pago Móvil (0102 / 0134): 0412-4489363 • C.I: 18.274.410</span>
-                    <span>Transferencia BDV (+500 Bs): 01020453450000950163</span>
-                    <span>Titular: Harold Eliezer Galea Sanchez</span>
-                </div>
-            </div>
         </section>
     </main>
 
@@ -500,7 +492,7 @@
     <script>
         const API_URL = "https://api-resultados-harold.agharoldjose.workers.dev";
         const TITULO_ORIGINAL = "Agencia Harold José - Seguridad, Confianza y Experiencia";
-        const TIEMPO_EXPIRACION_MS = 15 * 60 * 1000; // 15 minutos en milisegundos
+        const TIEMPO_EXPIRACION_MS = 15 * 60 * 1000;
 
         const REGLAS_Y_DATOS_TEXTO = `*📝 REGLAS DE JUEGO ACTUALIZADAS*
 💰 MONTOS MÍNIMOS
@@ -556,7 +548,6 @@ Harold Eliezer Galea Sanchez
         let ultimoTotalMensajes = -1;
         let ultimoConteoSinLeerAdmin = 0;
 
-        // CONTROL DE CIERRE AUTOMÁTICO AL SALIR POR MÁS DE 15 MINUTOS
         function registrarSalidaApp() {
             if (!sesionBloqueada) {
                 localStorage.setItem("harold_last_exit_ts", String(Date.now()));
@@ -654,7 +645,6 @@ Harold Eliezer Galea Sanchez
             document.getElementById('welcome-title').textContent = saludo.titulo;
             document.getElementById('welcome-msg').textContent = saludo.mensaje;
 
-            // Si estuvo fuera más de 15 minutos antes de abrir de nuevo, exige login
             if (verificarExpiracionAlVolver()) {
                 return;
             }
@@ -695,7 +685,6 @@ Harold Eliezer Galea Sanchez
             const tlfNormalizado = tlf.replace(/\D/g, "");
             const tlfGuardadoNorm = (miTelefono || "").replace(/\D/g, "");
 
-            // Si es el mismo cliente reingresando tras expirar los 15 min, conserva su historial y saldo
             if (!miChatId || !miClientToken || tlfNormalizado !== tlfGuardadoNorm) {
                 miChatId = "cli_" + tlfNormalizado + "_" + Math.floor(Math.random() * 1000);
                 miClientToken = "tok_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -783,7 +772,6 @@ Harold Eliezer Galea Sanchez
             }
         }
 
-        // SONIDO POTENTE Y GLOBITO ROJO CON CONTADOR (SIGUE ACTIVO EN SEGUNDO PLANO)
         function activarNotificaciones() {
             try {
                 if (!audioCtx) {
@@ -1083,7 +1071,6 @@ Harold Eliezer Galea Sanchez
             document.getElementById('fin-lbl-ret').textContent = `📤 Ret: ${fmtBs(finanzasActivas.retirado)}`;
         }
 
-        // MODAL MOVIMIENTOS Y CALCULADORA 0.3%
         function abrirModalMovimiento(accion) {
             if (!adminChatActivo) return;
             accionModalActual = accion;
