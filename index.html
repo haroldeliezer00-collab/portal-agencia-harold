@@ -53,39 +53,11 @@
             margin-bottom: 12px;
             box-shadow: 0 0 18px rgba(245, 158, 11, 0.3);
         }
-        .welcome-greeting {
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: var(--accent-gold);
-            margin-bottom: 6px;
-        }
-        .welcome-sub {
-            font-size: 0.84rem;
-            color: var(--text-main);
-            line-height: 1.4;
-            margin-bottom: 18px;
-        }
-        .loader-bar-wrap {
-            width: 100%;
-            height: 6px;
-            background: #0b141a;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-        .loader-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--accent-green), var(--accent-gold));
-            border-radius: 10px;
-            transition: width 1.6s ease-out;
-        }
-        .welcome-form {
-            display: flex;
-            flex-direction: column;
-            gap: 11px;
-            text-align: left;
-        }
+        .welcome-greeting { font-size: 1.15rem; font-weight: 800; color: var(--accent-gold); margin-bottom: 6px; }
+        .welcome-sub { font-size: 0.84rem; color: var(--text-main); line-height: 1.4; margin-bottom: 18px; }
+        .loader-bar-wrap { width: 100%; height: 6px; background: #0b141a; border-radius: 10px; overflow: hidden; margin-top: 10px; }
+        .loader-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-green), var(--accent-gold)); border-radius: 10px; transition: width 1.6s ease-out; }
+        .welcome-form { display: flex; flex-direction: column; gap: 11px; text-align: left; }
         .welcome-form input[type="text"],
         .welcome-form input[type="tel"],
         .welcome-form input[type="password"] {
@@ -101,52 +73,11 @@
         .welcome-form input:focus { border-color: var(--accent-green); }
         .pass-wrap { position: relative; display: flex; align-items: center; }
         .pass-wrap input { padding-right: 42px; }
-        .toggle-pass-btn {
-            position: absolute;
-            right: 10px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            cursor: pointer;
-        }
-        .remember-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.82rem;
-            color: var(--text-main);
-            cursor: pointer;
-            user-select: none;
-        }
-        .remember-row input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--accent-green);
-            cursor: pointer;
-        }
-        .btn-enter-portal {
-            background: var(--accent-green);
-            color: #fff;
-            border: none;
-            padding: 13px;
-            border-radius: 10px;
-            font-weight: 800;
-            font-size: 0.95rem;
-            cursor: pointer;
-            margin-top: 4px;
-            width: 100%;
-        }
-        .admin-link-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            margin-top: 14px;
-            cursor: pointer;
-            text-decoration: underline;
-            align-self: center;
-        }
+        .toggle-pass-btn { position: absolute; right: 10px; background: none; border: none; color: var(--text-muted); font-size: 1.05rem; cursor: pointer; }
+        .remember-row { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-main); cursor: pointer; user-select: none; }
+        .remember-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent-green); cursor: pointer; }
+        .btn-enter-portal { background: var(--accent-green); color: #fff; border: none; padding: 13px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer; margin-top: 4px; width: 100%; }
+        .admin-link-btn { background: none; border: none; color: var(--text-muted); font-size: 0.75rem; margin-top: 14px; cursor: pointer; text-decoration: underline; align-self: center; }
 
         /* ENCABEZADO Y NAVEGACIÓN */
         header { background-color: var(--bg-card); padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3942; flex-shrink: 0; gap: 8px; }
@@ -169,16 +100,7 @@
         nav { display: flex; background-color: var(--bg-card); border-bottom: 2px solid #2a3942; flex-shrink: 0; }
         .tab-btn { flex: 1; padding: 10px 4px; background: none; border: none; color: var(--text-muted); font-weight: 700; font-size: 0.78rem; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
         .tab-btn.active { color: var(--accent-green); border-bottom-color: var(--accent-green); }
-        .unread-badge {
-            display: none;
-            background: #ef4444;
-            color: #fff;
-            font-size: 0.66rem;
-            font-weight: 900;
-            padding: 1px 6px;
-            border-radius: 10px;
-            box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
-        }
+        .unread-badge { display: none; background: #ef4444; color: #fff; font-size: 0.66rem; font-weight: 900; padding: 1px 6px; border-radius: 10px; box-shadow: 0 0 8px rgba(239, 68, 68, 0.8); }
 
         .app-banner-bar { background: linear-gradient(90deg, #132a28, #272215); border-bottom: 1px solid rgba(245, 158, 11, 0.45); padding: 7px 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; flex-shrink: 0; }
         .app-banner-text { font-size: 0.76rem; color: #f3f4f6; font-weight: 600; line-height: 1.2; }
@@ -219,7 +141,7 @@
         #chat-wrapper { flex: 1; display: none; flex-direction: column; overflow: hidden; background: #0b141a; }
         .whatsapp-layout { display: flex; flex: 1; overflow: hidden; width: 100%; height: 100%; }
         
-        .admin-sidebar { width: 34%; min-width: 280px; max-width: 400px; border-right: 1px solid #2a3942; display: flex; flex-direction: column; background: var(--bg-panel); }
+        .admin-sidebar { width: 32%; min-width: 270px; max-width: 380px; border-right: 1px solid #2a3942; display: flex; flex-direction: column; background: var(--bg-panel); }
         .admin-bar { background: #075e54; padding: 9px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: bold; flex-shrink: 0; gap: 8px; }
         .sidebar-search { padding: 8px; background: var(--bg-panel); border-bottom: 1px solid #1f2c33; }
         .sidebar-search input { width: 100%; background: var(--bg-card); border: none; padding: 8px 12px; border-radius: 8px; color: #fff; font-size: 0.82rem; outline: none; }
@@ -238,6 +160,51 @@
         .chat-main-pane { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #0b141a; position: relative; }
         .empty-chat-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); text-align: center; padding: 20px; }
         .empty-chat-placeholder img { width: 70px; height: 70px; border-radius: 16px; margin-bottom: 12px; opacity: 0.8; border: 2px solid var(--accent-gold); }
+
+        /* PANEL FINANCIERO PRIVADO DEL ADMIN SOBRE EL CHAT */
+        .admin-finance-strip {
+            background: #131e24;
+            border-bottom: 1px solid #2a3942;
+            padding: 8px 12px;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .fin-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.75rem;
+        }
+        .fin-pill {
+            background: var(--bg-card);
+            border: 1px solid #2e3d47;
+            padding: 4px 9px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        .fin-pill.retirable { border-color: var(--accent-green); color: #34d399; }
+        .fin-pill.cashea { border-color: var(--accent-gold); color: #fbbf24; }
+        .fin-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .fin-btn {
+            border: none;
+            padding: 5px 9px;
+            border-radius: 7px;
+            font-size: 0.71rem;
+            font-weight: 800;
+            cursor: pointer;
+            color: #fff;
+        }
+        .fin-btn.play { background: #2563eb; }
+        .fin-btn.prize { background: #059669; }
+        .fin-btn.withdraw { background: #d97706; }
+        .fin-btn.cashea { background: #7c3aed; }
+        .fin-btn.statement { background: #374151; border: 1px solid #4b5563; }
 
         .chat-messages { flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
         .msg { max-width: 82%; padding: 8px 12px; border-radius: 12px; font-size: 0.88rem; line-height: 1.38; word-wrap: break-word; }
@@ -259,6 +226,60 @@
         .receipt-card.warn { border-left-color: #f59e0b; }
         .receipt-card.dup { border-left-color: #ef4444; background: rgba(239, 68, 68, 0.12); }
         .receipt-status { font-weight: 900; font-size: 0.8rem; margin-bottom: 4px; display: block; }
+        .btn-approve-receipt {
+            margin-top: 6px;
+            background: var(--accent-green);
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 7px;
+            font-size: 0.74rem;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* MODAL CALCULADORA DE RETIROS Y MOVIMIENTOS (SOLO ADMIN) */
+        #modal-movimiento {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 9998;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid #374151;
+            border-radius: 14px;
+            padding: 18px;
+            max-width: 370px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+        .modal-card h3 { font-size: 1rem; color: var(--accent-gold); }
+        .modal-card input[type="number"], .modal-card select {
+            background: var(--bg-panel);
+            border: 1px solid #374151;
+            padding: 10px 12px;
+            border-radius: 9px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            width: 100%;
+        }
+        .calc-box {
+            background: #0b141a;
+            border: 1px dashed var(--accent-gold);
+            border-radius: 9px;
+            padding: 10px;
+            font-size: 0.82rem;
+            line-height: 1.45;
+        }
 
         .quick-bar { background: var(--bg-panel); padding: 6px 10px; display: flex; gap: 6px; overflow-x: auto; border-top: 1px solid #2a3942; flex-shrink: 0; }
         .chip { background: var(--bg-card); color: var(--text-main); border: 1px solid #374151; padding: 5px 10px; border-radius: 14px; font-size: 0.72rem; white-space: nowrap; cursor: pointer; }
@@ -311,6 +332,35 @@
             </form>
 
             <button class="admin-link-btn" id="btn-show-admin" onclick="mostrarLoginAdmin()">Acceso Taquilla</button>
+        </div>
+    </div>
+
+    <!-- MODAL MOVIMIENTOS Y CALCULADORA 0.3% (SOLO ADMIN) -->
+    <div id="modal-movimiento">
+        <div class="modal-card">
+            <h3 id="modal-mov-titulo">Registrar Movimiento</h3>
+            <input type="number" id="modal-mov-monto" placeholder="Monto en Bs (ej: 1000)" step="0.01" oninput="recalcularModalRetiro()">
+            
+            <div id="modal-retiro-opciones" style="display:none; flex-direction:column; gap:8px;">
+                <label style="font-size:0.78rem; color:var(--text-muted);">Destino de pago al cliente:</label>
+                <select id="modal-retiro-banco" onchange="recalcularModalRetiro()">
+                    <option value="otro">Pago Móvil / Otro Banco (Descuenta 0,3% comisión)</option>
+                    <option value="bdv">Transferencia Mismo Banco Venezuela (0% comisión)</option>
+                </select>
+                <div class="calc-box" id="modal-retiro-resumen">
+                    Escribe un monto para ver el cálculo exacto a transferir.
+                </div>
+            </div>
+
+            <label id="modal-notif-wrap" class="remember-row">
+                <input type="checkbox" id="modal-mov-notif" checked>
+                <span>Notificar comprobante en el chat del cliente</span>
+            </label>
+
+            <div style="display:flex; gap:8px; margin-top:4px;">
+                <button onclick="cerrarModalMovimiento()" style="flex:1; background:#374151; color:#fff; border:none; padding:10px; border-radius:9px; font-weight:bold; cursor:pointer;">Cancelar</button>
+                <button onclick="confirmarMovimientoFinanciero()" style="flex:1; background:var(--accent-green); color:#fff; border:none; padding:10px; border-radius:9px; font-weight:bold; cursor:pointer;">Confirmar ✓</button>
+            </div>
         </div>
     </div>
 
@@ -392,7 +442,7 @@
                 <div id="no-chat-selected" class="empty-chat-placeholder" style="display:none;">
                     <img src="logo.png" alt="Logo">
                     <h3 style="color:#fff; margin-bottom:6px;">Panel de Atención Agencia Harold José</h3>
-                    <p style="font-size:0.85rem; max-width:320px;">Selecciona un cliente de la lista izquierda para ver sus jugadas, comprobantes validados y responderle en tiempo real.</p>
+                    <p style="font-size:0.85rem; max-width:320px;">Selecciona un cliente de la lista izquierda para ver sus jugadas, comprobantes validados y controlar su estado de cuenta.</p>
                 </div>
 
                 <div id="active-room" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
@@ -404,12 +454,31 @@
                         </div>
                     </div>
 
+                    <!-- BARRA FINANCIERA PRIVADA (SOLO VISIBLE PARA EL ADMIN) -->
+                    <div class="admin-finance-strip" id="admin-finance-strip">
+                        <div class="fin-metrics">
+                            <span class="fin-pill retirable" id="fin-lbl-disp">💰 Retirable: 0,00 Bs.</span>
+                            <span class="fin-pill cashea" id="fin-lbl-cashea">💳 Cashea (No retirable): 0,00 Bs.</span>
+                            <span class="fin-pill" id="fin-lbl-dep">📥 Dep: 0,00</span>
+                            <span class="fin-pill" id="fin-lbl-jug">🎲 Jug: 0,00</span>
+                            <span class="fin-pill" id="fin-lbl-ret">📤 Ret: 0,00</span>
+                        </div>
+                        <div class="fin-actions">
+                            <button class="fin-btn play" onclick="abrirModalMovimiento('jugada')">🎟️ - Jugada</button>
+                            <button class="fin-btn prize" onclick="abrirModalMovimiento('premio')">🏆 + Premio</button>
+                            <button class="fin-btn withdraw" onclick="abrirModalMovimiento('retiro')">💸 - Retiro (0,3%)</button>
+                            <button class="fin-btn cashea" onclick="abrirModalMovimiento('cashea_sumar')">💳 + Cashea</button>
+                            <button class="fin-btn statement" onclick="enviarEstadoCuentaAlChat()">📊 Enviar Estado</button>
+                        </div>
+                    </div>
+
                     <div class="chat-messages" id="chat-box"></div>
 
                     <div class="quick-bar">
                         <button class="chip" onclick="insertarTexto('Lotto Activo: ')">🦁 Lotto Activo</button>
                         <button class="chip" onclick="insertarTexto('La Granjita: ')">🐮 La Granjita</button>
                         <button class="chip" onclick="insertarTexto('Guácharo: ')">🦅 Guácharo</button>
+                        <button class="chip" onclick="consultarMiSaldoRapido()">📊 Mi Saldo</button>
                         <button class="chip" onclick="enviarPagoMovil()">💳 Datos Pago y Reglas</button>
                     </div>
 
@@ -475,10 +544,16 @@ Harold Eliezer Galea Sanchez
         let ES_ADMIN = Boolean(adminKey);
 
         let adminChatActivo = null;
+        let finanzasActivas = { cashea: 0, depositado: 0, jugado: 0, retirado: 0, disponible: 0 };
+        let accionModalActual = "";
         let audioCtx = null;
         let sonidoActivo = false;
         let ultimoTotalMensajes = -1;
         let ultimoConteoSinLeerAdmin = 0;
+
+        function fmtBs(val) {
+            return (Number(val) || 0).toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " Bs.";
+        }
 
         function formatearTextoChat(str) {
             return String(str || "")
@@ -919,6 +994,163 @@ Harold Eliezer Galea Sanchez
             borrarChatPorId(adminChatActivo.chatId, adminChatActivo.nombre);
         }
 
+        function actualizarBarraFinancieraAdmin(fin) {
+            if (!ES_ADMIN) return;
+            finanzasActivas = fin || { cashea: 0, depositado: 0, jugado: 0, retirado: 0, disponible: 0 };
+            document.getElementById('admin-finance-strip').style.display = 'flex';
+            document.getElementById('fin-lbl-disp').textContent = `💰 Retirable: ${fmtBs(finanzasActivas.disponible)}`;
+            document.getElementById('fin-lbl-cashea').textContent = `💳 Cashea (No retirable): ${fmtBs(finanzasActivas.cashea)}`;
+            document.getElementById('fin-lbl-dep').textContent = `📥 Dep: ${fmtBs(finanzasActivas.depositado)}`;
+            document.getElementById('fin-lbl-jug').textContent = `🎲 Jug: ${fmtBs(finanzasActivas.jugado)}`;
+            document.getElementById('fin-lbl-ret').textContent = `📤 Ret: ${fmtBs(finanzasActivas.retirado)}`;
+        }
+
+        // MODAL MOVIMIENTOS Y CALCULADORA 0.3%
+        function abrirModalMovimiento(accion) {
+            if (!adminChatActivo) return;
+            accionModalActual = accion;
+            document.getElementById('modal-mov-monto').value = "";
+            document.getElementById('modal-retiro-opciones').style.display = 'none';
+            document.getElementById('modal-notif-wrap').style.display = 'flex';
+
+            const titulos = {
+                jugada: "🎟️ Descontar Jugada del Saldo",
+                premio: "🏆 Acreditar Premio Ganador",
+                retiro: "💸 Liquidar Retiro (Calcula 0,3%)",
+                cashea_sumar: "💳 Asignar Crédito Cashea (No Retirable)"
+            };
+            document.getElementById('modal-mov-titulo').textContent = titulos[accion] || "Registrar Movimiento";
+
+            if (accion === "retiro") {
+                document.getElementById('modal-mov-monto').value = finanzasActivas.disponible > 0 ? finanzasActivas.disponible : "";
+                document.getElementById('modal-retiro-opciones').style.display = 'flex';
+                recalcularModalRetiro();
+            }
+
+            document.getElementById('modal-movimiento').style.display = 'flex';
+            setTimeout(() => document.getElementById('modal-mov-monto').focus(), 80);
+        }
+
+        function cerrarModalMovimiento() {
+            document.getElementById('modal-movimiento').style.display = 'none';
+        }
+
+        function recalcularModalRetiro() {
+            if (accionModalActual !== "retiro") return;
+            const bruto = parseFloat(document.getElementById('modal-mov-monto').value) || 0;
+            const banco = document.getElementById('modal-retiro-banco').value;
+            const resBox = document.getElementById('modal-retiro-resumen');
+
+            if (bruto <= 0) {
+                resBox.innerHTML = "Escribe un monto para ver el cálculo exacto a transferir.";
+                return;
+            }
+            if (bruto > finanzasActivas.disponible) {
+                resBox.innerHTML = `<span style="color:#f87171; font-weight:bold;">⚠️ El monto supera el saldo retirable (${fmtBs(finanzasActivas.disponible)}).</span>`;
+                return;
+            }
+
+            if (banco === "bdv") {
+                resBox.innerHTML = `
+                    <div>🏦 <strong>Banco de Venezuela (0% comisión)</strong></div>
+                    <div>💸 Se descuenta del saldo: <strong>${fmtBs(bruto)}</strong></div>
+                    <div style="color:#34d399; font-size:0.95rem; margin-top:4px;">✅ Debes transferirle: <strong>${fmtBs(bruto)}</strong></div>
+                `;
+            } else {
+                const comision = Math.round(bruto * 0.003 * 100) / 100;
+                const netoPagar = Math.round((bruto - comision) * 100) / 100;
+                resBox.innerHTML = `
+                    <div>📲 <strong>Pago Móvil / Otro Banco (0,3% comisión)</strong></div>
+                    <div>💸 Se descuenta del saldo: <strong>${fmtBs(bruto)}</strong></div>
+                    <div>📉 Comisión bancaria (0,3%): <strong>-${fmtBs(comision)}</strong></div>
+                    <div style="color:#fbbf24; font-size:0.95rem; margin-top:4px;">✅ Debes transferirle neto: <strong>${fmtBs(netoPagar)}</strong></div>
+                `;
+            }
+        }
+
+        async function confirmarMovimientoFinanciero() {
+            const monto = parseFloat(document.getElementById('modal-mov-monto').value) || 0;
+            if (monto <= 0) return alert("Ingresa un monto mayor a 0.");
+            if (accionModalActual === "retiro" && monto > finanzasActivas.disponible) {
+                return alert(`Solo puedes retirar hasta ${fmtBs(finanzasActivas.disponible)}. El saldo Cashea no es retirable.`);
+            }
+
+            const notificarChat = document.getElementById('modal-mov-notif').checked;
+            cerrarModalMovimiento();
+
+            const res = await fetch(`${API_URL}/chat/finance`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Admin-Key": adminKey
+                },
+                body: JSON.stringify({
+                    chatId: adminChatActivo.chatId,
+                    accion: accionModalActual,
+                    monto,
+                    notificarChat
+                })
+            });
+            const data = await res.json();
+            if (data.ok) {
+                actualizarBarraFinancieraAdmin(data.finanzas);
+                cargarHistorial(adminChatActivo.chatId, "admin");
+            }
+        }
+
+        async function aprobarDepositoComprobante(msgId, montoDetectado, referencia) {
+            if (!adminChatActivo) return;
+            const montoStr = prompt("Confirma el monto exacto en Bs a sumar al saldo del cliente:", montoDetectado || "");
+            if (montoStr === null) return;
+            const montoNum = parseFloat(String(montoStr).replace(/\./g, "").replace(",", ".")) || 0;
+            if (montoNum <= 0) return alert("Monto inválido.");
+
+            const res = await fetch(`${API_URL}/chat/finance`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Admin-Key": adminKey
+                },
+                body: JSON.stringify({
+                    chatId: adminChatActivo.chatId,
+                    accion: "aprobar_deposito",
+                    monto: montoNum,
+                    msgId,
+                    referencia
+                })
+            });
+            const data = await res.json();
+            if (data.ok) {
+                actualizarBarraFinancieraAdmin(data.finanzas);
+                cargarHistorial(adminChatActivo.chatId, "admin");
+            }
+        }
+
+        async function enviarEstadoCuentaAlChat() {
+            if (!adminChatActivo) return;
+            const res = await fetch(`${API_URL}/chat/finance`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Admin-Key": adminKey
+                },
+                body: JSON.stringify({
+                    chatId: adminChatActivo.chatId,
+                    accion: "enviar_estado"
+                })
+            });
+            const data = await res.json();
+            if (data.ok) cargarHistorial(adminChatActivo.chatId, "admin");
+        }
+
+        function consultarMiSaldoRapido() {
+            if (ES_ADMIN) {
+                enviarEstadoCuentaAlChat();
+            } else {
+                enviarMensaje("saldo");
+            }
+        }
+
         function abrirSalaAdmin(chatId, nombre) {
             adminChatActivo = { chatId, nombre };
             ultimoTotalMensajes = -1;
@@ -945,17 +1177,23 @@ Harold Eliezer Galea Sanchez
             document.getElementById('chat-main-pane').classList.add('mobile-hide');
         }
 
-        function renderizarTarjetaPago(ap) {
+        function renderizarTarjetaPago(m) {
+            const ap = m.analisisPago;
             if (!ap) return "";
             let clase = "";
-            let estadoTxt = "✅ PAGO VÁLIDO VERIFICADO";
-            if (ap.duplicada) {
+            let estadoTxt = ap.aprobado ? "✅ DEPÓSITO SUMADO AL SALDO" : "✅ PAGO VÁLIDO VERIFICADO";
+            if (ap.duplicada && !ap.aprobado) {
                 clase = "dup";
                 estadoTxt = "🚨 REFERENCIA DUPLICADA (YA USADA)";
-            } else if (!ap.coincideHarold) {
+            } else if (!ap.coincideHarold && !ap.aprobado) {
                 clase = "warn";
                 estadoTxt = "⚠️ REVISAR DESTINO MANUALMENTE";
             }
+
+            const btnAprobar = (ES_ADMIN && !ap.aprobado)
+                ? `<button class="btn-approve-receipt" onclick="aprobarDepositoComprobante(${m.id}, ${ap.montoNumerico || 0}, '${String(ap.referencia || '').replace(/'/g, '')}')">➕ Aprobar y Sumar ${ap.monto || ''}</button>`
+                : "";
+
             return `
                 <div class="receipt-card ${clase}">
                     <span class="receipt-status">${estadoTxt}</span>
@@ -963,6 +1201,7 @@ Harold Eliezer Galea Sanchez
                     <div>🔢 <strong>Operación:</strong> ${ap.referencia || 'No detectada'}</div>
                     <div>📅 <strong>Fecha:</strong> ${ap.fecha || 'No detectada'}</div>
                     <div>🎯 <strong>Destino:</strong> ${ap.destino || 'No identificado'}</div>
+                    ${btnAprobar}
                 </div>
             `;
         }
@@ -976,6 +1215,10 @@ Harold Eliezer Galea Sanchez
                 const res = await fetch(`${API_URL}/chat/history?chatId=${chatId}&viewer=${viewer}`, { headers });
                 const data = await res.json();
                 if (!data.ok) return;
+
+                if (ES_ADMIN && data.hilo.finanzas) {
+                    actualizarBarraFinancieraAdmin(data.hilo.finanzas);
+                }
 
                 const msgs = data.hilo.mensajes || [];
 
@@ -994,7 +1237,7 @@ Harold Eliezer Galea Sanchez
                 let html = `
                     <div class="msg in">
                         ¡Bienvenido a <strong>Agencia Harold José</strong>! 🍀<br>
-                        Escribe tu jugada o adjunta tu capture de Pago Móvil / Transferencia con el clip 📎.
+                        Escribe tu jugada, envía <strong>saldo</strong> para ver tu estado de cuenta o adjunta tu capture con el clip 📎.
                     </div>
                 `;
 
@@ -1003,7 +1246,7 @@ Harold Eliezer Galea Sanchez
                     return `
                         <div class="msg ${esMio ? 'out' : 'in'}">
                             ${m.imagen ? `<img src="${m.imagen}" alt="Comprobante" onclick="window.open(this.src)">` : ''}
-                            ${m.analisisPago ? renderizarTarjetaPago(m.analisisPago) : ''}
+                            ${m.analisisPago ? renderizarTarjetaPago(m) : ''}
                             ${m.texto ? `<div>${formatearTextoChat(m.texto)}</div>` : ''}
                             <div class="msg-time">${m.hora} ${esMio ? '✓✓' : ''}</div>
                         </div>
