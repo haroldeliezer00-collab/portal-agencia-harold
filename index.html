@@ -839,7 +839,7 @@ Harold Eliezer Galea Sanchez
             const nom = document.getElementById('reg-nombre').value.trim();
             const tlf = document.getElementById('reg-tlf').value.replace(/\D/g, "");
             if (!nom || nom.length < 2) return alert("Primero escribe tu Nombre y Apellido.");
-            if (!/^0(412|414|424|416|426)\d{7}$/.test(tlf)) {
+            if (!/^0(412|422|414|424|416|426)\d{7}$/.test(tlf)) {
                 return alert("Escribe un número venezolano válido de 11 dígitos (ej: 04141234567).");
             }
             const urlBot = `https://t.me/${BOT_TELEGRAM_USER}?start=${tlf}`;
@@ -852,7 +852,7 @@ Harold Eliezer Galea Sanchez
             const codigo = document.getElementById('reg-otp').value.trim();
 
             if (!nom || nom.length < 2) return alert("Ingresa tu nombre y apellido.");
-            if (!/^0(412|414|424|416|426)\d{7}$/.test(tlf)) return alert("Ingresa un teléfono venezolano válido (ej: 04141234567).");
+            if (!/^0(412|422|414|424|416|426)\d{7}$/.test(tlf)) return alert("Ingresa un teléfono venezolano válido (ej: 04141234567).");
             if (!/^\d{6}$/.test(codigo)) return alert("Ingresa el código de 6 dígitos que recibiste en Telegram.");
 
             const btn = document.getElementById('btn-verificar-entrar');
