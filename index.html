@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Agencia Harold José - Seguridad y Confianza</title>
+    <style>
+        :root {
+            --bg-dark: #0b141a;
+            --bg-panel: #111b21;
+            --bg-card: #202c33;
+            --accent-green: #00a884;
+            --accent-gold: #f59e0b;
+            --text-main: #e9edef;
+            --text-muted: #8696a0;
+            --chat-out: #005c4b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        
+        /* Header */
+        header { background-color: var(--bg-card); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3942; }
+        .brand h1 { font-size: 1.1rem; color: #fff; font-weight: 700; }
+        .brand span { font-size: 0.75rem; color: var(--accent-gold); font-weight: 600; letter-spacing: 0.5px; }
+        .status-badge { background: rgba(0, 168, 132, 0.2); color: var(--accent-green); padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; }
+
+        /* Navigation Tabs (Estilo WhatsApp) */
+        nav { display: flex; background-color: var(--bg-card); border-bottom: 2px solid #2a3942; }
+        .tab-btn { flex: 1; padding: 12px; background: none; border: none; color: var(--text-muted); font-weight: 600; font-size: 0.85rem; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; }
+        .tab-btn.active { color: var(--accent-green); border-bottom-color: var(--accent-green); }
+
+        /* Content Area */
+        main { flex: 1; overflow-y: auto; padding: 12px; }
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* Flyers / Promos */
+        .flyer-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; margin-bottom: 14px; border: 1px solid #2a3942; }
+        .flyer-banner { background: linear-gradient(135deg, #064e3b, #00a884); padding: 20px; text-align: center; }
+        .flyer-banner h2 { font-size: 1.3rem; margin-bottom: 6px; color: #fff; }
+        .flyer-banner p { font-size: 0.9rem; color: #d1fae5; }
+        .flyer-body { padding: 12px; font-size: 0.85rem; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        .btn-play { background: var(--accent-green); color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 0.85rem; }
+
+        /* Resultados */
+        .loteria-group { background: var(--bg-card); border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+        .loteria-title { font-size: 0.95rem; font-weight: bold; color: var(--accent-gold); margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .result-item { background: var(--bg-panel); padding: 8px; border-radius: 8px; text-align: center; border: 1px solid #2a3942; }
+        .result-hour { font-size: 0.7rem; color: var(--text-muted); }
+        .result-num { font-size: 1.1rem; font-weight: bold; color: #fff; margin: 2px 0; }
+        .result-animal { font-size: 0.75rem; color: var(--accent-green); font-weight: 600; }
+
+        /* Chat UI */
+        #chat-section { height: 100%; display: none; flex-direction: column; padding: 0; }
+        #chat-section.active { display: flex; }
+        .chat-messages { flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background-color: #0b141a; }
+        .msg { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 0.9rem; line-height: 1.4; position: relative; }
+        .msg.in { background-color: var(--bg-card); align-self: flex-start; border-top-left-radius: 2px; }
+        .msg.out { background-color: var(--chat-out); align-self: flex-end; border-top-right-radius: 2px; }
+        .msg-time { font-size: 0.65rem; color: rgba(255,255,255,0.6); text-align: right; margin-top: 4px; }
+        
+        /* Quick Bet Helper */
+        .quick-bar { background: var(--bg-panel); padding: 8px 12px; display: flex; gap: 6px; overflow-x: auto; border-top: 1px solid #2a3942; }
+        .chip { background: var(--bg-card); color: var(--text-main); border: 1px solid #374151; padding: 6px 12px; border-radius: 16px; font-size: 0.75rem; white-space: nowrap; cursor: pointer; }
+        .chip:hover { border-color: var(--accent-green); }
+
+        .chat-input-area { background: var(--bg-card); padding: 10px; display: flex; gap: 8px; align-items: center; }
+        .chat-input-area input { flex: 1; background: #2a3942; border: none; padding: 10px 14px; border-radius: 20px; color: #fff; font-size: 0.9rem; outline: none; }
+        .send-btn { background: var(--accent-green); border: none; width: 40px; height: 40px; border-radius: 50%; color: #fff; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        footer { background: var(--bg-card); text-align: center; padding: 6px; font-size: 0.65rem; color: var(--text-muted); border-top: 1px solid #2a3942; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <h1>Agencia Harold José</h1>
+            <span>SEGURIDAD Y CONFIANZA</span>
+        </div>
+        <div class="status-badge">● TAQUILLA ACTIVA</div>
+    </header>
+
+    <nav>
+        <button class="tab-btn active" onclick="switchTab('resultados', this)">🏆 RESULTADOS</button>
+        <button class="tab-btn" onclick="switchTab('flyers', this)">📢 PROMOS / FLYERS</button>
+        <button class="tab-btn" onclick="switchTab('chat', this)">💬 JUGAR (CHAT)</button>
+    </nav>
+
+    <main id="main-scroll">
+        <!-- PESTAÑA 1: RESULTADOS -->
+        <section id="resultados" class="section active">
+            <div class="loteria-group">
+                <div class="loteria-title"><span>🦁 LOTTO ACTIVO</span><span>HOY</span></div>
+                <div class="result-grid">
+                    <div class="result-item"><div class="result-hour">09:00 AM</div><div class="result-num">00</div><div class="result-animal">BALLENA</div></div>
+                    <div class="result-item"><div class="result-hour">10:00 AM</div><div class="result-num">15</div><div class="result-animal">ZORRO</div></div>
+                    <div class="result-item"><div class="result-hour">11:00 AM</div><div class="result-num">28</div><div class="result-animal">ZAMURO</div></div>
+                </div>
+            </div>
+
+            <div class="loteria-group">
+                <div class="loteria-title"><span>🐮 LA GRANJITA</span><span>HOY</span></div>
+                <div class="result-grid">
+                    <div class="result-item"><div class="result-hour">09:00 AM</div><div class="result-num">04</div><div class="result-animal">ALACRÁN</div></div>
+                    <div class="result-item"><div class="result-hour">10:00 AM</div><div class="result-num">32</div><div class="result-animal">ARDILLA</div></div>
+                    <div class="result-item"><div class="result-hour">11:00 AM</div><div class="result-num">11</div><div class="result-animal">GATO</div></div>
+                </div>
+            </div>
+
+            <div class="loteria-group">
+                <div class="loteria-title"><span>🦅 GUÁCHARO ACTIVO</span><span>HOY</span></div>
+                <div class="result-grid">
+                    <div class="result-item"><div class="result-hour">09:00 AM</div><div class="result-num">19</div><div class="result-animal">CHIVO</div></div>
+                    <div class="result-item"><div class="result-hour">10:00 AM</div><div class="result-num">07</div><div class="result-animal">PERICO</div></div>
+                    <div class="result-item"><div class="result-hour">11:00 AM</div><div class="result-num">--</div><div class="result-animal">EN ESPERA</div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PESTAÑA 2: FLYERS Y PROMOS -->
+        <section id="flyers" class="section">
+            <div class="flyer-card">
+                <div class="flyer-banner">
+                    <h2>🔥 POLLA MILLONARIA DIARIA</h2>
+                    <p>Participa desde Bs. 50 • Premios garantizados al instante</p>
+                </div>
+                <div class="flyer-body">
+                    <span>Cierra 15 min antes del primer sorteo</span>
+                    <button class="btn-play" onclick="irAlChat('Quiero participar en la Polla Millonaria')">Jugar ahora</button>
+                </div>
+            </div>
+
+            <div class="flyer-card">
+                <div class="flyer-banner" style="background: linear-gradient(135deg, #78350f, #d97706);">
+                    <h2>🎯 TRIPLETAS Y TRIPLES</h2>
+                    <p>Lotto Activo • La Granjita • Chance • Zulia • Táchira</p>
+                </div>
+                <div class="flyer-body">
+                    <span>Pagos inmediatos vía Pago Móvil</span>
+                    <button class="btn-play" onclick="irAlChat('Quiero jugar una Tripleta')">Armar jugada</button>
+                </div>
+            </div>
+
+            <div class="flyer-card">
+                <div class="flyer-body" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+                    <strong style="color: var(--accent-gold);">📲 DATOS DE PAGO MÓVIL OFICIAL</strong>
+                    <span>Banco: Venezuela / Banesco / Provincial</span>
+                    <span>Teléfono: 0412-4489363</span>
+                    <span>Cédula: V-18.274.410</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PESTAÑA 3: CHAT DIRECTO TIPO WHATSAPP -->
+    <section id="chat" class="section" style="height: calc(100vh - 125px); flex-direction: column;">
+        <div class="chat-messages" id="chat-box">
+            <div class="msg in">
+                ¡Bienvenido a <strong>Agencia Harold José</strong>! 🍀<br>
+                Escribe aquí tu jugada (ej: <em>"20 Bs al 00 Ballena Lotto Activo 12pm"</em>) o usa los botones rápidos de abajo.
+                <div class="msg-time">Ahora</div>
+            </div>
+        </div>
+
+        <div class="quick-bar">
+            <button class="chip" onclick="insertarTexto('Lotto Activo: ')">🦁 Lotto Activo</button>
+            <button class="chip" onclick="insertarTexto('La Granjita: ')">🐮 La Granjita</button>
+            <button class="chip" onclick="insertarTexto('Guácharo: ')">🦅 Guácharo</button>
+            <button class="chip" onclick="insertarTexto('Datos Pago Móvil')">💳 Pago Móvil</button>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Escribe tu jugada o mensaje..." onkeypress="if(event.key==='Enter') enviarMensaje()">
+            <button class="send-btn" onclick="enviarMensaje()">➤</button>
+        </div>
+    </section>
+
+    <footer>
+        Portal informativo y atención al cliente • Jugadas procesadas por sistemas autorizados • +18 Juega con responsabilidad
+    </footer>
+
+    <script>
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const mainScroll = document.getElementById('main-scroll');
+            const chatSec = document.getElementById('chat');
+
+            if (tabId === 'chat') {
+                mainScroll.style.display = 'none';
+                chatSec.style.display = 'flex';
+            } else {
+                chatSec.style.display = 'none';
+                mainScroll.style.display = 'block';
+                document.querySelectorAll('#main-scroll .section').forEach(s => s.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+            }
+        }
+
+        function insertarTexto(txt) {
+            const input = document.getElementById('chat-input');
+            input.value += txt;
+            input.focus();
+        }
+
+        function irAlChat(mensaje) {
+            const chatBtn = document.querySelectorAll('.tab-btn')[2];
+            switchTab('chat', chatBtn);
+            document.getElementById('chat-input').value = mensaje;
+            document.getElementById('chat-input').focus();
+        }
+
+        function enviarMensaje() {
+            const input = document.getElementById('chat-input');
+            const texto = input.value.trim();
+            if (!texto) return;
+
+            const box = document.getElementById('chat-box');
+            const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // Mostrar burbuja en pantalla
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'msg out';
+            msgDiv.innerHTML = `${texto}<div class="msg-time">${hora} ✓✓</div>`;
+            box.appendChild(msgDiv);
+            box.scrollTop = box.scrollHeight;
+            input.value = '';
+
+            // Opción puente directo a tu WhatsApp mientras conectamos backend en tiempo real
+            setTimeout(() => {
+                const reply = document.createElement('div');
+                reply.className = 'msg in';
+                const waUrl = `https://wa.me/584124489363?text=${encodeURIComponent(texto)}`;
+                reply.innerHTML = `Jugada registrada en pantalla. <a href="${waUrl}" target="_blank" style="color:#00a884; font-weight:bold;">Toca aquí para confirmarla directo en el WhatsApp de Taquilla ↗</a><div class="msg-time">${hora}</div>`;
+                box.appendChild(reply);
+                box.scrollTop = box.scrollHeight;
+            }, 500);
+        }
+    </script>
+</body>
+</html>
