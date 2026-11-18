@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Agencia Harold José - Seguridad, Confianza y Experiencia</title>
-    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="icon" id="dynamic-favicon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#00a884">
@@ -21,8 +21,107 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         html, body { height: 100dvh; max-height: 100dvh; background-color: var(--bg-dark); color: var(--text-main); display: flex; flex-direction: column; overflow: hidden; }
-        
-        /* Encabezado limpio sin elementos montados */
+
+        /* ==========================================
+           PANTALLA DE BIENVENIDA / REGISTRO INICIAL
+        ========================================== */
+        #welcome-overlay {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at top, #162a28 0%, #0b141a 75%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+        }
+        .welcome-box {
+            background: var(--bg-card);
+            border: 1px solid #2a3942;
+            border-radius: 18px;
+            padding: 26px 22px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+        }
+        .welcome-logo {
+            width: 82px;
+            height: 82px;
+            border-radius: 18px;
+            border: 2px solid var(--accent-gold);
+            object-fit: cover;
+            margin-bottom: 12px;
+            box-shadow: 0 0 18px rgba(245, 158, 11, 0.3);
+        }
+        .welcome-greeting {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            margin-bottom: 6px;
+        }
+        .welcome-sub {
+            font-size: 0.84rem;
+            color: var(--text-main);
+            line-height: 1.4;
+            margin-bottom: 18px;
+        }
+        .loader-bar-wrap {
+            width: 100%;
+            height: 6px;
+            background: #0b141a;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .loader-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-gold));
+            border-radius: 10px;
+            transition: width 1.6s ease-out;
+        }
+        .welcome-form {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            text-align: left;
+        }
+        .welcome-form input {
+            background: var(--bg-panel);
+            border: 1px solid #374151;
+            padding: 12px 14px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.92rem;
+            outline: none;
+        }
+        .welcome-form input:focus { border-color: var(--accent-green); }
+        .btn-enter-portal {
+            background: var(--accent-green);
+            color: #fff;
+            border: none;
+            padding: 13px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+        .admin-link-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 14px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* ==========================================
+           ENCABEZADO Y NAVEGACIÓN
+        ========================================== */
         header { background-color: var(--bg-card); padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3942; flex-shrink: 0; gap: 8px; }
         .brand-wrap { display: flex; align-items: center; gap: 8px; min-width: 0; }
         .brand-logo { width: 38px; height: 38px; border-radius: 9px; object-fit: cover; border: 1.5px solid var(--accent-gold); background: #000; flex-shrink: 0; }
@@ -41,16 +140,24 @@
         }
 
         nav { display: flex; background-color: var(--bg-card); border-bottom: 2px solid #2a3942; flex-shrink: 0; }
-        .tab-btn { flex: 1; padding: 10px 4px; background: none; border: none; color: var(--text-muted); font-weight: 700; font-size: 0.78rem; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; position: relative; }
+        .tab-btn { flex: 1; padding: 10px 4px; background: none; border: none; color: var(--text-muted); font-weight: 700; font-size: 0.78rem; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
         .tab-btn.active { color: var(--accent-green); border-bottom-color: var(--accent-green); }
-        .unread-dot { display: none; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; position: absolute; top: 8px; right: 14px; box-shadow: 0 0 6px #ef4444; }
+        .unread-badge {
+            display: none;
+            background: #ef4444;
+            color: #fff;
+            font-size: 0.66rem;
+            font-weight: 900;
+            padding: 1px 6px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
+        }
 
-        /* BANNER DE DESCARGA APK DEBAJO DE LAS PESTAÑAS (100% VISIBLE EN MÓVIL Y PC) */
+        /* BANNER DE DESCARGA APK DEBAJO DE LAS PESTAÑAS */
         .app-banner-bar { background: linear-gradient(90deg, #132a28, #272215); border-bottom: 1px solid rgba(245, 158, 11, 0.45); padding: 7px 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; flex-shrink: 0; }
-        .app-banner-bar:active { opacity: 0.85; }
         .app-banner-text { font-size: 0.76rem; color: #f3f4f6; font-weight: 600; line-height: 1.2; }
         .app-banner-text strong { color: var(--accent-gold); }
-        .btn-download-apk { background: var(--accent-green); color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; white-space: nowrap; cursor: pointer; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0, 168, 132, 0.35); }
+        .btn-download-apk { background: var(--accent-green); color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; white-space: nowrap; cursor: pointer; flex-shrink: 0; }
 
         main { flex: 1; overflow-y: auto; padding: 10px; }
         .section { display: none; }
@@ -74,22 +181,18 @@
         .sorteo-time { font-size: 0.65rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 2px; }
         .sorteo-animal { font-size: 0.68rem; font-weight: 800; color: #fff; text-transform: uppercase; line-height: 1.1; word-break: break-word; }
 
-        /* Flyers */
-        .flyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 14px; }
-        .flyer-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid #2a3942; display: flex; flex-direction: column; justify-content: space-between; }
-        .flyer-img { width: 100%; height: auto; display: block; object-fit: cover; }
-        .flyer-body { padding: 10px 12px; font-size: 0.8rem; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-        .btn-play { background: var(--accent-green); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.78rem; white-space: nowrap; }
+        /* FLYERS ALINEADOS SIN ESPACIOS NEGROS */
+        .flyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 14px; align-items: start; }
+        .flyer-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid #2a3942; display: flex; flex-direction: column; justify-content: flex-start; }
+        .flyer-img { width: 100%; height: auto; display: block; object-fit: contain; background: #0b141a; }
+        .flyer-body { padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; border-top: 1px solid #2a3942; }
+        .flyer-info { min-width: 0; flex: 1; }
+        .flyer-title { font-size: 0.82rem; font-weight: 800; color: #fff; display: block; line-height: 1.25; }
+        .flyer-schedule { font-size: 0.72rem; color: var(--accent-gold); font-weight: 700; display: block; margin-top: 3px; }
+        .btn-play { background: var(--accent-green); color: #fff; border: none; padding: 8px 13px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.78rem; white-space: nowrap; flex-shrink: 0; }
 
         /* CHAT CONTENEDOR PRINCIPAL */
         #chat-wrapper { flex: 1; display: none; flex-direction: column; overflow: hidden; background: #0b141a; }
-        
-        .client-setup { padding: 20px; display: flex; flex-direction: column; gap: 12px; justify-content: center; flex: 1; max-width: 400px; margin: 0 auto; width: 100%; }
-        .client-setup h3 { color: var(--accent-gold); text-align: center; font-size: 1.1rem; }
-        .client-setup p { color: var(--text-muted); font-size: 0.85rem; text-align: center; }
-        .client-setup input { background: var(--bg-card); border: 1px solid #374151; padding: 12px; border-radius: 10px; color: #fff; font-size: 0.95rem; outline: none; }
-        .client-setup button { background: var(--accent-green); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 0.95rem; cursor: pointer; }
-
         .whatsapp-layout { display: flex; flex: 1; overflow: hidden; width: 100%; height: 100%; }
         
         .admin-sidebar { width: 34%; min-width: 280px; max-width: 400px; border-right: 1px solid #2a3942; display: flex; flex-direction: column; background: var(--bg-panel); }
@@ -104,7 +207,7 @@
         .chat-row-info { min-width: 0; flex: 1; padding-right: 8px; }
         .chat-row-info h4 { font-size: 0.9rem; color: #fff; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .chat-row-info p { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .badge-new { background: var(--accent-green); color: #000; font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 10px; display: inline-block; }
+        .badge-new { background: #ef4444; color: #fff; font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 10px; display: inline-block; }
 
         .chat-main-pane { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #0b141a; position: relative; }
         .empty-chat-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); text-align: center; padding: 20px; }
@@ -134,6 +237,38 @@
 </head>
 <body>
 
+    <!-- PANTALLA DE BIENVENIDA / CARGA / REGISTRO INICIAL -->
+    <div id="welcome-overlay">
+        <div class="welcome-box">
+            <img src="logo.png" alt="Agencia Harold José" class="welcome-logo">
+            <div class="welcome-greeting" id="welcome-title">¡Bienvenido!</div>
+            <p class="welcome-sub" id="welcome-msg">Cargando resultados y promociones del día...</p>
+
+            <!-- Barra de carga cuando ya está registrado -->
+            <div id="welcome-loader" style="display:none;">
+                <div class="loader-bar-wrap">
+                    <div class="loader-bar-fill" id="loader-fill"></div>
+                </div>
+            </div>
+
+            <!-- Formulario inicial obligatorio la primera vez -->
+            <div id="welcome-register" class="welcome-form" style="display:none;">
+                <input type="text" id="reg-nombre" placeholder="Tu Nombre y Apellido (ej: Carlos Pérez)">
+                <input type="tel" id="reg-tlf" placeholder="Tu Teléfono (ej: 0414-1234567)">
+                <button class="btn-enter-portal" onclick="registrarUsuarioInicial()">Entrar a la Agencia ➤</button>
+            </div>
+
+            <!-- Acceso privado de taquilla -->
+            <div id="welcome-admin-login" class="welcome-form" style="display:none;">
+                <input type="password" id="reg-admin-pass" placeholder="Contraseña Maestra de Taquilla" onkeypress="if(event.key==='Enter') validarClaveAdmin()">
+                <button class="btn-enter-portal" style="background:#f59e0b; color:#000;" onclick="validarClaveAdmin()">Entrar como Administrador 🔐</button>
+                <button class="admin-link-btn" onclick="mostrarRegistroCliente()">← Volver a vista de cliente</button>
+            </div>
+
+            <button class="admin-link-btn" id="btn-show-admin" onclick="mostrarLoginAdmin()">Acceso Taquilla</button>
+        </div>
+    </div>
+
     <header>
         <div class="brand-wrap">
             <img src="logo.png" alt="Agencia Harold José" class="brand-logo">
@@ -154,7 +289,7 @@
         <button class="tab-btn" onclick="switchTab('flyers', this)">📢 PROMOS</button>
         <button class="tab-btn" id="tab-chat-btn" onclick="switchTab('chat', this)">
             💬 JUGAR (CHAT)
-            <span class="unread-dot" id="chat-dot"></span>
+            <span class="unread-badge" id="chat-badge">0</span>
         </button>
     </nav>
 
@@ -196,18 +331,9 @@
 
     <!-- PESTAÑA 3: CHAT EN TIEMPO REAL -->
     <div id="chat-wrapper">
-        
-        <div id="client-login" class="client-setup" style="display:none;">
-            <h3>🍀 Atención Directa en Taquilla</h3>
-            <p>Ingresa tu nombre o teléfono para iniciar tu chat y enviar tus jugadas en vivo:</p>
-            <input type="text" id="input-nombre" placeholder="Tu Nombre (ej: Carlos Pérez)">
-            <input type="tel" id="input-tlf" placeholder="Tu Teléfono (ej: 0414-1234567)">
-            <button onclick="iniciarChatCliente()">Entrar al Chat en Vivo ➤</button>
-        </div>
-
-        <div id="whatsapp-workspace" class="whatsapp-layout" style="display:none;">
+        <div id="whatsapp-workspace" class="whatsapp-layout">
             
-            <div class="admin-sidebar" id="admin-sidebar">
+            <div class="admin-sidebar" id="admin-sidebar" style="display:none;">
                 <div class="admin-bar">
                     <span>👑 TAQUILLA EN VIVO</span>
                     <button onclick="cargarListaAdmin()" style="background:none; border:1px solid rgba(255,255,255,0.5); color:#fff; padding:2px 8px; border-radius:6px; font-size:0.72rem; cursor:pointer;">↻</button>
@@ -253,30 +379,284 @@
 
             </div>
         </div>
-
     </div>
 
     <script>
         const API_URL = "https://api-resultados-harold.agharoldjose.workers.dev";
         const TITULO_ORIGINAL = "Agencia Harold José - Seguridad, Confianza y Experiencia";
-        const urlParams = new URLSearchParams(window.location.search);
-        const ES_ADMIN = urlParams.get("admin") === "harold";
 
         let todasLasLoterias = [];
         let listaContactosCache = [];
         let miChatId = localStorage.getItem("harold_chat_id");
+        let miClientToken = localStorage.getItem("harold_client_token");
         let miNombre = localStorage.getItem("harold_chat_nombre");
         let miTelefono = localStorage.getItem("harold_chat_tlf");
-        let adminChatActivo = null;
-        let intervaloChat = null;
+        let adminKey = sessionStorage.getItem("harold_admin_key") || localStorage.getItem("harold_admin_key") || "";
+        let ES_ADMIN = Boolean(adminKey);
 
-        // Ocultar el banner de descarga si ya estás navegando dentro de la App instalada
+        let adminChatActivo = null;
+        let intervaloGlobal = null;
+        let audioCtx = null;
+        let sonidoActivo = false;
+        let ultimoTotalMensajes = -1;
+        let ultimoConteoSinLeerAdmin = 0;
+
+        // ==========================================
+        // PANTALLA DE BIENVENIDA SEGÚN LA HORA
+        // ==========================================
+        function obtenerSaludoHorario(nombreUsuario = "") {
+            const horaVE = parseInt(new Date().toLocaleTimeString("en-US", {
+                timeZone: "America/Caracas",
+                hour: "2-digit",
+                hour12: false
+            }), 10);
+
+            const sufijo = nombreUsuario ? `, ${nombreUsuario}` : "";
+
+            if (horaVE >= 5 && horaVE < 12) {
+                return {
+                    titulo: `☀️ ¡Buenos días${sufijo}!`,
+                    mensaje: "Que la suerte te acompañe hoy. Consulta los resultados al instante y realiza tus jugadas en Agencia Harold José."
+                };
+            } else if (horaVE >= 12 && horaVE < 19) {
+                return {
+                    titulo: `🌤️ ¡Buenas tardes${sufijo}!`,
+                    mensaje: "Revisa los animales ganadores de la jornada y asegura tus jugadas de la tarde con total confianza."
+                };
+            } else {
+                return {
+                    titulo: `🌙 ¡Buenas noches${sufijo}!`,
+                    mensaje: "Verifica los resultados del día o juega en los sorteos nocturnos. ¡Mucho éxito!"
+                };
+            }
+        }
+
+        function iniciarPantallaBienvenida() {
+            const saludo = obtenerSaludoHorario(miNombre || "");
+            document.getElementById('welcome-title').textContent = saludo.titulo;
+            document.getElementById('welcome-msg').textContent = saludo.mensaje;
+
+            const quiereAdmin = new URLSearchParams(window.location.search).has("admin");
+
+            if (ES_ADMIN) {
+                document.getElementById('btn-show-admin').style.display = 'none';
+                document.getElementById('welcome-loader').style.display = 'block';
+                setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
+                setTimeout(() => {
+                    document.getElementById('welcome-overlay').style.display = 'none';
+                    activarNotificaciones();
+                    switchTab('chat', document.getElementById('tab-chat-btn'));
+                }, 1300);
+            } else if (quiereAdmin) {
+                mostrarLoginAdmin();
+            } else if (miChatId && miClientToken && miNombre) {
+                document.getElementById('btn-show-admin').style.display = 'none';
+                document.getElementById('welcome-loader').style.display = 'block';
+                setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
+                setTimeout(() => {
+                    document.getElementById('welcome-overlay').style.display = 'none';
+                }, 1500);
+            } else {
+                document.getElementById('welcome-register').style.display = 'flex';
+            }
+        }
+
+        function registrarUsuarioInicial() {
+            const nom = document.getElementById('reg-nombre').value.trim();
+            const tlf = document.getElementById('reg-tlf').value.trim();
+            if (!nom || nom.length < 2) return alert("Por favor ingresa tu nombre.");
+            if (!tlf || tlf.length < 7) return alert("Por favor ingresa un número de teléfono válido.");
+
+            miChatId = "cli_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+            miClientToken = "tok_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+            miNombre = nom;
+            miTelefono = tlf;
+
+            localStorage.setItem("harold_chat_id", miChatId);
+            localStorage.setItem("harold_client_token", miClientToken);
+            localStorage.setItem("harold_chat_nombre", miNombre);
+            localStorage.setItem("harold_chat_tlf", miTelefono);
+
+            activarNotificaciones();
+
+            document.getElementById('welcome-register').style.display = 'none';
+            document.getElementById('btn-show-admin').style.display = 'none';
+            const saludo = obtenerSaludoHorario(miNombre);
+            document.getElementById('welcome-title').textContent = saludo.titulo;
+            document.getElementById('welcome-loader').style.display = 'block';
+            setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
+            setTimeout(() => {
+                document.getElementById('welcome-overlay').style.display = 'none';
+            }, 1200);
+        }
+
+        function mostrarLoginAdmin() {
+            document.getElementById('welcome-register').style.display = 'none';
+            document.getElementById('btn-show-admin').style.display = 'none';
+            document.getElementById('welcome-title').textContent = "👑 Acceso Privado Taquilla";
+            document.getElementById('welcome-msg').textContent = "Ingresa tu contraseña maestra para administrar el chat en vivo:";
+            document.getElementById('welcome-admin-login').style.display = 'flex';
+        }
+
+        function mostrarRegistroCliente() {
+            document.getElementById('welcome-admin-login').style.display = 'none';
+            document.getElementById('btn-show-admin').style.display = 'inline-block';
+            const saludo = obtenerSaludoHorario("");
+            document.getElementById('welcome-title').textContent = saludo.titulo;
+            document.getElementById('welcome-msg').textContent = saludo.mensaje;
+            document.getElementById('welcome-register').style.display = 'flex';
+        }
+
+        async function validarClaveAdmin() {
+            const pass = document.getElementById('reg-admin-pass').value.trim();
+            if (!pass) return alert("Escribe tu contraseña.");
+            try {
+                const res = await fetch(`${API_URL}/auth/admin`, {
+                    method: "POST",
+                    headers: { "X-Admin-Key": pass }
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    adminKey = pass;
+                    ES_ADMIN = true;
+                    localStorage.setItem("harold_admin_key", pass);
+                    activarNotificaciones();
+                    document.getElementById('welcome-overlay').style.display = 'none';
+                    switchTab('chat', document.getElementById('tab-chat-btn'));
+                } else {
+                    alert("❌ Contraseña incorrecta.");
+                }
+            } catch (e) {
+                alert("Error de conexión verificando clave.");
+            }
+        }
+
+        // ==========================================
+        // SONIDO POTENTE Y GLOBITO ROJO CON CONTADOR
+        // ==========================================
+        function activarNotificaciones() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                sonidoActivo = true;
+                tocarTimbreFuerte();
+
+                const btn = document.getElementById('btn-sound');
+                btn.textContent = "🔔 Sonido ON";
+                btn.classList.add('active');
+
+                if ("Notification" in window && Notification.permission === "default") {
+                    Notification.requestPermission();
+                }
+            } catch (e) {}
+        }
+
+        function tocarTimbreFuerte() {
+            if (!sonidoActivo || !audioCtx) return;
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const now = audioCtx.currentTime;
+
+                // Triple tono brillante de alta potencia
+                const notas = [
+                    { freq: 880, start: 0, dur: 0.14 },
+                    { freq: 1174.66, start: 0.15, dur: 0.16 },
+                    { freq: 1318.51, start: 0.32, dur: 0.28 }
+                ];
+
+                notas.forEach(n => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(n.freq, now + n.start);
+                    gain.gain.setValueAtTime(0.95, now + n.start);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + n.start + n.dur);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + n.start);
+                    osc.stop(now + n.start + n.dur);
+                });
+
+                if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+            } catch (e) {}
+        }
+
+        function actualizarGlobitoRojo(cantidad) {
+            const badge = document.getElementById('chat-badge');
+            if (cantidad > 0) {
+                badge.textContent = cantidad;
+                badge.style.display = 'inline-block';
+                document.title = `(${cantidad}) 🔔 Agencia Harold José`;
+            } else {
+                badge.style.display = 'none';
+                document.title = TITULO_ORIGINAL;
+            }
+
+            // Globito rojo oficial en el ícono de la App (Windows / Android)
+            if ('setAppBadge' in navigator) {
+                if (cantidad > 0) {
+                    navigator.setAppBadge(cantidad).catch(() => {});
+                } else {
+                    navigator.clearAppBadge().catch(() => {});
+                }
+            }
+
+            // Dibujar globito rojo en el favicon de la pestaña
+            actualizarFaviconConNumero(cantidad);
+        }
+
+        function actualizarFaviconConNumero(cantidad) {
+            const link = document.getElementById('dynamic-favicon');
+            if (!cantidad || cantidad <= 0) {
+                link.href = 'logo.png';
+                return;
+            }
+            const img = new Image();
+            img.src = 'logo.png';
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = 64;
+                canvas.height = 64;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, 64, 64);
+
+                ctx.fillStyle = '#ef4444';
+                ctx.beginPath();
+                ctx.arc(46, 46, 17, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 22px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(cantidad > 9 ? '9+' : String(cantidad), 46, 47);
+
+                link.href = canvas.toDataURL('image/png');
+            };
+        }
+
+        function dispararAlertaCompleta(titulo, cuerpo, cantidad) {
+            tocarTimbreFuerte();
+            actualizarGlobitoRojo(cantidad);
+            if ("Notification" in window && Notification.permission === "granted" && document.hidden) {
+                new Notification(titulo, { body: cuerpo, icon: "logo.png" });
+            }
+        }
+
+        document.addEventListener("click", () => {
+            if (!sonidoActivo) activarNotificaciones();
+        }, { once: true });
+
+        // ==========================================
+        // DESCARGA / INSTALACIÓN DE APK
+        // ==========================================
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
             const banner = document.getElementById('apk-banner');
             if (banner) banner.style.display = 'none';
         }
 
-        // Instalación / Descarga APK
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -301,70 +681,9 @@
                 deferredPrompt.prompt();
                 deferredPrompt = null;
             } else {
-                alert("📲 Para instalar la App en tu teléfono:\n\n1. Toca los 3 puntitos (⋮) arriba a la derecha de tu navegador.\n2. Selecciona 'Instalar aplicación' o 'Agregar a la pantalla principal'.");
+                alert("📲 Para instalar la App:\n\n1. Toca los 3 puntitos (⋮) de tu navegador.\n2. Elige 'Instalar aplicación' o 'Agregar a pantalla principal'.");
             }
         }
-
-        // Control de sonido y notificaciones
-        let audioCtx = null;
-        let sonidoActivo = false;
-        let ultimoTotalMensajes = -1;
-        let ultimoTimestampAdmin = "";
-
-        function activarNotificaciones() {
-            try {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                sonidoActivo = true;
-                tocarSonidoWhatsApp();
-
-                const btn = document.getElementById('btn-sound');
-                btn.textContent = "🔔 Sonido ON";
-                btn.classList.add('active');
-
-                if ("Notification" in window && Notification.permission === "default") {
-                    Notification.requestPermission();
-                }
-            } catch (e) {}
-        }
-
-        function tocarSonidoWhatsApp() {
-            if (!sonidoActivo || !audioCtx) return;
-            try {
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const now = audioCtx.currentTime;
-
-                const osc1 = audioCtx.createOscillator();
-                const gain1 = audioCtx.createGain();
-                osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(587.33, now);
-                osc1.frequency.setValueAtTime(880, now + 0.09);
-                gain1.gain.setValueAtTime(0.18, now);
-                gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-                osc1.connect(gain1);
-                gain1.connect(audioCtx.destination);
-                osc1.start(now);
-                osc1.stop(now + 0.35);
-            } catch (e) {}
-        }
-
-        function dispararAlertaVisual(titulo, cuerpo) {
-            tocarSonidoWhatsApp();
-            document.title = `(1) 🔔 ${titulo}`;
-            document.getElementById('chat-dot').style.display = 'block';
-
-            if ("Notification" in window && Notification.permission === "granted" && document.hidden) {
-                new Notification(titulo, { body: cuerpo, icon: "logo.png" });
-            }
-        }
-
-        window.addEventListener("focus", () => {
-            document.title = TITULO_ORIGINAL;
-        });
-
-        document.addEventListener("click", () => {
-            if (!sonidoActivo) activarNotificaciones();
-        }, { once: true });
 
         // ==========================================
         // NAVEGACIÓN ENTRE PESTAÑAS
@@ -379,8 +698,7 @@
             if (tabId === 'chat') {
                 mainScroll.style.display = 'none';
                 chatWrap.style.display = 'flex';
-                document.getElementById('chat-dot').style.display = 'none';
-                document.title = TITULO_ORIGINAL;
+                if (!ES_ADMIN) actualizarGlobitoRojo(0);
                 inicializarVistaChat();
             } else {
                 chatWrap.style.display = 'none';
@@ -402,14 +720,8 @@
         // LÓGICA DEL CHAT EN TIEMPO REAL
         // ==========================================
         function inicializarVistaChat() {
-            clearInterval(intervaloChat);
-            document.getElementById('client-login').style.display = 'none';
-            document.getElementById('whatsapp-workspace').style.display = 'none';
-
             if (ES_ADMIN) {
-                document.getElementById('whatsapp-workspace').style.display = 'flex';
                 document.getElementById('admin-sidebar').style.display = 'flex';
-
                 if (adminChatActivo) {
                     abrirSalaAdmin(adminChatActivo.chatId, adminChatActivo.nombre);
                 } else {
@@ -419,57 +731,44 @@
                         document.getElementById('chat-main-pane').classList.add('mobile-hide');
                     }
                 }
-
                 cargarListaAdmin();
-                intervaloChat = setInterval(() => {
-                    cargarListaAdmin();
-                    if (adminChatActivo) cargarHistorial(adminChatActivo.chatId, "admin");
-                }, 3500);
-
             } else {
-                if (!miChatId) {
-                    document.getElementById('client-login').style.display = 'flex';
-                } else {
-                    document.getElementById('whatsapp-workspace').style.display = 'flex';
-                    document.getElementById('admin-sidebar').style.display = 'none';
-                    document.getElementById('no-chat-selected').style.display = 'none';
-                    document.getElementById('active-room').style.display = 'flex';
-                    document.getElementById('room-title').textContent = `🟢 Taquilla Harold José (${miNombre})`;
-                    cargarHistorial(miChatId, "client");
-                    intervaloChat = setInterval(() => cargarHistorial(miChatId, "client"), 3500);
-                }
+                document.getElementById('admin-sidebar').style.display = 'none';
+                document.getElementById('no-chat-selected').style.display = 'none';
+                document.getElementById('active-room').style.display = 'flex';
+                document.getElementById('room-title').textContent = `🟢 Taquilla Harold José (${miNombre || 'Cliente'})`;
+                if (miChatId) cargarHistorial(miChatId, "client");
             }
         }
 
-        function iniciarChatCliente() {
-            const nom = document.getElementById('input-nombre').value.trim();
-            const tlf = document.getElementById('input-tlf').value.trim();
-            if (!nom) return alert("Por favor escribe tu nombre.");
-
-            miChatId = "cli_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
-            miNombre = nom;
-            miTelefono = tlf;
-
-            localStorage.setItem("harold_chat_id", miChatId);
-            localStorage.setItem("harold_chat_nombre", miNombre);
-            localStorage.setItem("harold_chat_tlf", miTelefono);
-
-            inicializarVistaChat();
-        }
-
         async function cargarListaAdmin() {
+            if (!ES_ADMIN) return;
             try {
-                const res = await fetch(`${API_URL}/chat/list`);
+                const res = await fetch(`${API_URL}/chat/list`, {
+                    headers: { "X-Admin-Key": adminKey }
+                });
+                if (res.status === 403) {
+                    localStorage.removeItem("harold_admin_key");
+                    location.reload();
+                    return;
+                }
                 const data = await res.json();
                 if (!data.ok) return;
 
                 listaContactosCache = data.chats || [];
 
-                const conSinLeer = listaContactosCache.find(c => c.sinLeer);
-                if (conSinLeer && conSinLeer.ts !== ultimoTimestampAdmin) {
-                    ultimoTimestampAdmin = conSinLeer.ts;
-                    dispararAlertaVisual(`Mensaje de ${conSinLeer.nombre}`, conSinLeer.ultimoMsg);
+                const totalSinLeer = listaContactosCache.reduce((acc, c) => acc + (c.sinLeerCount || (c.sinLeer ? 1 : 0)), 0);
+                actualizarGlobitoRojo(totalSinLeer);
+
+                if (totalSinLeer > ultimoConteoSinLeerAdmin) {
+                    const primeroNuevo = listaContactosCache.find(c => c.sinLeer);
+                    dispararAlertaCompleta(
+                        primeroNuevo ? `Mensaje de ${primeroNuevo.nombre}` : "Nuevo mensaje en Taquilla",
+                        primeroNuevo ? primeroNuevo.ultimoMsg : "Tienes mensajes sin leer",
+                        totalSinLeer
+                    );
                 }
+                ultimoConteoSinLeerAdmin = totalSinLeer;
 
                 renderizarListaContactos(listaContactosCache);
             } catch (e) {}
@@ -483,6 +782,7 @@
             }
             listDiv.innerHTML = lista.map(c => {
                 const seleccionado = adminChatActivo && adminChatActivo.chatId === c.chatId;
+                const badgeNum = c.sinLeerCount || (c.sinLeer ? 1 : 0);
                 return `
                     <div class="chat-row ${seleccionado ? 'selected' : ''}" onclick="abrirSalaAdmin('${c.chatId}', '${c.nombre.replace(/'/g, "")}')">
                         <div class="chat-row-info">
@@ -491,7 +791,7 @@
                         </div>
                         <div style="text-align:right; flex-shrink:0;">
                             <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;">${c.hora}</div>
-                            ${c.sinLeer ? '<span class="badge-new">NUEVO</span>' : ''}
+                            ${badgeNum > 0 ? `<span class="badge-new">${badgeNum}</span>` : ''}
                         </div>
                     </div>
                 `;
@@ -522,8 +822,7 @@
                 document.getElementById('btn-back-admin').style.display = 'none';
             }
 
-            renderizarListaContactos(listaContactosCache);
-            cargarHistorial(chatId, "admin");
+            cargarHistorial(chatId, "admin").then(() => cargarListaAdmin());
         }
 
         function volverBandejaMobile() {
@@ -534,7 +833,11 @@
 
         async function cargarHistorial(chatId, viewer) {
             try {
-                const res = await fetch(`${API_URL}/chat/history?chatId=${chatId}&viewer=${viewer}`);
+                const headers = ES_ADMIN
+                    ? { "X-Admin-Key": adminKey }
+                    : { "X-Client-Token": miClientToken };
+
+                const res = await fetch(`${API_URL}/chat/history?chatId=${chatId}&viewer=${viewer}`, { headers });
                 const data = await res.json();
                 if (!data.ok) return;
 
@@ -543,7 +846,8 @@
                 if (!ES_ADMIN && ultimoTotalMensajes !== -1 && msgs.length > ultimoTotalMensajes) {
                     const ultimo = msgs[msgs.length - 1];
                     if (ultimo.sender === "admin") {
-                        dispararAlertaVisual("Respuesta de Agencia Harold José", ultimo.texto || "Imagen recibida");
+                        const chatAbierto = document.getElementById('chat-wrapper').style.display === 'flex';
+                        dispararAlertaCompleta("Agencia Harold José", ultimo.texto || "Imagen recibida", chatAbierto ? 0 : 1);
                     }
                 }
                 ultimoTotalMensajes = msgs.length;
@@ -584,9 +888,13 @@
 
             if (textoForzado === null) input.value = '';
 
+            const headers = { "Content-Type": "application/json" };
+            if (ES_ADMIN) headers["X-Admin-Key"] = adminKey;
+            else headers["X-Client-Token"] = miClientToken;
+
             await fetch(`${API_URL}/chat/send`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers,
                 body: JSON.stringify({
                     chatId: destinoId,
                     nombre: ES_ADMIN ? null : miNombre,
@@ -665,9 +973,12 @@
                 if (data.ok && data.flyers && data.flyers.length > 0) {
                     container.innerHTML = data.flyers.map(f => `
                         <div class="flyer-card">
-                            <img class="flyer-img" src="${f.img}" alt="Promoción" loading="lazy">
+                            <img class="flyer-img" src="${f.img}" alt="${f.titulo}" loading="lazy">
                             <div class="flyer-body">
-                                <span class="flyer-title">${f.titulo}</span>
+                                <div class="flyer-info">
+                                    <span class="flyer-title">${f.titulo}</span>
+                                    ${f.horario ? `<span class="flyer-schedule">⏰ ${f.horario}</span>` : ''}
+                                </div>
                                 <button class="btn-play" onclick="irAlChat('Hola, quiero jugar: ${f.titulo.replace(/'/g, "")}')">Jugar</button>
                             </div>
                         </div>
@@ -723,13 +1034,19 @@
             renderizarLoterias(todasLasLoterias.filter(l => l.nombre.toLowerCase().includes(q)));
         }
 
-        if (ES_ADMIN) {
-            switchTab('chat', document.getElementById('tab-chat-btn'));
-        }
-
+        // Arranque y sondeo continuo de mensajes en segundo plano
+        iniciarPantallaBienvenida();
         cargarResultados();
         cargarFlyers();
         setInterval(() => { cargarResultados(); cargarFlyers(); }, 60000);
+        setInterval(() => {
+            if (ES_ADMIN) {
+                cargarListaAdmin();
+                if (adminChatActivo) cargarHistorial(adminChatActivo.chatId, "admin");
+            } else if (miChatId && miClientToken) {
+                cargarHistorial(miChatId, "client");
+            }
+        }, 3500);
     </script>
 </body>
 </html>
