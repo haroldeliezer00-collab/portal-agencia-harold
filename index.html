@@ -112,7 +112,7 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        /* BANNER EN MOVIMIENTO: LOTERÍA + HORA + IMAGEN DEL RESULTADO */
+        /* BANNER EN MOVIMIENTO: LOTERÍA (HORA  NÚMERO - ANIMAL) + IMAGEN */
         .ticker-wrap {
             display: flex;
             align-items: center;
@@ -152,7 +152,7 @@
             align-items: center;
             white-space: nowrap;
             will-change: transform;
-            animation: marqueeLeft 50s linear infinite;
+            animation: marqueeLeft 52s linear infinite;
         }
         .ticker-wrap:hover .ticker-track,
         .ticker-wrap:active .ticker-track {
@@ -173,10 +173,14 @@
             text-transform: uppercase;
             letter-spacing: 0.2px;
         }
-        .ticker-hora {
+        .ticker-detalle {
             color: #e9edef;
             font-weight: 700;
             font-size: 0.76rem;
+        }
+        .ticker-detalle strong {
+            color: #34d399;
+            font-weight: 900;
         }
         .ticker-item img {
             width: 38px;
@@ -481,7 +485,7 @@
 
     <main id="main-scroll">
         <section id="resultados" class="section active">
-            <!-- CINTILLO EN MOVIMIENTO: LOTERÍA + HORA + IMAGEN DEL RESULTADO -->
+            <!-- CINTILLO EN MOVIMIENTO: LOTERÍA (HORA  NÚMERO - ANIMAL) + IMAGEN -->
             <div class="ticker-wrap" id="ultimos-ticker-wrap" style="display:none;">
                 <div class="ticker-label">🔥 ÚLTIMOS</div>
                 <div class="ticker-viewport">
@@ -1486,7 +1490,7 @@ Harold Eliezer Galea Sanchez
             fileInput.value = '';
         }
 
-        // GENERADOR DEL CINTILLO: LOTERÍA + (HORA) + IMAGEN DEL ANIMALITO
+        // GENERADOR DEL CINTILLO: LOTERÍA (HORA  NÚMERO - ANIMAL) + IMAGEN
         function actualizarTickerUltimosResultados(loterias) {
             const wrap = document.getElementById('ultimos-ticker-wrap');
             const track = document.getElementById('ultimos-ticker-track');
@@ -1502,6 +1506,7 @@ Harold Eliezer Galea Sanchez
                     ultimos.push({
                         loteria: lot.nombre,
                         hora: ultimo.hora,
+                        numero: ultimo.numero,
                         animal: ultimo.animal,
                         img: ultimo.img
                     });
@@ -1516,13 +1521,13 @@ Harold Eliezer Galea Sanchez
             const itemsHtml = ultimos.map(u => `
                 <div class="ticker-item">
                     <span class="ticker-lot">${u.loteria}</span>
-                    <span class="ticker-hora">(${u.hora})</span>
-                    <img src="${u.img}" alt="${u.animal}" title="${u.animal}" onerror="this.src='logo.png'">
+                    <span class="ticker-detalle">(${u.hora} &nbsp;<strong>${u.numero} - ${u.animal.toUpperCase()}</strong>)</span>
+                    <img src="${u.img}" alt="${u.animal}" onerror="this.src='logo.png'">
                 </div>
             `).join('');
 
             track.innerHTML = itemsHtml + itemsHtml;
-            const duracionSeg = Math.max(25, ultimos.length * 4);
+            const duracionSeg = Math.max(28, ultimos.length * 4.5);
             track.style.animationDuration = `${duracionSeg}s`;
             wrap.style.display = 'flex';
         }
