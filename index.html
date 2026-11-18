@@ -670,7 +670,6 @@ Harold Eliezer Galea Sanchez
 0102 / 18274410 / 04124489363
 0134 / 18274410 / 04124489363`;
 
-        // Huella única del navegador/equipo para evitar múltiples cobros de bono en el mismo celular
         function obtenerDeviceId() {
             let saved = localStorage.getItem("harold_device_fp");
             if (saved) return saved;
@@ -1169,7 +1168,8 @@ Harold Eliezer Galea Sanchez
             const claveConsulta = adminKey || localStorage.getItem("harold_admin_saved_input");
             if (!claveConsulta) return;
             try {
-                const res = await fetch(`${API_URL}/chat/list`, {
+                const res = await fetch(`${API_URL}/chat/list?_t=${Date.now()}`, {
+                    cache: "no-store",
                     headers: { "X-Admin-Key": claveConsulta }
                 });
                 if (res.status === 403) return;
@@ -1478,7 +1478,10 @@ Harold Eliezer Galea Sanchez
                     ? { "X-Admin-Key": adminKey }
                     : { "X-Client-Token": miClientToken };
 
-                const res = await fetch(`${API_URL}/chat/history?chatId=${chatId}&viewer=${viewer}`, { headers });
+                const res = await fetch(`${API_URL}/chat/history?chatId=${chatId}&viewer=${viewer}&_t=${Date.now()}`, {
+                    cache: "no-store",
+                    headers
+                });
                 const data = await res.json();
                 if (!data.ok) return;
 
