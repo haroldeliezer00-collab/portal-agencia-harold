@@ -35,7 +35,7 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        /* Barra de búsqueda y filtro rápido */
+        /* Barra de búsqueda */
         .search-bar { display: flex; gap: 8px; margin-bottom: 12px; position: sticky; top: 0; z-index: 10; background: var(--bg-dark); padding-bottom: 6px; }
         .search-bar input { flex: 1; background: var(--bg-card); border: 1px solid #2a3942; padding: 10px 14px; border-radius: 10px; color: #fff; font-size: 0.85rem; outline: none; }
         .search-bar input:focus { border-color: var(--accent-green); }
@@ -47,7 +47,6 @@
         .loteria-header h2 { font-size: 0.95rem; font-weight: 800; color: #fff; letter-spacing: 0.4px; text-transform: uppercase; }
         .loteria-tag { background: rgba(0, 168, 132, 0.15); color: var(--accent-green); font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(0, 168, 132, 0.3); }
 
-        /* Cuadrícula de todos los horarios de esa lotería */
         .sorteos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 10px; }
         .sorteo-cell { background: var(--bg-panel); border-radius: 10px; padding: 8px 4px; text-align: center; border: 1px solid #26333b; display: flex; flex-direction: column; align-items: center; position: relative; }
         .num-pill { position: absolute; top: 5px; right: 5px; background: var(--accent-gold); color: #000; font-size: 0.68rem; font-weight: 900; padding: 1px 6px; border-radius: 10px; }
@@ -55,13 +54,13 @@
         .sorteo-time { font-size: 0.68rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 2px; }
         .sorteo-animal { font-size: 0.72rem; font-weight: 800; color: #fff; text-transform: uppercase; line-height: 1.1; word-break: break-word; }
 
-        /* Flyers / Promos */
-        .flyer-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; margin-bottom: 14px; border: 1px solid #2a3942; }
-        .flyer-banner { background: linear-gradient(135deg, #064e3b, #00a884); padding: 20px; text-align: center; }
-        .flyer-banner h2 { font-size: 1.25rem; margin-bottom: 6px; color: #fff; }
-        .flyer-banner p { font-size: 0.85rem; color: #d1fae5; }
-        .flyer-body { padding: 12px; font-size: 0.85rem; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-        .btn-play { background: var(--accent-green); color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.82rem; white-space: nowrap; }
+        /* Flyers dinámicos */
+        .flyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; margin-bottom: 16px; }
+        .flyer-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid #2a3942; display: flex; flex-direction: column; justify-content: space-between; }
+        .flyer-img { width: 100%; height: auto; display: block; object-fit: cover; background: #0b141a; }
+        .flyer-body { padding: 12px; font-size: 0.82rem; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .flyer-title { font-weight: 600; color: #e9edef; line-height: 1.3; }
+        .btn-play { background: var(--accent-green); color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.8rem; white-space: nowrap; }
 
         /* Chat UI */
         .chat-messages { flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background-color: #0b141a; }
@@ -112,28 +111,10 @@
             </div>
         </section>
 
-        <!-- PESTAÑA 2: FLYERS Y PROMOS -->
+        <!-- PESTAÑA 2: FLYERS AUTOMÁTICOS DESDE TELEGRAM -->
         <section id="flyers" class="section">
-            <div class="flyer-card">
-                <div class="flyer-banner">
-                    <h2>🔥 POLLA MILLONARIA DIARIA</h2>
-                    <p>Participa desde Bs. 50 • Premios garantizados al instante</p>
-                </div>
-                <div class="flyer-body">
-                    <span>Cierra 15 min antes del primer sorteo</span>
-                    <button class="btn-play" onclick="irAlChat('Quiero participar en la Polla Millonaria')">Jugar ahora</button>
-                </div>
-            </div>
-
-            <div class="flyer-card">
-                <div class="flyer-banner" style="background: linear-gradient(135deg, #78350f, #d97706);">
-                    <h2>🎯 TRIPLETAS Y TRIPLES</h2>
-                    <p>Lotto Activo • La Granjita • Chance • Zulia • Táchira</p>
-                </div>
-                <div class="flyer-body">
-                    <span>Pagos inmediatos vía Pago Móvil</span>
-                    <button class="btn-play" onclick="irAlChat('Quiero jugar una Tripleta')">Armar jugada</button>
-                </div>
+            <div id="flyers-container" class="flyers-grid">
+                <p style="color: var(--text-muted); text-align: center; grid-column: 1/-1; padding: 30px;">Cargando promociones y acumulados del día...</p>
             </div>
 
             <div class="flyer-card">
@@ -176,14 +157,14 @@
     </footer>
 
     <script>
-        const API_URL = "https://api-resultados-harold.agharoldjose.workers.dev/";
+        const API_URL = "https://api-resultados-harold.agharoldjose.workers.dev";
         let todasLasLoterias = [];
 
         async function cargarResultados() {
             const badge = document.getElementById('sync-status');
             badge.textContent = "↻ ACTUALIZANDO...";
             try {
-                const res = await fetch(API_URL);
+                const res = await fetch(`${API_URL}/`);
                 const data = await res.json();
                 if (data.ok && data.loterias) {
                     todasLasLoterias = data.loterias;
@@ -193,15 +174,34 @@
                 }
             } catch (err) {
                 badge.textContent = "● OFFLINE";
-                document.getElementById('loterias-container').innerHTML =
-                    `<p style="color:#f87171; text-align:center;">Error cargando sorteos. Toca ↻ para reintentar.</p>`;
+            }
+        }
+
+        async function cargarFlyers() {
+            const container = document.getElementById('flyers-container');
+            try {
+                const res = await fetch(`${API_URL}/flyers`);
+                const data = await res.json();
+                if (data.ok && data.flyers && data.flyers.length > 0) {
+                    container.innerHTML = data.flyers.map(f => `
+                        <div class="flyer-card">
+                            <img class="flyer-img" src="${f.img}" alt="Promoción" loading="lazy">
+                            <div class="flyer-body">
+                                <span class="flyer-title">${f.titulo}</span>
+                                <button class="btn-play" onclick="irAlChat('Hola, quiero jugar esta promoción: ${f.titulo.replace(/'/g, "")}')">Jugar ahora</button>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `<p style="color:var(--text-muted); text-align:center; grid-column:1/-1;">No hay promociones cargadas en este momento.</p>`;
+                }
+            } catch (err) {
+                container.innerHTML = `<p style="color:#f87171; text-align:center; grid-column:1/-1;">Error cargando promociones.</p>`;
             }
         }
 
         function renderizarLoterias(lista) {
             const container = document.getElementById('loterias-container');
-
-            // Ocultar loterías que tengan TODOS los sorteos pendientes (ej. Cazaloton sin resultados)
             const activas = lista.filter(lot =>
                 lot.sorteos.some(s => !s.animal.toUpperCase().includes('PENDIENTE'))
             );
@@ -301,7 +301,11 @@
         }
 
         cargarResultados();
-        setInterval(cargarResultados, 60000);
+        cargarFlyers();
+        setInterval(() => {
+            cargarResultados();
+            cargarFlyers();
+        }, 60000);
     </script>
 </body>
 </html>
