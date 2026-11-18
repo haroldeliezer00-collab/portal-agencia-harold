@@ -221,7 +221,8 @@
         .flyer-info { min-width: 0; flex: 1; }
         .flyer-title { font-size: 0.82rem; font-weight: 800; color: #fff; display: block; line-height: 1.25; }
         .flyer-schedule { font-size: 0.72rem; color: var(--accent-gold); font-weight: 700; display: block; margin-top: 3px; }
-        .btn-play { background: var(--accent-green); color: #fff; border: none; padding: 8px 13px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.78rem; white-space: nowrap; flex-shrink: 0; }
+        .btn-play { background: var(--accent-green); color: #fff; border: none; padding: 8px 13px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.78rem; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: inline-block; }
+        .btn-register { background: var(--accent-gold); color: #000; border: none; padding: 8px 13px; border-radius: 8px; font-weight: 900; cursor: pointer; font-size: 0.78rem; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: inline-block; }
 
         /* CHAT CONTENEDOR PRINCIPAL */
         #chat-wrapper { flex: 1; display: none; flex-direction: column; overflow: hidden; background: #0b141a; }
@@ -588,6 +589,7 @@
         const API_URL = "https://api-resultados-harold.agharoldjose.workers.dev";
         const TITULO_ORIGINAL = "Agencia Harold José - Seguridad, Confianza y Experiencia";
         const TIEMPO_EXPIRACION_MS = 15 * 60 * 1000;
+        const ROLLERCOIN_REF_URL = "https://rollercoin.com/?r=kqmow2ag";
 
         const REGLAS_Y_DATOS_TEXTO = `*📝 REGLAS DE JUEGO ACTUALIZADAS*
 💰 MONTOS MÍNIMOS
@@ -1552,18 +1554,37 @@ Harold Eliezer Galea Sanchez
                 const res = await fetch(`${API_URL}/flyers`);
                 const data = await res.json();
                 if (data.ok && data.flyers && data.flyers.length > 0) {
-                    container.innerHTML = data.flyers.map(f => `
-                        <div class="flyer-card">
-                            <img class="flyer-img" src="${f.img}" alt="${f.titulo}" loading="lazy">
-                            <div class="flyer-body">
-                                <div class="flyer-info">
-                                    <span class="flyer-title">${f.titulo}</span>
-                                    ${f.horario ? `<span class="flyer-schedule">⏰ ${f.horario}</span>` : ''}
+                    container.innerHTML = data.flyers.map(f => {
+                        const esRollerCoin = /roller\s*coin|minar\s*cripto/i.test(`${f.titulo || ''} ${f.horario || ''}`);
+
+                        if (esRollerCoin) {
+                            return `
+                                <div class="flyer-card">
+                                    <img class="flyer-img" src="${f.img}" alt="RollerCoin" loading="lazy">
+                                    <div class="flyer-body">
+                                        <div class="flyer-info">
+                                            <span class="flyer-title">ROLLERCOIN • ¡Juega y Mina Criptomonedas!</span>
+                                            <span class="flyer-schedule">🪙 Regístrate gratis y empieza a minar</span>
+                                        </div>
+                                        <a class="btn-register" href="${ROLLERCOIN_REF_URL}" target="_blank" rel="noopener noreferrer">Registro</a>
+                                    </div>
                                 </div>
-                                <button class="btn-play" onclick="irAlChat('Hola, quiero jugar: ${f.titulo.replace(/'/g, "")}')">Jugar</button>
+                            `;
+                        }
+
+                        return `
+                            <div class="flyer-card">
+                                <img class="flyer-img" src="${f.img}" alt="${f.titulo}" loading="lazy">
+                                <div class="flyer-body">
+                                    <div class="flyer-info">
+                                        <span class="flyer-title">${f.titulo}</span>
+                                        ${f.horario ? `<span class="flyer-schedule">⏰ ${f.horario}</span>` : ''}
+                                    </div>
+                                    <button class="btn-play" onclick="irAlChat('Hola, quiero jugar: ${f.titulo.replace(/'/g, "")}')">Jugar</button>
+                                </div>
                             </div>
-                        </div>
-                    `).join('');
+                        `;
+                    }).join('');
                 }
             } catch (err) {}
         }
