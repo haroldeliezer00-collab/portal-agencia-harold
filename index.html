@@ -112,6 +112,87 @@
         .section { display: none; }
         .section.active { display: block; }
 
+        /* BANNER EN MOVIMIENTO: LOTERÍA + HORA + IMAGEN DEL RESULTADO */
+        .ticker-wrap {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(90deg, #111f21, #19282e);
+            border: 1px solid rgba(245, 158, 11, 0.45);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            height: 48px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        }
+        .ticker-label {
+            background: linear-gradient(135deg, var(--accent-gold), #d97706);
+            color: #000;
+            font-weight: 900;
+            font-size: 0.7rem;
+            padding: 0 11px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            z-index: 2;
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
+        }
+        .ticker-viewport {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .ticker-track {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            will-change: transform;
+            animation: marqueeLeft 50s linear infinite;
+        }
+        .ticker-wrap:hover .ticker-track,
+        .ticker-wrap:active .ticker-track {
+            animation-play-state: paused;
+        }
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 18px;
+            font-size: 0.8rem;
+            color: #fff;
+            border-right: 1px solid rgba(255, 255, 255, 0.14);
+        }
+        .ticker-lot {
+            color: var(--accent-gold);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+        .ticker-hora {
+            color: #e9edef;
+            font-weight: 700;
+            font-size: 0.76rem;
+        }
+        .ticker-item img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-green);
+            background: #fff;
+            box-shadow: 0 0 8px rgba(0, 168, 132, 0.45);
+            flex-shrink: 0;
+        }
+        @keyframes marqueeLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
         .search-bar { display: flex; gap: 8px; margin-bottom: 10px; position: sticky; top: 0; z-index: 10; background: var(--bg-dark); padding-bottom: 4px; }
         .search-bar input { flex: 1; background: var(--bg-card); border: 1px solid #2a3942; padding: 9px 12px; border-radius: 10px; color: #fff; font-size: 0.85rem; outline: none; }
         .refresh-btn { background: var(--bg-card); border: 1px solid #2a3942; color: var(--accent-green); padding: 0 14px; border-radius: 10px; font-weight: bold; cursor: pointer; }
@@ -400,10 +481,20 @@
 
     <main id="main-scroll">
         <section id="resultados" class="section active">
+            <!-- CINTILLO EN MOVIMIENTO: LOTERÍA + HORA + IMAGEN DEL RESULTADO -->
+            <div class="ticker-wrap" id="ultimos-ticker-wrap" style="display:none;">
+                <div class="ticker-label">🔥 ÚLTIMOS</div>
+                <div class="ticker-viewport">
+                    <div class="ticker-track" id="ultimos-ticker-track"></div>
+                </div>
+            </div>
+
+            <!-- BUSCADOR DE LOTERÍAS DEBAJO DEL CINTILLO -->
             <div class="search-bar">
                 <input type="text" id="filtro-loteria" placeholder="🔍 Filtrar lotería (ej: Lotto Activo, Granjita)..." oninput="filtrarLoterias()">
                 <button class="refresh-btn" onclick="cargarResultados()">↻</button>
             </div>
+
             <div id="loterias-container">
                 <p style="color: var(--text-muted); text-align: center; padding: 30px;">Cargando sorteos del día...</p>
             </div>
@@ -1395,6 +1486,47 @@ Harold Eliezer Galea Sanchez
             fileInput.value = '';
         }
 
+        // GENERADOR DEL CINTILLO: LOTERÍA + (HORA) + IMAGEN DEL ANIMALITO
+        function actualizarTickerUltimosResultados(loterias) {
+            const wrap = document.getElementById('ultimos-ticker-wrap');
+            const track = document.getElementById('ultimos-ticker-track');
+            if (!wrap || !track) return;
+
+            const ultimos = [];
+            loterias.forEach(lot => {
+                const salidos = (lot.sorteos || []).filter(s =>
+                    !s.animal.toUpperCase().includes('PENDIENTE') && !s.img.includes('logowin')
+                );
+                if (salidos.length > 0) {
+                    const ultimo = salidos[salidos.length - 1];
+                    ultimos.push({
+                        loteria: lot.nombre,
+                        hora: ultimo.hora,
+                        animal: ultimo.animal,
+                        img: ultimo.img
+                    });
+                }
+            });
+
+            if (ultimos.length === 0) {
+                wrap.style.display = 'none';
+                return;
+            }
+
+            const itemsHtml = ultimos.map(u => `
+                <div class="ticker-item">
+                    <span class="ticker-lot">${u.loteria}</span>
+                    <span class="ticker-hora">(${u.hora})</span>
+                    <img src="${u.img}" alt="${u.animal}" title="${u.animal}" onerror="this.src='logo.png'">
+                </div>
+            `).join('');
+
+            track.innerHTML = itemsHtml + itemsHtml;
+            const duracionSeg = Math.max(25, ultimos.length * 4);
+            track.style.animationDuration = `${duracionSeg}s`;
+            wrap.style.display = 'flex';
+        }
+
         async function cargarResultados() {
             const badge = document.getElementById('sync-status');
             badge.textContent = "↻ ACTUALIZANDO...";
@@ -1403,6 +1535,7 @@ Harold Eliezer Galea Sanchez
                 const data = await res.json();
                 if (data.ok && data.loterias) {
                     todasLasLoterias = data.loterias;
+                    actualizarTickerUltimosResultados(todasLasLoterias);
                     renderizarLoterias(todasLasLoterias);
                 }
             } catch (err) { badge.textContent = "● OFFLINE"; }
