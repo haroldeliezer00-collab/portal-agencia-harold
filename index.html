@@ -8,7 +8,7 @@
         :root {
             --bg-dark: #0b141a;
             --bg-panel: #111b21;
-            --bg-card: #202c33;
+            --bg-card: #1c272e;
             --accent-green: #00a884;
             --accent-gold: #f59e0b;
             --text-main: #e9edef;
@@ -20,7 +20,7 @@
         
         header { background-color: var(--bg-card); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3942; }
         .brand h1 { font-size: 1.1rem; color: #fff; font-weight: 700; }
-        .brand span { font-size: 0.75rem; color: var(--accent-gold); font-weight: 600; letter-spacing: 0.5px; }
+        .brand span { font-size: 0.72rem; color: var(--accent-gold); font-weight: 700; letter-spacing: 0.5px; }
         .status-badge { background: rgba(0, 168, 132, 0.2); color: var(--accent-green); padding: 4px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: bold; }
 
         nav { display: flex; background-color: var(--bg-card); border-bottom: 2px solid #2a3942; }
@@ -31,20 +31,25 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        /* Buscador y Toolbar de Resultados */
-        .search-bar { display: flex; gap: 8px; margin-bottom: 12px; }
+        /* Barra de búsqueda y filtro rápido */
+        .search-bar { display: flex; gap: 8px; margin-bottom: 12px; position: sticky; top: 0; z-index: 10; background: var(--bg-dark); padding-bottom: 6px; }
         .search-bar input { flex: 1; background: var(--bg-card); border: 1px solid #2a3942; padding: 10px 14px; border-radius: 10px; color: #fff; font-size: 0.85rem; outline: none; }
         .search-bar input:focus { border-color: var(--accent-green); }
         .refresh-btn { background: var(--bg-card); border: 1px solid #2a3942; color: var(--accent-green); padding: 0 14px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 
-        /* Grid de Resultados en Vivo */
-        .live-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 10px; }
-        .animal-card { background: var(--bg-card); border-radius: 12px; padding: 12px 8px; text-align: center; border: 1px solid #2a3942; display: flex; flex-direction: column; align-items: center; transition: transform 0.15s; }
-        .animal-card:hover { border-color: var(--accent-gold); transform: translateY(-2px); }
-        .loteria-name { font-size: 0.75rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 2px; line-height: 1.2; }
-        .sorteo-hour { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px; }
-        .animal-img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; background: var(--bg-panel); border: 2px solid #374151; margin-bottom: 8px; }
-        .animal-res { font-size: 0.85rem; font-weight: 700; color: #fff; background: var(--bg-panel); padding: 4px 10px; border-radius: 8px; width: 100%; }
+        /* Tarjeta Agrupada por Lotería (Estilo Winbig / Gogo) */
+        .loteria-block { background: var(--bg-card); border-radius: 14px; padding: 14px; margin-bottom: 16px; border: 1px solid #2a3942; }
+        .loteria-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3942; padding-bottom: 8px; margin-bottom: 12px; }
+        .loteria-header h2 { font-size: 0.95rem; font-weight: 800; color: #fff; letter-spacing: 0.4px; text-transform: uppercase; }
+        .loteria-tag { background: rgba(0, 168, 132, 0.15); color: var(--accent-green); font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(0, 168, 132, 0.3); }
+
+        /* Cuadrícula de todos los horarios de esa lotería */
+        .sorteos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 10px; }
+        .sorteo-cell { background: var(--bg-panel); border-radius: 10px; padding: 8px 4px; text-align: center; border: 1px solid #26333b; display: flex; flex-direction: column; align-items: center; position: relative; }
+        .num-pill { position: absolute; top: 5px; right: 5px; background: var(--accent-gold); color: #000; font-size: 0.68rem; font-weight: 900; padding: 1px 6px; border-radius: 10px; }
+        .sorteo-cell img { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; margin-bottom: 6px; background: #0b141a; border: 2px solid #2e3d47; }
+        .sorteo-time { font-size: 0.68rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 2px; }
+        .sorteo-animal { font-size: 0.72rem; font-weight: 800; color: #fff; text-transform: uppercase; line-height: 1.1; word-break: break-word; }
 
         /* Flyers / Promos */
         .flyer-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; margin-bottom: 14px; border: 1px solid #2a3942; }
@@ -89,14 +94,14 @@
     </nav>
 
     <main id="main-scroll">
-        <!-- PESTAÑA 1: RESULTADOS EN VIVO -->
+        <!-- PESTAÑA 1: RESULTADOS AGRUPADOS POR LOTERÍA -->
         <section id="resultados" class="section active">
             <div class="search-bar">
-                <input type="text" id="filtro-loteria" placeholder="🔍 Buscar lotería (ej: Lotto Activo, Granjita, Guácharo)..." oninput="filtrarResultados()">
+                <input type="text" id="filtro-loteria" placeholder="🔍 Filtrar lotería (ej: Lotto Activo, La Granjita, Guácharo)..." oninput="filtrarLoterias()">
                 <button class="refresh-btn" onclick="cargarResultados()" title="Actualizar">↻</button>
             </div>
-            <div id="resultados-container" class="live-grid">
-                <p style="color: var(--text-muted); grid-column: 1/-1; text-align: center; padding: 30px;">Cargando últimos sorteos en vivo...</p>
+            <div id="loterias-container">
+                <p style="color: var(--text-muted); text-align: center; padding: 30px;">Cargando todos los sorteos del día...</p>
             </div>
         </section>
 
@@ -165,7 +170,7 @@
 
     <script>
         const API_URL = "https://api-resultados-harold.agharoldjose.workers.dev/";
-        let todosLosResultados = [];
+        let todasLasLoterias = [];
 
         async function cargarResultados() {
             const badge = document.getElementById('sync-status');
@@ -173,40 +178,48 @@
             try {
                 const res = await fetch(API_URL);
                 const data = await res.json();
-                if (data.ok && data.recientes) {
-                    todosLosResultados = data.recientes;
-                    renderizarResultados(todosLosResultados);
-                    badge.textContent = "● EN VIVO";
+                if (data.ok && data.loterias) {
+                    todasLasLoterias = data.loterias;
+                    renderizarLoterias(todasLasLoterias);
+                    badge.textContent = `● ${todasLasLoterias.length} LOTERÍAS`;
                 }
             } catch (err) {
                 badge.textContent = "● OFFLINE";
-                document.getElementById('resultados-container').innerHTML =
-                    `<p style="color:#f87171; grid-column:1/-1; text-align:center;">Error cargando resultados. Toca ↻ para reintentar.</p>`;
+                document.getElementById('loterias-container').innerHTML =
+                    `<p style="color:#f87171; text-align:center;">Error cargando sorteos. Toca ↻ para reintentar.</p>`;
             }
         }
 
-        function renderizarResultados(lista) {
-            const container = document.getElementById('resultados-container');
+        function renderizarLoterias(lista) {
+            const container = document.getElementById('loterias-container');
             if (!lista.length) {
-                container.innerHTML = `<p style="color:var(--text-muted); grid-column:1/-1; text-align:center;">No se encontraron loterías con ese nombre.</p>`;
+                container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 20px;">No se encontraron loterías con ese nombre.</p>`;
                 return;
             }
-            container.innerHTML = lista.map(item => `
-                <div class="animal-card">
-                    <div class="loteria-name">${item.loteria}</div>
-                    <div class="sorteo-hour">${item.hora}</div>
-                    <img class="animal-img" src="${item.img}" alt="${item.resultado}" loading="lazy" onerror="this.src='https://lotery.winbigvzla.com/img/logowin.png'">
-                    <div class="animal-res">${item.resultado}</div>
+            container.innerHTML = lista.map(lot => `
+                <div class="loteria-block">
+                    <div class="loteria-header">
+                        <h2>${lot.nombre}</h2>
+                        <span class="loteria-tag">● ACTIVA</span>
+                    </div>
+                    <div class="sorteos-grid">
+                        ${lot.sorteos.map(s => `
+                            <div class="sorteo-cell">
+                                <span class="num-pill">${s.numero}</span>
+                                <img src="${s.img}" alt="${s.animal}" loading="lazy" onerror="this.src='https://lotery.winbigvzla.com/img/logowin.png'">
+                                <div class="sorteo-time">${s.hora}</div>
+                                <div class="sorteo-animal">${s.numero} - ${s.animal}</div>
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
             `).join('');
         }
 
-        function filtrarResultados() {
+        function filtrarLoterias() {
             const q = document.getElementById('filtro-loteria').value.toLowerCase().trim();
-            const filtrados = todosLosResultados.filter(r =>
-                r.loteria.toLowerCase().includes(q) || r.resultado.toLowerCase().includes(q)
-            );
-            renderizarResultados(filtrados);
+            const filtradas = todasLasLoterias.filter(l => l.nombre.toLowerCase().includes(q));
+            renderizarLoterias(filtradas);
         }
 
         function switchTab(tabId, btn) {
@@ -265,7 +278,6 @@
             }, 400);
         }
 
-        // Cargar al abrir y actualizar cada 60 segundos automáticamente
         cargarResultados();
         setInterval(cargarResultados, 60000);
     </script>
