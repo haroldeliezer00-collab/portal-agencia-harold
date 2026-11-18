@@ -220,29 +220,45 @@
         .whatsapp-layout { display: flex; flex: 1; overflow: hidden; width: 100%; height: 100%; }
         
         .admin-sidebar { width: 34%; min-width: 280px; max-width: 400px; border-right: 1px solid #2a3942; display: flex; flex-direction: column; background: var(--bg-panel); }
-        .admin-bar { background: #075e54; padding: 9px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: bold; flex-shrink: 0; }
+        .admin-bar { background: #075e54; padding: 9px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: bold; flex-shrink: 0; gap: 8px; }
         .sidebar-search { padding: 8px; background: var(--bg-panel); border-bottom: 1px solid #1f2c33; }
         .sidebar-search input { width: 100%; background: var(--bg-card); border: none; padding: 8px 12px; border-radius: 8px; color: #fff; font-size: 0.82rem; outline: none; }
         .admin-list { flex: 1; overflow-y: auto; }
         
-        .chat-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-bottom: 1px solid #1f2c33; cursor: pointer; transition: background 0.15s; }
+        .chat-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-bottom: 1px solid #1f2c33; cursor: pointer; transition: background 0.15s; gap: 8px; }
         .chat-row:hover { background: var(--bg-card); }
         .chat-row.selected { background: #2a3942; border-left: 4px solid var(--accent-green); }
-        .chat-row-info { min-width: 0; flex: 1; padding-right: 8px; }
+        .chat-row-info { min-width: 0; flex: 1; }
         .chat-row-info h4 { font-size: 0.9rem; color: #fff; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .chat-row-info p { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .badge-new { background: #ef4444; color: #fff; font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 10px; display: inline-block; }
+        .btn-del-row { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 4px 7px; border-radius: 6px; font-size: 0.72rem; cursor: pointer; }
+        .btn-del-row:hover { background: #ef4444; color: #fff; }
 
         .chat-main-pane { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #0b141a; position: relative; }
         .empty-chat-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); text-align: center; padding: 20px; }
         .empty-chat-placeholder img { width: 70px; height: 70px; border-radius: 16px; margin-bottom: 12px; opacity: 0.8; border: 2px solid var(--accent-gold); }
 
         .chat-messages { flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        .msg { max-width: 78%; padding: 8px 12px; border-radius: 12px; font-size: 0.88rem; line-height: 1.35; word-wrap: break-word; }
+        .msg { max-width: 82%; padding: 8px 12px; border-radius: 12px; font-size: 0.88rem; line-height: 1.38; word-wrap: break-word; }
         .msg.in { background-color: var(--bg-card); align-self: flex-start; border-top-left-radius: 2px; }
         .msg.out { background-color: var(--chat-out); align-self: flex-end; border-top-right-radius: 2px; }
-        .msg img { max-width: 260px; width: 100%; border-radius: 8px; margin-bottom: 4px; display: block; cursor: pointer; }
+        .msg img { max-width: 260px; width: 100%; border-radius: 8px; margin-bottom: 6px; display: block; cursor: pointer; }
         .msg-time { font-size: 0.62rem; color: rgba(255,255,255,0.6); text-align: right; margin-top: 3px; }
+
+        /* TARJETA DE VERIFICACIÓN AUTOMÁTICA DE PAGO */
+        .receipt-card {
+            background: #0b141a;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin: 6px 0;
+            font-size: 0.78rem;
+            line-height: 1.35;
+            border-left: 4px solid var(--accent-green);
+        }
+        .receipt-card.warn { border-left-color: #f59e0b; }
+        .receipt-card.dup { border-left-color: #ef4444; background: rgba(239, 68, 68, 0.12); }
+        .receipt-status { font-weight: 900; font-size: 0.8rem; margin-bottom: 4px; display: block; }
 
         .quick-bar { background: var(--bg-panel); padding: 6px 10px; display: flex; gap: 6px; overflow-x: auto; border-top: 1px solid #2a3942; flex-shrink: 0; }
         .chip { background: var(--bg-card); color: var(--text-main); border: 1px solid #374151; padding: 5px 10px; border-radius: 14px; font-size: 0.72rem; white-space: nowrap; cursor: pointer; }
@@ -280,7 +296,6 @@
                 <button class="btn-enter-portal" onclick="registrarUsuarioInicial()">Entrar a la Agencia ➤</button>
             </div>
 
-            <!-- Acceso privado de taquilla con Recordar contraseña -->
             <form id="welcome-admin-login" class="welcome-form" style="display:none;" onsubmit="event.preventDefault(); validarClaveAdmin();">
                 <input type="text" name="username" value="Taquilla Harold" autocomplete="username" style="display:none;">
                 <div class="pass-wrap">
@@ -347,10 +362,10 @@
             </div>
             <div class="flyer-card">
                 <div class="flyer-body" style="flex-direction: column; align-items: flex-start; gap: 5px;">
-                    <strong style="color: var(--accent-gold);">📲 DATOS DE PAGO MÓVIL OFICIAL</strong>
-                    <span>Banco: Venezuela / Banesco / Provincial</span>
-                    <span>Teléfono: 0412-4489363</span>
-                    <span>Cédula: V-18.274.410</span>
+                    <strong style="color: var(--accent-gold);">📲 DATOS DE PAGO OFICIALES</strong>
+                    <span>Pago Móvil (0102 / 0134): 0412-4489363 • C.I: 18.274.410</span>
+                    <span>Transferencia BDV (+500 Bs): 01020453450000950163</span>
+                    <span>Titular: Harold Eliezer Galea Sanchez</span>
                 </div>
             </div>
         </section>
@@ -377,13 +392,16 @@
                 <div id="no-chat-selected" class="empty-chat-placeholder" style="display:none;">
                     <img src="logo.png" alt="Logo">
                     <h3 style="color:#fff; margin-bottom:6px;">Panel de Atención Agencia Harold José</h3>
-                    <p style="font-size:0.85rem; max-width:320px;">Selecciona un cliente de la lista izquierda para ver sus jugadas, comprobantes de Pago Móvil y responderle en tiempo real.</p>
+                    <p style="font-size:0.85rem; max-width:320px;">Selecciona un cliente de la lista izquierda para ver sus jugadas, comprobantes validados y responderle en tiempo real.</p>
                 </div>
 
                 <div id="active-room" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
                     <div class="admin-bar" id="room-header" style="background:#1c272e; border-bottom:1px solid #2a3942;">
                         <span id="room-title">🟢 Taquilla Agencia Harold José</span>
-                        <button id="btn-back-admin" onclick="volverBandejaMobile()" style="display:none; background:#00a884; border:none; color:#fff; padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:bold; cursor:pointer;">← Contactos</button>
+                        <div style="display:flex; gap:6px; align-items:center;">
+                            <button id="btn-delete-chat" onclick="borrarChatActual()" style="display:none; background:#ef4444; border:none; color:#fff; padding:4px 9px; border-radius:6px; font-size:0.72rem; font-weight:bold; cursor:pointer;">🗑️ Borrar Chat</button>
+                            <button id="btn-back-admin" onclick="volverBandejaMobile()" style="display:none; background:#00a884; border:none; color:#fff; padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:bold; cursor:pointer;">← Contactos</button>
+                        </div>
                     </div>
 
                     <div class="chat-messages" id="chat-box"></div>
@@ -392,7 +410,7 @@
                         <button class="chip" onclick="insertarTexto('Lotto Activo: ')">🦁 Lotto Activo</button>
                         <button class="chip" onclick="insertarTexto('La Granjita: ')">🐮 La Granjita</button>
                         <button class="chip" onclick="insertarTexto('Guácharo: ')">🦅 Guácharo</button>
-                        <button class="chip" onclick="enviarPagoMovil()">💳 Datos Pago Móvil</button>
+                        <button class="chip" onclick="enviarPagoMovil()">💳 Datos Pago y Reglas</button>
                     </div>
 
                     <div class="chat-input-area">
@@ -411,6 +429,42 @@
         const API_URL = "https://api-resultados-harold.agharoldjose.workers.dev";
         const TITULO_ORIGINAL = "Agencia Harold José - Seguridad, Confianza y Experiencia";
 
+        const REGLAS_Y_DATOS_TEXTO = `*📝 REGLAS DE JUEGO ACTUALIZADAS*
+💰 MONTOS MÍNIMOS
+🐾 Animalito: *50,00 Bs*
+🎉 Tripletas: *100,00 Bs*
+*📜 FORMATO DE ENVÍO*
+(Animalito / Monto / Ruleta / Hora)
+*⚠️ CIERRE DE SISTEMA*
+⏰ Minutos : *24 y :54* (Sin excepción)
+*🏆 CONDICIONES*
+Notificar tickets ganadores.
+⏳ 3 min. para revisión de jugada.
+*🚫 No fío / No vendo filtros.*
+
+🏦 DATOS DE PAGO
+Bancos: (0102 -- 0134)
+Cédula: 18274410
+Teléfono: 04124489363
+🔗 Pagos +500: son por Transferencia
+
+*Transferencia Venezuela (VES):*
+01020453450000950163
+V18274410
+Harold Eliezer Galea Sanchez
+
+01020453460000965527
+V18274410
+Harold Eliezer Galea Sanchez
+
+01020613810000317201
+V18274410
+Harold Eliezer Galea Sanchez
+
+*Pago móvil:*
+0102 / 18274410 / 04124489363
+0134 / 18274410 / 04124489363`;
+
         let todasLasLoterias = [];
         let listaContactosCache = [];
         let miChatId = localStorage.getItem("harold_chat_id");
@@ -425,6 +479,15 @@
         let sonidoActivo = false;
         let ultimoTotalMensajes = -1;
         let ultimoConteoSinLeerAdmin = 0;
+
+        function formatearTextoChat(str) {
+            return String(str || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/\*([^*]+)\*/g, "<strong>$1</strong>")
+                .replace(/\n/g, "<br>");
+        }
 
         function toggleVerClave() {
             const inp = document.getElementById('reg-admin-pass');
@@ -631,11 +694,8 @@
             }
 
             if ('setAppBadge' in navigator) {
-                if (cantidad > 0) {
-                    navigator.setAppBadge(cantidad).catch(() => {});
-                } else {
-                    navigator.clearAppBadge().catch(() => {});
-                }
+                if (cantidad > 0) navigator.setAppBadge(cantidad).catch(() => {});
+                else navigator.clearAppBadge().catch(() => {});
             }
 
             actualizarFaviconConNumero(cantidad);
@@ -809,15 +869,19 @@
             listDiv.innerHTML = lista.map(c => {
                 const seleccionado = adminChatActivo && adminChatActivo.chatId === c.chatId;
                 const badgeNum = c.sinLeerCount || (c.sinLeer ? 1 : 0);
+                const nomSeguro = c.nombre.replace(/'/g, "");
                 return `
-                    <div class="chat-row ${seleccionado ? 'selected' : ''}" onclick="abrirSalaAdmin('${c.chatId}', '${c.nombre.replace(/'/g, "")}')">
+                    <div class="chat-row ${seleccionado ? 'selected' : ''}" onclick="abrirSalaAdmin('${c.chatId}', '${nomSeguro}')">
                         <div class="chat-row-info">
                             <h4>${c.nombre} <small style="color:var(--accent-gold);">${c.telefono || ''}</small></h4>
                             <p>${c.ultimoMsg}</p>
                         </div>
-                        <div style="text-align:right; flex-shrink:0;">
-                            <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;">${c.hora}</div>
-                            ${badgeNum > 0 ? `<span class="badge-new">${badgeNum}</span>` : ''}
+                        <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                            <div style="text-align:right;">
+                                <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;">${c.hora}</div>
+                                ${badgeNum > 0 ? `<span class="badge-new">${badgeNum}</span>` : ''}
+                            </div>
+                            <button class="btn-del-row" title="Borrar chat" onclick="event.stopPropagation(); borrarChatPorId('${c.chatId}', '${nomSeguro}')">🗑️</button>
                         </div>
                     </div>
                 `;
@@ -832,6 +896,29 @@
             renderizarListaContactos(filtrados);
         }
 
+        async function borrarChatPorId(chatId, nombre) {
+            if (!confirm(`¿Seguro que deseas borrar todo el chat de "${nombre}"?\n\nCuando vuelva a escribirte recibirá automáticamente las reglas y datos de pago.`)) return;
+            await fetch(`${API_URL}/chat/delete`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Admin-Key": adminKey
+                },
+                body: JSON.stringify({ chatId })
+            });
+            if (adminChatActivo && adminChatActivo.chatId === chatId) {
+                adminChatActivo = null;
+                document.getElementById('active-room').style.display = 'none';
+                document.getElementById('no-chat-selected').style.display = 'flex';
+            }
+            cargarListaAdmin();
+        }
+
+        function borrarChatActual() {
+            if (!adminChatActivo) return;
+            borrarChatPorId(adminChatActivo.chatId, adminChatActivo.nombre);
+        }
+
         function abrirSalaAdmin(chatId, nombre) {
             adminChatActivo = { chatId, nombre };
             ultimoTotalMensajes = -1;
@@ -839,6 +926,7 @@
             document.getElementById('no-chat-selected').style.display = 'none';
             document.getElementById('active-room').style.display = 'flex';
             document.getElementById('room-title').textContent = `👤 ${nombre}`;
+            document.getElementById('btn-delete-chat').style.display = 'inline-block';
 
             if (window.innerWidth <= 768) {
                 document.getElementById('admin-sidebar').classList.add('mobile-hide');
@@ -855,6 +943,28 @@
             adminChatActivo = null;
             document.getElementById('admin-sidebar').classList.remove('mobile-hide');
             document.getElementById('chat-main-pane').classList.add('mobile-hide');
+        }
+
+        function renderizarTarjetaPago(ap) {
+            if (!ap) return "";
+            let clase = "";
+            let estadoTxt = "✅ PAGO VÁLIDO VERIFICADO";
+            if (ap.duplicada) {
+                clase = "dup";
+                estadoTxt = "🚨 REFERENCIA DUPLICADA (YA USADA)";
+            } else if (!ap.coincideHarold) {
+                clase = "warn";
+                estadoTxt = "⚠️ REVISAR DESTINO MANUALMENTE";
+            }
+            return `
+                <div class="receipt-card ${clase}">
+                    <span class="receipt-status">${estadoTxt}</span>
+                    <div>💵 <strong>Monto:</strong> ${ap.monto || 'No detectado'}</div>
+                    <div>🔢 <strong>Operación:</strong> ${ap.referencia || 'No detectada'}</div>
+                    <div>📅 <strong>Fecha:</strong> ${ap.fecha || 'No detectada'}</div>
+                    <div>🎯 <strong>Destino:</strong> ${ap.destino || 'No identificado'}</div>
+                </div>
+            `;
         }
 
         async function cargarHistorial(chatId, viewer) {
@@ -884,7 +994,7 @@
                 let html = `
                     <div class="msg in">
                         ¡Bienvenido a <strong>Agencia Harold José</strong>! 🍀<br>
-                        Escribe tu jugada o adjunta tu capture de Pago Móvil con el clip 📎.
+                        Escribe tu jugada o adjunta tu capture de Pago Móvil / Transferencia con el clip 📎.
                     </div>
                 `;
 
@@ -893,7 +1003,8 @@
                     return `
                         <div class="msg ${esMio ? 'out' : 'in'}">
                             ${m.imagen ? `<img src="${m.imagen}" alt="Comprobante" onclick="window.open(this.src)">` : ''}
-                            ${m.texto ? `<div>${m.texto.replace(/\n/g, '<br>')}</div>` : ''}
+                            ${m.analisisPago ? renderizarTarjetaPago(m.analisisPago) : ''}
+                            ${m.texto ? `<div>${formatearTextoChat(m.texto)}</div>` : ''}
                             <div class="msg-time">${m.hora} ${esMio ? '✓✓' : ''}</div>
                         </div>
                     `;
@@ -936,12 +1047,11 @@
         }
 
         function enviarPagoMovil() {
-            const datos = "📲 PAGO MÓVIL OFICIAL:\nBanco: Venezuela / Banesco / Provincial\nTlf: 0412-4489363\nC.I: V-18.274.410";
             if (ES_ADMIN) {
-                enviarMensaje(datos);
+                enviarMensaje(REGLAS_Y_DATOS_TEXTO);
             } else {
                 const box = document.getElementById('chat-box');
-                box.innerHTML += `<div class="msg in">${datos.replace(/\n/g, '<br>')}<div class="msg-time">Info</div></div>`;
+                box.innerHTML += `<div class="msg in">${formatearTextoChat(REGLAS_Y_DATOS_TEXTO)}<div class="msg-time">Info Oficial</div></div>`;
                 box.scrollTop = box.scrollHeight;
             }
         }
@@ -960,13 +1070,13 @@
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const maxW = 650;
+                    const maxW = 850;
                     const scale = Math.min(1, maxW / img.width);
                     canvas.width = img.width * scale;
                     canvas.height = img.height * scale;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    const comprimida = canvas.toDataURL('image/jpeg', 0.72);
+                    const comprimida = canvas.toDataURL('image/jpeg', 0.82);
                     enviarMensaje("📷 Comprobante adjunto", comprimida);
                 };
                 img.src = e.target.result;
