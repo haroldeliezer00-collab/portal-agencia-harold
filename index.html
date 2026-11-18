@@ -22,9 +22,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         html, body { height: 100dvh; max-height: 100dvh; background-color: var(--bg-dark); color: var(--text-main); display: flex; flex-direction: column; overflow: hidden; }
 
-        /* ==========================================
-           PANTALLA DE BIENVENIDA / REGISTRO INICIAL
-        ========================================== */
+        /* PANTALLA DE BIENVENIDA / REGISTRO INICIAL */
         #welcome-overlay {
             position: fixed;
             inset: 0;
@@ -88,7 +86,9 @@
             gap: 11px;
             text-align: left;
         }
-        .welcome-form input {
+        .welcome-form input[type="text"],
+        .welcome-form input[type="tel"],
+        .welcome-form input[type="password"] {
             background: var(--bg-panel);
             border: 1px solid #374151;
             padding: 12px 14px;
@@ -96,8 +96,35 @@
             color: #fff;
             font-size: 0.92rem;
             outline: none;
+            width: 100%;
         }
         .welcome-form input:focus { border-color: var(--accent-green); }
+        .pass-wrap { position: relative; display: flex; align-items: center; }
+        .pass-wrap input { padding-right: 42px; }
+        .toggle-pass-btn {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            cursor: pointer;
+        }
+        .remember-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            color: var(--text-main);
+            cursor: pointer;
+            user-select: none;
+        }
+        .remember-row input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent-green);
+            cursor: pointer;
+        }
         .btn-enter-portal {
             background: var(--accent-green);
             color: #fff;
@@ -108,6 +135,7 @@
             font-size: 0.95rem;
             cursor: pointer;
             margin-top: 4px;
+            width: 100%;
         }
         .admin-link-btn {
             background: none;
@@ -117,11 +145,10 @@
             margin-top: 14px;
             cursor: pointer;
             text-decoration: underline;
+            align-self: center;
         }
 
-        /* ==========================================
-           ENCABEZADO Y NAVEGACIÓN
-        ========================================== */
+        /* ENCABEZADO Y NAVEGACIÓN */
         header { background-color: var(--bg-card); padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3942; flex-shrink: 0; gap: 8px; }
         .brand-wrap { display: flex; align-items: center; gap: 8px; min-width: 0; }
         .brand-logo { width: 38px; height: 38px; border-radius: 9px; object-fit: cover; border: 1.5px solid var(--accent-gold); background: #000; flex-shrink: 0; }
@@ -153,7 +180,6 @@
             box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
         }
 
-        /* BANNER DE DESCARGA APK DEBAJO DE LAS PESTAÑAS */
         .app-banner-bar { background: linear-gradient(90deg, #132a28, #272215); border-bottom: 1px solid rgba(245, 158, 11, 0.45); padding: 7px 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; flex-shrink: 0; }
         .app-banner-text { font-size: 0.76rem; color: #f3f4f6; font-weight: 600; line-height: 1.2; }
         .app-banner-text strong { color: var(--accent-gold); }
@@ -163,12 +189,10 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        /* Barra de búsqueda */
         .search-bar { display: flex; gap: 8px; margin-bottom: 10px; position: sticky; top: 0; z-index: 10; background: var(--bg-dark); padding-bottom: 4px; }
         .search-bar input { flex: 1; background: var(--bg-card); border: 1px solid #2a3942; padding: 9px 12px; border-radius: 10px; color: #fff; font-size: 0.85rem; outline: none; }
         .refresh-btn { background: var(--bg-card); border: 1px solid #2a3942; color: var(--accent-green); padding: 0 14px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 
-        /* Tarjetas de Lotería */
         .loteria-block { background: var(--bg-card); border-radius: 12px; padding: 12px; margin-bottom: 14px; border: 1px solid #2a3942; }
         .loteria-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3942; padding-bottom: 6px; margin-bottom: 10px; }
         .loteria-header h2 { font-size: 0.9rem; font-weight: 800; color: #fff; text-transform: uppercase; }
@@ -244,26 +268,32 @@
             <div class="welcome-greeting" id="welcome-title">¡Bienvenido!</div>
             <p class="welcome-sub" id="welcome-msg">Cargando resultados y promociones del día...</p>
 
-            <!-- Barra de carga cuando ya está registrado -->
             <div id="welcome-loader" style="display:none;">
                 <div class="loader-bar-wrap">
                     <div class="loader-bar-fill" id="loader-fill"></div>
                 </div>
             </div>
 
-            <!-- Formulario inicial obligatorio la primera vez -->
             <div id="welcome-register" class="welcome-form" style="display:none;">
                 <input type="text" id="reg-nombre" placeholder="Tu Nombre y Apellido (ej: Carlos Pérez)">
                 <input type="tel" id="reg-tlf" placeholder="Tu Teléfono (ej: 0414-1234567)">
                 <button class="btn-enter-portal" onclick="registrarUsuarioInicial()">Entrar a la Agencia ➤</button>
             </div>
 
-            <!-- Acceso privado de taquilla -->
-            <div id="welcome-admin-login" class="welcome-form" style="display:none;">
-                <input type="password" id="reg-admin-pass" placeholder="Contraseña Maestra de Taquilla" onkeypress="if(event.key==='Enter') validarClaveAdmin()">
-                <button class="btn-enter-portal" style="background:#f59e0b; color:#000;" onclick="validarClaveAdmin()">Entrar como Administrador 🔐</button>
-                <button class="admin-link-btn" onclick="mostrarRegistroCliente()">← Volver a vista de cliente</button>
-            </div>
+            <!-- Acceso privado de taquilla con Recordar contraseña -->
+            <form id="welcome-admin-login" class="welcome-form" style="display:none;" onsubmit="event.preventDefault(); validarClaveAdmin();">
+                <input type="text" name="username" value="Taquilla Harold" autocomplete="username" style="display:none;">
+                <div class="pass-wrap">
+                    <input type="password" id="reg-admin-pass" name="password" autocomplete="current-password" placeholder="Contraseña Maestra de Taquilla">
+                    <button type="button" class="toggle-pass-btn" onclick="toggleVerClave()" title="Mostrar/Ocultar contraseña">👁️</button>
+                </div>
+                <label class="remember-row">
+                    <input type="checkbox" id="chk-remember-admin" checked>
+                    <span>Recordar contraseña e iniciar directo</span>
+                </label>
+                <button type="submit" class="btn-enter-portal" style="background:#f59e0b; color:#000;">Entrar como Administrador 🔐</button>
+                <button type="button" class="admin-link-btn" onclick="mostrarRegistroCliente()">← Volver a vista de cliente</button>
+            </form>
 
             <button class="admin-link-btn" id="btn-show-admin" onclick="mostrarLoginAdmin()">Acceso Taquilla</button>
         </div>
@@ -293,7 +323,6 @@
         </button>
     </nav>
 
-    <!-- BANNER DE DESCARGA APK DEBAJO DE LAS PESTAÑAS -->
     <div class="app-banner-bar" id="apk-banner" onclick="descargarOInstalarApp()">
         <div class="app-banner-text">
             📲 <strong>App Oficial Android</strong> • Resultados y jugadas más rápido
@@ -302,7 +331,6 @@
     </div>
 
     <main id="main-scroll">
-        <!-- PESTAÑA 1: RESULTADOS -->
         <section id="resultados" class="section active">
             <div class="search-bar">
                 <input type="text" id="filtro-loteria" placeholder="🔍 Filtrar lotería (ej: Lotto Activo, Granjita)..." oninput="filtrarLoterias()">
@@ -313,7 +341,6 @@
             </div>
         </section>
 
-        <!-- PESTAÑA 2: FLYERS -->
         <section id="flyers" class="section">
             <div id="flyers-container" class="flyers-grid">
                 <p style="color: var(--text-muted); text-align: center; grid-column: 1/-1; padding: 30px;">Cargando promociones...</p>
@@ -329,7 +356,6 @@
         </section>
     </main>
 
-    <!-- PESTAÑA 3: CHAT EN TIEMPO REAL -->
     <div id="chat-wrapper">
         <div id="whatsapp-workspace" class="whatsapp-layout">
             
@@ -391,19 +417,20 @@
         let miClientToken = localStorage.getItem("harold_client_token");
         let miNombre = localStorage.getItem("harold_chat_nombre");
         let miTelefono = localStorage.getItem("harold_chat_tlf");
-        let adminKey = sessionStorage.getItem("harold_admin_key") || localStorage.getItem("harold_admin_key") || "";
+        let adminKey = localStorage.getItem("harold_admin_key") || sessionStorage.getItem("harold_admin_key") || "";
         let ES_ADMIN = Boolean(adminKey);
 
         let adminChatActivo = null;
-        let intervaloGlobal = null;
         let audioCtx = null;
         let sonidoActivo = false;
         let ultimoTotalMensajes = -1;
         let ultimoConteoSinLeerAdmin = 0;
 
-        // ==========================================
-        // PANTALLA DE BIENVENIDA SEGÚN LA HORA
-        // ==========================================
+        function toggleVerClave() {
+            const inp = document.getElementById('reg-admin-pass');
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+        }
+
         function obtenerSaludoHorario(nombreUsuario = "") {
             const horaVE = parseInt(new Date().toLocaleTimeString("en-US", {
                 timeZone: "America/Caracas",
@@ -446,7 +473,7 @@
                     document.getElementById('welcome-overlay').style.display = 'none';
                     activarNotificaciones();
                     switchTab('chat', document.getElementById('tab-chat-btn'));
-                }, 1300);
+                }, 1000);
             } else if (quiereAdmin) {
                 mostrarLoginAdmin();
             } else if (miChatId && miClientToken && miNombre) {
@@ -455,7 +482,7 @@
                 setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
                 setTimeout(() => {
                     document.getElementById('welcome-overlay').style.display = 'none';
-                }, 1500);
+                }, 1400);
             } else {
                 document.getElementById('welcome-register').style.display = 'flex';
             }
@@ -487,7 +514,7 @@
             setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
             setTimeout(() => {
                 document.getElementById('welcome-overlay').style.display = 'none';
-            }, 1200);
+            }, 1100);
         }
 
         function mostrarLoginAdmin() {
@@ -496,6 +523,9 @@
             document.getElementById('welcome-title').textContent = "👑 Acceso Privado Taquilla";
             document.getElementById('welcome-msg').textContent = "Ingresa tu contraseña maestra para administrar el chat en vivo:";
             document.getElementById('welcome-admin-login').style.display = 'flex';
+
+            const guardada = localStorage.getItem("harold_admin_saved_input");
+            if (guardada) document.getElementById('reg-admin-pass').value = guardada;
         }
 
         function mostrarRegistroCliente() {
@@ -509,7 +539,9 @@
 
         async function validarClaveAdmin() {
             const pass = document.getElementById('reg-admin-pass').value.trim();
+            const recordar = document.getElementById('chk-remember-admin').checked;
             if (!pass) return alert("Escribe tu contraseña.");
+
             try {
                 const res = await fetch(`${API_URL}/auth/admin`, {
                     method: "POST",
@@ -519,21 +551,26 @@
                 if (data.ok) {
                     adminKey = pass;
                     ES_ADMIN = true;
-                    localStorage.setItem("harold_admin_key", pass);
+                    if (recordar) {
+                        localStorage.setItem("harold_admin_key", pass);
+                        localStorage.setItem("harold_admin_saved_input", pass);
+                    } else {
+                        sessionStorage.setItem("harold_admin_key", pass);
+                        localStorage.removeItem("harold_admin_key");
+                        localStorage.removeItem("harold_admin_saved_input");
+                    }
                     activarNotificaciones();
                     document.getElementById('welcome-overlay').style.display = 'none';
                     switchTab('chat', document.getElementById('tab-chat-btn'));
                 } else {
-                    alert("❌ Contraseña incorrecta.");
+                    alert(`❌ ${data.error || "Contraseña incorrecta"}`);
                 }
             } catch (e) {
                 alert("Error de conexión verificando clave.");
             }
         }
 
-        // ==========================================
         // SONIDO POTENTE Y GLOBITO ROJO CON CONTADOR
-        // ==========================================
         function activarNotificaciones() {
             try {
                 if (!audioCtx) {
@@ -559,7 +596,6 @@
                 if (audioCtx.state === 'suspended') audioCtx.resume();
                 const now = audioCtx.currentTime;
 
-                // Triple tono brillante de alta potencia
                 const notas = [
                     { freq: 880, start: 0, dur: 0.14 },
                     { freq: 1174.66, start: 0.15, dur: 0.16 },
@@ -594,7 +630,6 @@
                 document.title = TITULO_ORIGINAL;
             }
 
-            // Globito rojo oficial en el ícono de la App (Windows / Android)
             if ('setAppBadge' in navigator) {
                 if (cantidad > 0) {
                     navigator.setAppBadge(cantidad).catch(() => {});
@@ -603,7 +638,6 @@
                 }
             }
 
-            // Dibujar globito rojo en el favicon de la pestaña
             actualizarFaviconConNumero(cantidad);
         }
 
@@ -649,9 +683,6 @@
             if (!sonidoActivo) activarNotificaciones();
         }, { once: true });
 
-        // ==========================================
-        // DESCARGA / INSTALACIÓN DE APK
-        // ==========================================
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
             const banner = document.getElementById('apk-banner');
             if (banner) banner.style.display = 'none';
@@ -685,9 +716,6 @@
             }
         }
 
-        // ==========================================
-        // NAVEGACIÓN ENTRE PESTAÑAS
-        // ==========================================
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -716,9 +744,6 @@
             }, 150);
         }
 
-        // ==========================================
-        // LÓGICA DEL CHAT EN TIEMPO REAL
-        // ==========================================
         function inicializarVistaChat() {
             if (ES_ADMIN) {
                 document.getElementById('admin-sidebar').style.display = 'flex';
@@ -749,6 +774,7 @@
                 });
                 if (res.status === 403) {
                     localStorage.removeItem("harold_admin_key");
+                    sessionStorage.removeItem("harold_admin_key");
                     location.reload();
                     return;
                 }
@@ -949,9 +975,6 @@
             fileInput.value = '';
         }
 
-        // ==========================================
-        // RESULTADOS Y FLYERS
-        // ==========================================
         async function cargarResultados() {
             const badge = document.getElementById('sync-status');
             badge.textContent = "↻ ACTUALIZANDO...";
@@ -1034,7 +1057,6 @@
             renderizarLoterias(todasLasLoterias.filter(l => l.nombre.toLowerCase().includes(q)));
         }
 
-        // Arranque y sondeo continuo de mensajes en segundo plano
         iniciarPantallaBienvenida();
         cargarResultados();
         cargarFlyers();
