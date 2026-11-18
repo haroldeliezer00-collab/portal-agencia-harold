@@ -22,7 +22,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         html, body { height: 100dvh; max-height: 100dvh; background-color: var(--bg-dark); color: var(--text-main); display: flex; flex-direction: column; overflow: hidden; }
 
-        /* PANTALLA DE BIENVENIDA / REGISTRO INICIAL */
+        /* PANTALLA DE BIENVENIDA / BLOQUEO POR INACTIVIDAD */
         #welcome-overlay {
             position: fixed;
             inset: 0;
@@ -56,7 +56,7 @@
         .welcome-greeting { font-size: 1.15rem; font-weight: 800; color: var(--accent-gold); margin-bottom: 6px; }
         .welcome-sub { font-size: 0.84rem; color: var(--text-main); line-height: 1.4; margin-bottom: 18px; }
         .loader-bar-wrap { width: 100%; height: 6px; background: #0b141a; border-radius: 10px; overflow: hidden; margin-top: 10px; }
-        .loader-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-green), var(--accent-gold)); border-radius: 10px; transition: width 1.6s ease-out; }
+        .loader-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-green), var(--accent-gold)); border-radius: 10px; transition: width 1.4s ease-out; }
         .welcome-form { display: flex; flex-direction: column; gap: 11px; text-align: left; }
         .welcome-form input[type="text"],
         .welcome-form input[type="tel"],
@@ -90,6 +90,7 @@
         .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
         .sound-btn { background: rgba(245, 158, 11, 0.18); color: var(--accent-gold); border: 1px solid rgba(245, 158, 11, 0.4); padding: 5px 9px; border-radius: 12px; font-size: 0.68rem; font-weight: bold; cursor: pointer; white-space: nowrap; }
         .sound-btn.active { background: rgba(0, 168, 132, 0.2); color: var(--accent-green); border-color: rgba(0, 168, 132, 0.4); }
+        .lock-btn { background: rgba(239, 68, 68, 0.16); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.38); padding: 5px 9px; border-radius: 12px; font-size: 0.68rem; font-weight: bold; cursor: pointer; white-space: nowrap; }
         .status-badge { background: rgba(0, 168, 132, 0.2); color: var(--accent-green); padding: 5px 9px; border-radius: 12px; font-size: 0.68rem; font-weight: bold; white-space: nowrap; }
 
         @media (max-width: 768px) {
@@ -185,6 +186,7 @@
             font-weight: 700;
         }
         .fin-pill.retirable { border-color: var(--accent-green); color: #34d399; }
+        .fin-pill.negativo { border-color: #ef4444; color: #f87171; }
         .fin-pill.cashea { border-color: var(--accent-gold); color: #fbbf24; }
         .fin-actions {
             display: flex;
@@ -298,7 +300,7 @@
 </head>
 <body>
 
-    <!-- PANTALLA DE BIENVENIDA / CARGA / REGISTRO INICIAL -->
+    <!-- PANTALLA DE BIENVENIDA / BLOQUEO POR INACTIVIDAD -->
     <div id="welcome-overlay">
         <div class="welcome-box">
             <img src="logo.png" alt="Agencia Harold José" class="welcome-logo">
@@ -375,6 +377,7 @@
 
         <div class="header-actions">
             <button class="sound-btn" id="btn-sound" onclick="activarNotificaciones()">🔔 Activar Sonido</button>
+            <button class="lock-btn" onclick="cerrarSesionManual()" title="Bloquear sesión">🔒 Salir</button>
             <div class="status-badge" id="sync-status">● EN VIVO</div>
         </div>
     </header>
@@ -497,6 +500,7 @@
     <script>
         const API_URL = "https://api-resultados-harold.agharoldjose.workers.dev";
         const TITULO_ORIGINAL = "Agencia Harold José - Seguridad, Confianza y Experiencia";
+        const TIEMPO_EXPIRACION_MS = 15 * 60 * 1000; // 15 minutos en milisegundos
 
         const REGLAS_Y_DATOS_TEXTO = `*📝 REGLAS DE JUEGO ACTUALIZADAS*
 💰 MONTOS MÍNIMOS
@@ -542,6 +546,7 @@ Harold Eliezer Galea Sanchez
         let miTelefono = localStorage.getItem("harold_chat_tlf");
         let adminKey = localStorage.getItem("harold_admin_key") || sessionStorage.getItem("harold_admin_key") || "";
         let ES_ADMIN = Boolean(adminKey);
+        let sesionBloqueada = false;
 
         let adminChatActivo = null;
         let finanzasActivas = { cashea: 0, depositado: 0, jugado: 0, retirado: 0, disponible: 0 };
@@ -550,6 +555,54 @@ Harold Eliezer Galea Sanchez
         let sonidoActivo = false;
         let ultimoTotalMensajes = -1;
         let ultimoConteoSinLeerAdmin = 0;
+
+        // CONTROL DE CIERRE AUTOMÁTICO AL SALIR POR MÁS DE 15 MINUTOS
+        function registrarSalidaApp() {
+            if (!sesionBloqueada) {
+                localStorage.setItem("harold_last_exit_ts", String(Date.now()));
+            }
+        }
+
+        function verificarExpiracionAlVolver() {
+            const salidaTs = parseInt(localStorage.getItem("harold_last_exit_ts") || "0", 10);
+            if (salidaTs > 0 && (Date.now() - salidaTs) > TIEMPO_EXPIRACION_MS) {
+                localStorage.removeItem("harold_last_exit_ts");
+                bloquearPorInactividad();
+                return true;
+            }
+            return false;
+        }
+
+        function bloquearPorInactividad() {
+            sesionBloqueada = true;
+            const overlay = document.getElementById('welcome-overlay');
+            overlay.style.display = 'flex';
+            document.getElementById('welcome-loader').style.display = 'none';
+
+            if (ES_ADMIN) {
+                ES_ADMIN = false;
+                adminKey = "";
+                sessionStorage.removeItem("harold_admin_key");
+                mostrarLoginAdmin("🔒 Sesión cerrada tras 15 min fuera de la app. Ingresa tu clave para continuar:");
+            } else {
+                mostrarRegistroCliente("🔒 Sesión cerrada tras 15 min fuera de la app. Ingresa tu usuario para continuar:");
+            }
+        }
+
+        function cerrarSesionManual() {
+            localStorage.removeItem("harold_last_exit_ts");
+            bloquearPorInactividad();
+        }
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                registrarSalidaApp();
+            } else {
+                verificarExpiracionAlVolver();
+            }
+        });
+        window.addEventListener("pagehide", registrarSalidaApp);
+        window.addEventListener("beforeunload", registrarSalidaApp);
 
         function fmtBs(val) {
             return (Number(val) || 0).toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " Bs.";
@@ -601,9 +654,15 @@ Harold Eliezer Galea Sanchez
             document.getElementById('welcome-title').textContent = saludo.titulo;
             document.getElementById('welcome-msg').textContent = saludo.mensaje;
 
+            // Si estuvo fuera más de 15 minutos antes de abrir de nuevo, exige login
+            if (verificarExpiracionAlVolver()) {
+                return;
+            }
+
             const quiereAdmin = new URLSearchParams(window.location.search).has("admin");
 
             if (ES_ADMIN) {
+                sesionBloqueada = false;
                 document.getElementById('btn-show-admin').style.display = 'none';
                 document.getElementById('welcome-loader').style.display = 'block';
                 setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
@@ -611,18 +670,19 @@ Harold Eliezer Galea Sanchez
                     document.getElementById('welcome-overlay').style.display = 'none';
                     activarNotificaciones();
                     switchTab('chat', document.getElementById('tab-chat-btn'));
-                }, 1000);
+                }, 900);
             } else if (quiereAdmin) {
                 mostrarLoginAdmin();
             } else if (miChatId && miClientToken && miNombre) {
+                sesionBloqueada = false;
                 document.getElementById('btn-show-admin').style.display = 'none';
                 document.getElementById('welcome-loader').style.display = 'block';
                 setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
                 setTimeout(() => {
                     document.getElementById('welcome-overlay').style.display = 'none';
-                }, 1400);
+                }, 1200);
             } else {
-                document.getElementById('welcome-register').style.display = 'flex';
+                mostrarRegistroCliente();
             }
         }
 
@@ -632,10 +692,19 @@ Harold Eliezer Galea Sanchez
             if (!nom || nom.length < 2) return alert("Por favor ingresa tu nombre.");
             if (!tlf || tlf.length < 7) return alert("Por favor ingresa un número de teléfono válido.");
 
-            miChatId = "cli_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-            miClientToken = "tok_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+            const tlfNormalizado = tlf.replace(/\D/g, "");
+            const tlfGuardadoNorm = (miTelefono || "").replace(/\D/g, "");
+
+            // Si es el mismo cliente reingresando tras expirar los 15 min, conserva su historial y saldo
+            if (!miChatId || !miClientToken || tlfNormalizado !== tlfGuardadoNorm) {
+                miChatId = "cli_" + tlfNormalizado + "_" + Math.floor(Math.random() * 1000);
+                miClientToken = "tok_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+            }
+
             miNombre = nom;
             miTelefono = tlf;
+            sesionBloqueada = false;
+            localStorage.removeItem("harold_last_exit_ts");
 
             localStorage.setItem("harold_chat_id", miChatId);
             localStorage.setItem("harold_client_token", miClientToken);
@@ -652,27 +721,30 @@ Harold Eliezer Galea Sanchez
             setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
             setTimeout(() => {
                 document.getElementById('welcome-overlay').style.display = 'none';
-            }, 1100);
+            }, 900);
         }
 
-        function mostrarLoginAdmin() {
+        function mostrarLoginAdmin(mensajePersonalizado = null) {
             document.getElementById('welcome-register').style.display = 'none';
             document.getElementById('btn-show-admin').style.display = 'none';
             document.getElementById('welcome-title').textContent = "👑 Acceso Privado Taquilla";
-            document.getElementById('welcome-msg').textContent = "Ingresa tu contraseña maestra para administrar el chat en vivo:";
+            document.getElementById('welcome-msg').textContent = mensajePersonalizado || "Ingresa tu contraseña maestra para administrar el chat en vivo:";
             document.getElementById('welcome-admin-login').style.display = 'flex';
 
             const guardada = localStorage.getItem("harold_admin_saved_input");
             if (guardada) document.getElementById('reg-admin-pass').value = guardada;
         }
 
-        function mostrarRegistroCliente() {
+        function mostrarRegistroCliente(mensajePersonalizado = null) {
             document.getElementById('welcome-admin-login').style.display = 'none';
             document.getElementById('btn-show-admin').style.display = 'inline-block';
             const saludo = obtenerSaludoHorario("");
             document.getElementById('welcome-title').textContent = saludo.titulo;
-            document.getElementById('welcome-msg').textContent = saludo.mensaje;
+            document.getElementById('welcome-msg').textContent = mensajePersonalizado || saludo.mensaje;
             document.getElementById('welcome-register').style.display = 'flex';
+
+            if (miNombre) document.getElementById('reg-nombre').value = miNombre;
+            if (miTelefono) document.getElementById('reg-tlf').value = miTelefono;
         }
 
         async function validarClaveAdmin() {
@@ -689,6 +761,9 @@ Harold Eliezer Galea Sanchez
                 if (data.ok) {
                     adminKey = pass;
                     ES_ADMIN = true;
+                    sesionBloqueada = false;
+                    localStorage.removeItem("harold_last_exit_ts");
+
                     if (recordar) {
                         localStorage.setItem("harold_admin_key", pass);
                         localStorage.setItem("harold_admin_saved_input", pass);
@@ -708,7 +783,7 @@ Harold Eliezer Galea Sanchez
             }
         }
 
-        // SONIDO POTENTE Y GLOBITO ROJO CON CONTADOR
+        // SONIDO POTENTE Y GLOBITO ROJO CON CONTADOR (SIGUE ACTIVO EN SEGUNDO PLANO)
         function activarNotificaciones() {
             try {
                 if (!audioCtx) {
@@ -809,7 +884,7 @@ Harold Eliezer Galea Sanchez
         function dispararAlertaCompleta(titulo, cuerpo, cantidad) {
             tocarTimbreFuerte();
             actualizarGlobitoRojo(cantidad);
-            if ("Notification" in window && Notification.permission === "granted" && document.hidden) {
+            if ("Notification" in window && Notification.permission === "granted" && (document.hidden || sesionBloqueada)) {
                 new Notification(titulo, { body: cuerpo, icon: "logo.png" });
             }
         }
@@ -902,17 +977,13 @@ Harold Eliezer Galea Sanchez
         }
 
         async function cargarListaAdmin() {
-            if (!ES_ADMIN) return;
+            const claveConsulta = adminKey || localStorage.getItem("harold_admin_saved_input");
+            if (!claveConsulta) return;
             try {
                 const res = await fetch(`${API_URL}/chat/list`, {
-                    headers: { "X-Admin-Key": adminKey }
+                    headers: { "X-Admin-Key": claveConsulta }
                 });
-                if (res.status === 403) {
-                    localStorage.removeItem("harold_admin_key");
-                    sessionStorage.removeItem("harold_admin_key");
-                    location.reload();
-                    return;
-                }
+                if (res.status === 403) return;
                 const data = await res.json();
                 if (!data.ok) return;
 
@@ -931,7 +1002,7 @@ Harold Eliezer Galea Sanchez
                 }
                 ultimoConteoSinLeerAdmin = totalSinLeer;
 
-                renderizarListaContactos(listaContactosCache);
+                if (ES_ADMIN) renderizarListaContactos(listaContactosCache);
             } catch (e) {}
         }
 
@@ -998,7 +1069,14 @@ Harold Eliezer Galea Sanchez
             if (!ES_ADMIN) return;
             finanzasActivas = fin || { cashea: 0, depositado: 0, jugado: 0, retirado: 0, disponible: 0 };
             document.getElementById('admin-finance-strip').style.display = 'flex';
-            document.getElementById('fin-lbl-disp').textContent = `💰 Retirable: ${fmtBs(finanzasActivas.disponible)}`;
+            const lblDisp = document.getElementById('fin-lbl-disp');
+            if (finanzasActivas.disponible < 0) {
+                lblDisp.className = "fin-pill negativo";
+                lblDisp.textContent = `⚠️ Negativo: ${fmtBs(finanzasActivas.disponible)}`;
+            } else {
+                lblDisp.className = "fin-pill retirable";
+                lblDisp.textContent = `💰 Retirable: ${fmtBs(finanzasActivas.disponible)}`;
+            }
             document.getElementById('fin-lbl-cashea').textContent = `💳 Cashea (No retirable): ${fmtBs(finanzasActivas.cashea)}`;
             document.getElementById('fin-lbl-dep').textContent = `📥 Dep: ${fmtBs(finanzasActivas.depositado)}`;
             document.getElementById('fin-lbl-jug').textContent = `🎲 Jug: ${fmtBs(finanzasActivas.jugado)}`;
@@ -1072,7 +1150,7 @@ Harold Eliezer Galea Sanchez
             const monto = parseFloat(document.getElementById('modal-mov-monto').value) || 0;
             if (monto <= 0) return alert("Ingresa un monto mayor a 0.");
             if (accionModalActual === "retiro" && monto > finanzasActivas.disponible) {
-                return alert(`Solo puedes retirar hasta ${fmtBs(finanzasActivas.disponible)}. El saldo Cashea no es retirable.`);
+                return alert(`Solo puedes retirar hasta ${fmtBs(Math.max(0, finanzasActivas.disponible))}. El saldo Cashea no es retirable.`);
             }
 
             const notificarChat = document.getElementById('modal-mov-notif').checked;
@@ -1225,11 +1303,13 @@ Harold Eliezer Galea Sanchez
                 if (!ES_ADMIN && ultimoTotalMensajes !== -1 && msgs.length > ultimoTotalMensajes) {
                     const ultimo = msgs[msgs.length - 1];
                     if (ultimo.sender === "admin") {
-                        const chatAbierto = document.getElementById('chat-wrapper').style.display === 'flex';
+                        const chatAbierto = document.getElementById('chat-wrapper').style.display === 'flex' && !sesionBloqueada;
                         dispararAlertaCompleta("Agencia Harold José", ultimo.texto || "Imagen recibida", chatAbierto ? 0 : 1);
                     }
                 }
                 ultimoTotalMensajes = msgs.length;
+
+                if (sesionBloqueada) return;
 
                 const box = document.getElementById('chat-box');
                 const estabaAbajo = box.scrollHeight - box.scrollTop <= box.clientHeight + 90;
@@ -1415,9 +1495,11 @@ Harold Eliezer Galea Sanchez
         cargarFlyers();
         setInterval(() => { cargarResultados(); cargarFlyers(); }, 60000);
         setInterval(() => {
-            if (ES_ADMIN) {
+            if (ES_ADMIN || localStorage.getItem("harold_admin_saved_input")) {
                 cargarListaAdmin();
-                if (adminChatActivo) cargarHistorial(adminChatActivo.chatId, "admin");
+                if (ES_ADMIN && adminChatActivo && !sesionBloqueada) {
+                    cargarHistorial(adminChatActivo.chatId, "admin");
+                }
             } else if (miChatId && miClientToken) {
                 cargarHistorial(miChatId, "client");
             }
