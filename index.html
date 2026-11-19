@@ -75,14 +75,13 @@
   .view { display: none; flex: 1; flex-direction: column; }
   .view.active { display: flex; }
 
-  /* BARRA EN MOVIMIENTO DE ÚLTIMOS RESULTADOS */
+  /* BARRA EN MOVIMIENTO */
   .ticker-wrap {
     background: linear-gradient(90deg, #102028, #182b36, #102028);
     border-bottom: 1px solid var(--border);
     overflow: hidden;
     white-space: nowrap;
     padding: 8px 0;
-    position: relative;
   }
   .ticker-track {
     display: inline-flex;
@@ -163,24 +162,37 @@
   .sorteo-ani { font-size: 10px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
   .sorteo-ani.pendiente { color: var(--muted); font-weight: 600; }
 
-  /* DATOS Y PROMOS */
+  /* DATOS / GACETA WINBIG */
   .section-pad { padding: 14px; display: grid; gap: 14px; }
   .info-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
   .info-card h2 { font-size: 16px; color: var(--gold); margin-bottom: 10px; }
-  .datos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .gaceta-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; }
+  .gaceta-chip {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .gaceta-chip.active { background: rgba(0,168,132,.18); border-color: var(--green); color: #25d366; }
+  .gaceta-bloque-title { font-size: 12.5px; font-weight: 800; color: var(--gold); margin: 12px 0 8px; text-transform: uppercase; }
+  .datos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
   .dato-item {
     background: var(--panel2);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 10px 12px;
+    padding: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
   }
-  .dato-item img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-  .dato-num { font-size: 15px; font-weight: 900; color: var(--gold); }
-  .dato-ani { font-size: 12px; font-weight: 800; color: var(--text); }
-  .dato-tag { font-size: 10.5px; color: #25d366; font-weight: 700; }
+  .dato-item img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+  .dato-num { font-size: 14px; font-weight: 900; color: var(--gold); }
+  .dato-ani { font-size: 11.5px; font-weight: 800; color: var(--text); }
   .bank-box { background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; font-size: 13px; line-height: 1.6; }
   .flyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
   .flyer-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
@@ -226,7 +238,6 @@
   .btn-tg { background: #24a1de; color: #fff; }
   .btn-dark { background: var(--panel2); color: var(--text); border: 1px solid var(--border); }
 
-  /* SALA DE CHAT */
   .chat-wrap { flex: 1; display: flex; flex-direction: column; height: calc(100vh - 105px); }
   .chat-topbar {
     background: var(--panel2);
@@ -311,7 +322,6 @@
   }
   .icon-btn.send { background: var(--green); color: #041b15; font-weight: 900; }
 
-  /* ADMIN LAYOUT */
   .admin-grid { display: grid; grid-template-columns: 280px 1fr; flex: 1; height: calc(100vh - 105px); }
   @media (max-width: 760px) { .admin-grid { grid-template-columns: 1fr; } }
   .admin-list { background: var(--panel); border-right: 1px solid var(--border); overflow-y: auto; }
@@ -349,7 +359,6 @@
 <main>
   <!-- TAB 1: RESULTADOS -->
   <section id="tab-resultados" class="view active">
-    <!-- BARRA DESLIZANTE DE ÚLTIMOS RESULTADOS -->
     <div class="ticker-wrap" id="tickerBar">
       <div class="ticker-track" id="tickerTrack">
         <span style="font-size:12px;color:var(--muted);">Cargando últimos sorteos en vivo...</span>
@@ -375,13 +384,22 @@
     <div id="gridLoterias" class="grid-loterias"></div>
   </section>
 
-  <!-- TAB 2: DATOS DEL DÍA Y CUENTAS DE PAGO -->
+  <!-- TAB 2: GACETA OFICIAL WINBIG + DATOS DE PAGO -->
   <section id="tab-datos" class="view">
     <div class="section-pad">
       <div class="info-card">
-        <h2>🍀 Datos y Pronósticos del Día • Agencia Harold José</h2>
-        <div id="datosPronosticosGrid" class="datos-grid"></div>
-        <p style="font-size:11.5px;color:var(--muted);">💡 Sugerencias orientativas generadas según la tendencia de los sorteos de hoy. Juega con responsabilidad.</p>
+        <h2>🍀 Gaceta Oficial Winbig • Datos del Día</h2>
+        <div class="gaceta-chips" id="gacetaChips">
+          <button class="gaceta-chip active" onclick="seleccionarGaceta('LOTTO ACTIVO', this)">LOTTO ACTIVO</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('LA GRANJITA', this)">LA GRANJITA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('GUACA ACTIVA', this)">GUACA ACTIVA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('MEGA GUACA', this)">MEGA GUACA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('GUACHARO ACTIVO', this)">GUACHARO ACTIVO</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('EL GUACHARITO MILLONARIO', this)">EL GUACHARITO MILLONARIO</button>
+        </div>
+        <div id="gacetaContenido">
+          <p style="font-size:12px;color:var(--muted);">Cargando Gaceta Oficial...</p>
+        </div>
       </div>
 
       <div class="info-card">
@@ -496,6 +514,7 @@ const API_BASE = "https://api-resultados-harold.agharoldjose.workers.dev";
 const BOT_USERNAME = "VerificacionAgenciaHaroldBot";
 
 let loteriasData = [];
+let gacetaActualLoteria = "LOTTO ACTIVO";
 let soundOn = true;
 let pollTimer = null;
 
@@ -519,7 +538,7 @@ function switchTab(tab, btn) {
   document.querySelectorAll("main .view").forEach(v => v.classList.remove("active"));
   document.getElementById("tab-" + tab).classList.add("active");
   if (tab === "promos") cargarFlyers();
-  if (tab === "datos") renderDatosPronosticos();
+  if (tab === "datos") cargarGacetaWinbig(gacetaActualLoteria);
 }
 
 async function cargarResultados() {
@@ -531,7 +550,6 @@ async function cargarResultados() {
       document.getElementById("badgeCount").textContent = `• ${loteriasData.length} LOTERÍAS`;
       renderTicker();
       renderLoterias();
-      renderDatosPronosticos();
     }
   } catch (e) {}
 }
@@ -569,7 +587,6 @@ function renderTicker() {
     </div>
   `).join("");
 
-  // Duplicado para desplazamiento continuo sin salto
   track.innerHTML = itemsHtml + itemsHtml;
 }
 
@@ -602,43 +619,49 @@ function renderLoterias() {
   `).join("");
 }
 
-function renderDatosPronosticos() {
-  const grid = document.getElementById("datosPronosticosGrid");
-  if (!grid) return;
+function seleccionarGaceta(loteria, btn) {
+  gacetaActualLoteria = loteria;
+  document.querySelectorAll("#gacetaChips .gaceta-chip").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  cargarGacetaWinbig(loteria);
+}
 
-  const candidatos = [];
-  for (const lot of loteriasData) {
-    const salidos = (lot.sorteos || []).filter(s => s.animal && s.animal !== "PENDIENTE" && s.numero !== "--");
-    if (salidos.length > 0) {
-      const base = salidos[salidos.length - 1];
-      const numInt = parseInt(base.numero, 10);
-      const sugeridoNum = isNaN(numInt) ? "07" : String((numInt + 7) % 100).padStart(2, "0");
-      candidatos.push({
-        loteria: lot.nombre,
-        numero: sugeridoNum,
-        animal: `DATO ${lot.nombre.split(" ")[0]}`,
-        img: base.img,
-        etiqueta: "🔥 DATO DEL DÍA"
-      });
-    }
-    if (candidatos.length >= 6) break;
-  }
-
-  if (candidatos.length === 0) {
-    grid.innerHTML = `<div class="bank-box">Cargando datos del día...</div>`;
-    return;
-  }
-
-  grid.innerHTML = candidatos.map(d => `
-    <div class="dato-item">
-      <img src="${d.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${d.animal}" />
-      <div>
-        <div class="dato-tag">${d.etiqueta} • ${d.loteria}</div>
-        <div class="dato-num">#${d.numero}</div>
-        <div class="dato-ani">${d.animal}</div>
-      </div>
+function renderBloqueGaceta(titulo, items) {
+  if (!items || items.length === 0) return "";
+  return `
+    <div class="gaceta-bloque-title">${titulo}</div>
+    <div class="datos-grid">
+      ${items.map(it => `
+        <div class="dato-item">
+          <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+          <div>
+            <div class="dato-num">${it.numero}</div>
+            <div class="dato-ani">${it.animal}</div>
+          </div>
+        </div>
+      `).join("")}
     </div>
-  `).join("");
+  `;
+}
+
+async function cargarGacetaWinbig(loteria) {
+  const cont = document.getElementById("gacetaContenido");
+  cont.innerHTML = `<p style="font-size:12px;color:var(--muted);">Cargando Gaceta Oficial Winbig (${loteria})...</p>`;
+  try {
+    const r = await fetch(`${API_BASE}/gaceta?loteria=${encodeURIComponent(loteria)}`);
+    const d = await r.json();
+    const htmlBloques =
+      renderBloqueGaceta("🎯 Radar de Atracción", d.radar) +
+      renderBloqueGaceta("🔺 Fichas Resultantes de la Pirámide", d.piramide) +
+      renderBloqueGaceta("✝️ La Cruz de la Suerte", d.cruz) +
+      renderBloqueGaceta("👑 La Tripleta Millonaria Winbig", d.tripleta) +
+      renderBloqueGaceta("🔥 Animalitos en Racha", d.racha) +
+      renderBloqueGaceta("⚡ Los 4 Elementos del Día", d.elementos);
+
+    cont.innerHTML = htmlBloques || `<div class="bank-box">Gaceta Oficial Winbig • ${loteria} (${d.fecha || ""}) disponible al actualizar sorteos.</div>`;
+  } catch (e) {
+    cont.innerHTML = `<div class="bank-box">No se pudo cargar la Gaceta en este momento.</div>`;
+  }
 }
 
 async function cargarFlyers() {
