@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Agencia Harold José - Seguridad, Confianza y Experiencia</title>
     <link rel="icon" id="dynamic-favicon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
@@ -20,7 +20,17 @@
             --chat-out: #005c4b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        html, body { height: 100dvh; max-height: 100dvh; background-color: var(--bg-dark); color: var(--text-main); display: flex; flex-direction: column; overflow: hidden; }
+        html, body {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
         /* PANTALLA DE BIENVENIDA / VERIFICACIÓN / BLOQUEO */
         #welcome-overlay {
@@ -118,15 +128,15 @@
         /* ENCABEZADO Y NAVEGACIÓN */
         header { background-color: var(--bg-card); padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3942; flex-shrink: 0; gap: 8px; }
         .brand-wrap { display: flex; align-items: center; gap: 8px; min-width: 0; }
-        .brand-logo { width: 38px; height: 38px; border-radius: 9px; object-fit: cover; border: 1.5px solid var(--accent-gold); background: #000; flex-shrink: 0; }
+        .brand-logo { width: 36px; height: 36px; border-radius: 9px; object-fit: cover; border: 1.5px solid var(--accent-gold); background: #000; flex-shrink: 0; }
         .brand { min-width: 0; }
-        .brand h1 { font-size: 0.96rem; color: #fff; font-weight: 800; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .brand h1 { font-size: 0.94rem; color: #fff; font-weight: 800; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .brand span { font-size: 0.62rem; color: var(--accent-gold); font-weight: 700; letter-spacing: 0.3px; display: block; margin-top: 2px; white-space: nowrap; }
 
         .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-        .sound-btn { background: rgba(245, 158, 11, 0.18); color: var(--accent-gold); border: 1px solid rgba(245, 158, 11, 0.4); padding: 5px 9px; border-radius: 12px; font-size: 0.68rem; font-weight: bold; cursor: pointer; white-space: nowrap; }
+        .sound-btn { background: rgba(245, 158, 11, 0.18); color: var(--accent-gold); border: 1px solid rgba(245, 158, 11, 0.4); padding: 5px 8px; border-radius: 12px; font-size: 0.68rem; font-weight: bold; cursor: pointer; white-space: nowrap; }
         .sound-btn.active { background: rgba(0, 168, 132, 0.2); color: var(--accent-green); border-color: rgba(0, 168, 132, 0.4); }
-        .lock-btn { background: rgba(239, 68, 68, 0.16); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.38); padding: 5px 9px; border-radius: 12px; font-size: 0.68rem; font-weight: bold; cursor: pointer; white-space: nowrap; }
+        .lock-btn { background: rgba(239, 68, 68, 0.16); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.38); padding: 5px 8px; border-radius: 12px; font-size: 0.68rem; font-weight: bold; cursor: pointer; white-space: nowrap; }
         .status-badge { background: rgba(0, 168, 132, 0.2); color: var(--accent-green); padding: 5px 9px; border-radius: 12px; font-size: 0.68rem; font-weight: bold; white-space: nowrap; }
 
         @media (max-width: 768px) {
@@ -135,20 +145,20 @@
         }
 
         nav { display: flex; background-color: var(--bg-card); border-bottom: 2px solid #2a3942; flex-shrink: 0; }
-        .tab-btn { flex: 1; padding: 10px 4px; background: none; border: none; color: var(--text-muted); font-weight: 700; font-size: 0.78rem; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .tab-btn { flex: 1; padding: 9px 4px; background: none; border: none; color: var(--text-muted); font-weight: 700; font-size: 0.76rem; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
         .tab-btn.active { color: var(--accent-green); border-bottom-color: var(--accent-green); }
         .unread-badge { display: none; background: #ef4444; color: #fff; font-size: 0.66rem; font-weight: 900; padding: 1px 6px; border-radius: 10px; box-shadow: 0 0 8px rgba(239, 68, 68, 0.8); }
 
-        .app-banner-bar { background: linear-gradient(90deg, #132a28, #272215); border-bottom: 1px solid rgba(245, 158, 11, 0.45); padding: 7px 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; flex-shrink: 0; }
-        .app-banner-text { font-size: 0.76rem; color: #f3f4f6; font-weight: 600; line-height: 1.2; }
+        .app-banner-bar { background: linear-gradient(90deg, #132a28, #272215); border-bottom: 1px solid rgba(245, 158, 11, 0.45); padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; flex-shrink: 0; }
+        .app-banner-text { font-size: 0.74rem; color: #f3f4f6; font-weight: 600; line-height: 1.2; }
         .app-banner-text strong { color: var(--accent-gold); }
-        .btn-download-apk { background: var(--accent-green); color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 800; white-space: nowrap; cursor: pointer; flex-shrink: 0; }
+        .btn-download-apk { background: var(--accent-green); color: #fff; border: none; padding: 5px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; white-space: nowrap; cursor: pointer; flex-shrink: 0; }
 
-        main { flex: 1; overflow-y: auto; padding: 10px; }
+        main { flex: 1; overflow-y: auto; padding: 10px; min-height: 0; }
         .section { display: none; }
         .section.active { display: block; }
 
-        /* BANNER EN MOVIMIENTO: LOTERÍA (HORA  NÚMERO - ANIMAL) + IMAGEN */
+        /* BANNER EN MOVIMIENTO */
         .ticker-wrap {
             display: flex;
             align-items: center;
@@ -175,63 +185,15 @@
             letter-spacing: 0.3px;
             flex-shrink: 0;
         }
-        .ticker-viewport {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
-        .ticker-track {
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
-            will-change: transform;
-            animation: marqueeLeft 52s linear infinite;
-        }
-        .ticker-wrap:hover .ticker-track,
-        .ticker-wrap:active .ticker-track {
-            animation-play-state: paused;
-        }
-        .ticker-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 0 18px;
-            font-size: 0.8rem;
-            color: #fff;
-            border-right: 1px solid rgba(255, 255, 255, 0.14);
-        }
-        .ticker-lot {
-            color: var(--accent-gold);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.2px;
-        }
-        .ticker-detalle {
-            color: #e9edef;
-            font-weight: 700;
-            font-size: 0.76rem;
-        }
-        .ticker-detalle strong {
-            color: #34d399;
-            font-weight: 900;
-        }
-        .ticker-item img {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent-green);
-            background: #fff;
-            box-shadow: 0 0 8px rgba(0, 168, 132, 0.45);
-            flex-shrink: 0;
-        }
-        @keyframes marqueeLeft {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+        .ticker-viewport { flex: 1; overflow: hidden; position: relative; height: 100%; display: flex; align-items: center; }
+        .ticker-track { display: flex; align-items: center; white-space: nowrap; will-change: transform; animation: marqueeLeft 52s linear infinite; }
+        .ticker-wrap:hover .ticker-track, .ticker-wrap:active .ticker-track { animation-play-state: paused; }
+        .ticker-item { display: inline-flex; align-items: center; gap: 8px; padding: 0 18px; font-size: 0.8rem; color: #fff; border-right: 1px solid rgba(255, 255, 255, 0.14); }
+        .ticker-lot { color: var(--accent-gold); font-weight: 900; text-transform: uppercase; letter-spacing: 0.2px; }
+        .ticker-detalle { color: #e9edef; font-weight: 700; font-size: 0.76rem; }
+        .ticker-detalle strong { color: #34d399; font-weight: 900; }
+        .ticker-item img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-green); background: #fff; box-shadow: 0 0 8px rgba(0, 168, 132, 0.45); flex-shrink: 0; }
+        @keyframes marqueeLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         .search-bar { display: flex; gap: 8px; margin-bottom: 10px; position: sticky; top: 0; z-index: 10; background: var(--bg-dark); padding-bottom: 4px; }
         .search-bar input { flex: 1; background: var(--bg-card); border: 1px solid #2a3942; padding: 9px 12px; border-radius: 10px; color: #fff; font-size: 0.85rem; outline: none; }
@@ -249,7 +211,6 @@
         .sorteo-time { font-size: 0.65rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 2px; }
         .sorteo-animal { font-size: 0.68rem; font-weight: 800; color: #fff; text-transform: uppercase; line-height: 1.1; word-break: break-word; }
 
-        /* FLYERS ALINEADOS SIN ESPACIOS NEGROS */
         .flyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 14px; align-items: start; }
         .flyer-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid #2a3942; display: flex; flex-direction: column; justify-content: flex-start; }
         .flyer-img { width: 100%; height: auto; display: block; object-fit: contain; background: #0b141a; }
@@ -260,84 +221,60 @@
         .btn-play { background: var(--accent-green); color: #fff; border: none; padding: 8px 13px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.78rem; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: inline-block; }
         .btn-register { background: var(--accent-gold); color: #000; border: none; padding: 8px 13px; border-radius: 8px; font-weight: 900; cursor: pointer; font-size: 0.78rem; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: inline-block; }
 
-        /* CHAT CONTENEDOR PRINCIPAL */
-        #chat-wrapper { flex: 1; display: none; flex-direction: column; overflow: hidden; background: #0b141a; }
-        .whatsapp-layout { display: flex; flex: 1; overflow: hidden; width: 100%; height: 100%; }
+        /* CHAT CONTENEDOR PRINCIPAL AJUSTADO AL ALTO REAL */
+        #chat-wrapper { flex: 1; min-height: 0; display: none; flex-direction: column; overflow: hidden; background: #0b141a; }
+        .whatsapp-layout { display: flex; flex: 1; min-height: 0; overflow: hidden; width: 100%; }
         
-        .admin-sidebar { width: 32%; min-width: 270px; max-width: 380px; border-right: 1px solid #2a3942; display: flex; flex-direction: column; background: var(--bg-panel); }
-        .admin-bar { background: #075e54; padding: 9px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: bold; flex-shrink: 0; gap: 8px; }
-        .sidebar-search { padding: 8px; background: var(--bg-panel); border-bottom: 1px solid #1f2c33; }
+        .admin-sidebar { width: 32%; min-width: 270px; max-width: 380px; border-right: 1px solid #2a3942; display: flex; flex-direction: column; background: var(--bg-panel); min-height: 0; }
+        .admin-bar { background: #075e54; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; font-weight: bold; flex-shrink: 0; gap: 6px; }
+        .sidebar-search { padding: 8px; background: var(--bg-panel); border-bottom: 1px solid #1f2c33; flex-shrink: 0; }
         .sidebar-search input { width: 100%; background: var(--bg-card); border: none; padding: 8px 12px; border-radius: 8px; color: #fff; font-size: 0.82rem; outline: none; }
-        .admin-list { flex: 1; overflow-y: auto; }
+        .admin-list { flex: 1; overflow-y: auto; min-height: 0; }
         
-        .chat-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-bottom: 1px solid #1f2c33; cursor: pointer; transition: background 0.15s; gap: 8px; }
+        .chat-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 12px; border-bottom: 1px solid #1f2c33; cursor: pointer; transition: background 0.15s; gap: 8px; }
         .chat-row:hover { background: var(--bg-card); }
         .chat-row.selected { background: #2a3942; border-left: 4px solid var(--accent-green); }
         .chat-row-info { min-width: 0; flex: 1; }
-        .chat-row-info h4 { font-size: 0.9rem; color: #fff; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .chat-row-info p { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-row-info h4 { font-size: 0.88rem; color: #fff; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-row-info p { font-size: 0.76rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .badge-new { background: #ef4444; color: #fff; font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 10px; display: inline-block; }
-        .btn-del-row { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 4px 7px; border-radius: 6px; font-size: 0.72rem; cursor: pointer; }
+        .btn-del-row { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 5px 8px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; }
         .btn-del-row:hover { background: #ef4444; color: #fff; }
 
-        .chat-main-pane { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #0b141a; position: relative; }
+        .chat-main-pane { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; background: #0b141a; position: relative; }
         .empty-chat-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); text-align: center; padding: 20px; }
         .empty-chat-placeholder img { width: 70px; height: 70px; border-radius: 16px; margin-bottom: 12px; opacity: 0.8; border: 2px solid var(--accent-gold); }
 
-        /* PANEL FINANCIERO PRIVADO DEL ADMIN SOBRE EL CHAT */
+        /* PANEL FINANCIERO PRIVADO DEL ADMIN (PLEGABLE PARA NO TAPAR EL CHAT) */
         .admin-finance-strip {
             background: #131e24;
             border-bottom: 1px solid #2a3942;
-            padding: 8px 12px;
+            padding: 7px 10px;
             display: none;
             flex-direction: column;
             gap: 6px;
             flex-shrink: 0;
         }
-        .fin-metrics {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            font-size: 0.75rem;
-        }
-        .fin-pill {
-            background: var(--bg-card);
-            border: 1px solid #2e3d47;
-            padding: 4px 9px;
-            border-radius: 8px;
-            font-weight: 700;
-        }
+        .fin-metrics { display: flex; flex-wrap: wrap; gap: 5px; font-size: 0.71rem; }
+        .fin-pill { background: var(--bg-card); border: 1px solid #2e3d47; padding: 3px 7px; border-radius: 7px; font-weight: 700; }
         .fin-pill.retirable { border-color: var(--accent-green); color: #34d399; }
         .fin-pill.negativo { border-color: #ef4444; color: #f87171; }
         .fin-pill.cashea { border-color: var(--accent-gold); color: #fbbf24; }
-        .fin-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        .fin-btn {
-            border: none;
-            padding: 5px 9px;
-            border-radius: 7px;
-            font-size: 0.71rem;
-            font-weight: 800;
-            cursor: pointer;
-            color: #fff;
-        }
+        .fin-actions { display: flex; flex-wrap: wrap; gap: 4px; }
+        .fin-btn { border: none; padding: 5px 8px; border-radius: 6px; font-size: 0.69rem; font-weight: 800; cursor: pointer; color: #fff; }
         .fin-btn.play { background: #2563eb; }
         .fin-btn.prize { background: #059669; }
         .fin-btn.withdraw { background: #d97706; }
         .fin-btn.cashea { background: #7c3aed; }
         .fin-btn.statement { background: #374151; border: 1px solid #4b5563; }
 
-        .chat-messages { flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        .msg { max-width: 82%; padding: 8px 12px; border-radius: 12px; font-size: 0.88rem; line-height: 1.38; word-wrap: break-word; }
+        .chat-messages { flex: 1; min-height: 0; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .msg { max-width: 84%; padding: 8px 12px; border-radius: 12px; font-size: 0.86rem; line-height: 1.38; word-wrap: break-word; }
         .msg.in { background-color: var(--bg-card); align-self: flex-start; border-top-left-radius: 2px; }
         .msg.out { background-color: var(--chat-out); align-self: flex-end; border-top-right-radius: 2px; }
-        .msg img { max-width: 260px; width: 100%; border-radius: 8px; margin-bottom: 6px; display: block; cursor: pointer; }
+        .msg img { max-width: 240px; width: 100%; border-radius: 8px; margin-bottom: 6px; display: block; cursor: pointer; }
         .msg-time { font-size: 0.62rem; color: rgba(255,255,255,0.6); text-align: right; margin-top: 3px; }
 
-        /* TARJETA DE VERIFICACIÓN AUTOMÁTICA DE PAGO */
         .receipt-card {
             background: #0b141a;
             border-radius: 8px;
@@ -405,14 +342,22 @@
             line-height: 1.45;
         }
 
-        .quick-bar { background: var(--bg-panel); padding: 6px 10px; display: flex; gap: 6px; overflow-x: auto; border-top: 1px solid #2a3942; flex-shrink: 0; }
+        .quick-bar { background: var(--bg-panel); padding: 6px 8px; display: flex; gap: 6px; overflow-x: auto; border-top: 1px solid #2a3942; flex-shrink: 0; }
         .chip { background: var(--bg-card); color: var(--text-main); border: 1px solid #374151; padding: 5px 10px; border-radius: 14px; font-size: 0.72rem; white-space: nowrap; cursor: pointer; }
         .chip:hover { border-color: var(--accent-green); }
 
-        .chat-input-area { background: var(--bg-card); padding: 8px 10px; display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
-        .chat-input-area input[type="text"] { flex: 1; background: #2a3942; border: none; padding: 10px 14px; border-radius: 20px; color: #fff; font-size: 0.9rem; outline: none; min-width: 0; }
-        .icon-btn { background: #2a3942; border: none; width: 38px; height: 38px; border-radius: 50%; color: var(--text-main); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .send-btn { background: var(--accent-green); border: none; width: 38px; height: 38px; border-radius: 50%; color: #fff; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .chat-input-area {
+            background: var(--bg-card);
+            padding: 8px 10px calc(10px + env(safe-area-inset-bottom, 0px)) 10px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid #2a3942;
+        }
+        .chat-input-area input[type="text"] { flex: 1; background: #2a3942; border: none; padding: 10px 14px; border-radius: 20px; color: #fff; font-size: 0.92rem; outline: none; min-width: 0; }
+        .icon-btn { background: #2a3942; border: none; width: 40px; height: 40px; border-radius: 50%; color: var(--text-main); font-size: 1.15rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .send-btn { background: var(--accent-green); border: none; width: 40px; height: 40px; border-radius: 50%; color: #fff; font-size: 1.05rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
         @media (max-width: 768px) {
             .admin-sidebar { width: 100%; max-width: none; border-right: none; }
@@ -579,19 +524,21 @@
                     <p style="font-size:0.85rem; max-width:320px;">Selecciona un cliente de la lista izquierda para ver sus jugadas, comprobantes validados y controlar su estado de cuenta.</p>
                 </div>
 
-                <div id="active-room" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
+                <div id="active-room" style="display:none; flex-direction:column; flex:1; min-height:0; overflow:hidden;">
                     <div class="admin-bar" id="room-header" style="background:#1c272e; border-bottom:1px solid #2a3942;">
-                        <span id="room-title">🟢 Taquilla Agencia Harold José</span>
-                        <div style="display:flex; gap:6px; align-items:center;">
-                            <button id="btn-delete-chat" onclick="borrarChatActual()" style="display:none; background:#ef4444; border:none; color:#fff; padding:4px 9px; border-radius:6px; font-size:0.72rem; font-weight:bold; cursor:pointer;">🗑️ Borrar Chat</button>
-                            <button id="btn-back-admin" onclick="volverBandejaMobile()" style="display:none; background:#00a884; border:none; color:#fff; padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:bold; cursor:pointer;">← Contactos</button>
+                        <span id="room-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🟢 Taquilla Agencia Harold José</span>
+                        <div style="display:flex; gap:5px; align-items:center; flex-shrink:0;">
+                            <button id="btn-toggle-fin" onclick="togglePanelFinancieroAdmin()" style="display:none; background:#2563eb; border:none; color:#fff; padding:4px 8px; border-radius:6px; font-size:0.7rem; font-weight:bold; cursor:pointer;">📊 Cuenta ▼</button>
+                            <button id="btn-delete-chat" onclick="borrarChatActual()" style="display:none; background:#ef4444; border:none; color:#fff; padding:4px 8px; border-radius:6px; font-size:0.7rem; font-weight:bold; cursor:pointer;">🗑️</button>
+                            <button id="btn-back-admin" onclick="volverBandejaMobile()" style="display:none; background:#00a884; border:none; color:#fff; padding:4px 9px; border-radius:6px; font-size:0.72rem; font-weight:bold; cursor:pointer;">← Lista</button>
                         </div>
                     </div>
 
+                    <!-- ESTE PANEL SOLO SE RENDERIZA SI ES_ADMIN === TRUE -->
                     <div class="admin-finance-strip" id="admin-finance-strip">
                         <div class="fin-metrics">
                             <span class="fin-pill retirable" id="fin-lbl-disp">💰 Retirable: 0,00 Bs.</span>
-                            <span class="fin-pill cashea" id="fin-lbl-cashea">💳 Cashea/Promo (No retirable): 0,00 Bs.</span>
+                            <span class="fin-pill cashea" id="fin-lbl-cashea">💳 Cashea/Promo: 0,00 Bs.</span>
                             <span class="fin-pill" id="fin-lbl-dep">📥 Dep: 0,00</span>
                             <span class="fin-pill" id="fin-lbl-jug">🎲 Jug: 0,00</span>
                             <span class="fin-pill" id="fin-lbl-ret">📤 Ret: 0,00</span>
@@ -617,9 +564,9 @@
 
                     <div class="chat-input-area">
                         <input type="file" id="foto-input" accept="image/*" style="display:none;" onchange="enviarImagen(this)">
-                        <button class="icon-btn" onclick="document.getElementById('foto-input').click()" title="Enviar capture de pago">📎</button>
+                        <button type="button" class="icon-btn" onclick="document.getElementById('foto-input').click()" title="Enviar capture de pago">📎</button>
                         <input type="text" id="chat-input" placeholder="Escribe un mensaje aquí..." onkeypress="if(event.key==='Enter') enviarMensaje()">
-                        <button class="send-btn" onclick="enviarMensaje()">➤</button>
+                        <button type="button" class="send-btn" onclick="enviarMensaje()">➤</button>
                     </div>
                 </div>
 
@@ -694,14 +641,18 @@ Harold Eliezer Galea Sanchez
         const DEVICE_ID = obtenerDeviceId();
         let todasLasLoterias = [];
         let listaContactosCache = [];
+        let chatsEliminadosRecientes = new Set();
         let miChatId = localStorage.getItem("harold_chat_id");
         let miClientToken = localStorage.getItem("harold_client_token");
         let miNombre = localStorage.getItem("harold_chat_nombre");
         let miTelefono = localStorage.getItem("harold_chat_tlf");
         let miVerificado = localStorage.getItem("harold_verificado") === "1";
+
+        const quiereAdminURL = new URLSearchParams(window.location.search).has("admin");
         let adminKey = localStorage.getItem("harold_admin_key") || sessionStorage.getItem("harold_admin_key") || "";
         let ES_ADMIN = Boolean(adminKey);
         let sesionBloqueada = false;
+        let panelFinAbierto = false;
 
         let adminChatActivo = null;
         let finanzasActivas = { cashea: 0, depositado: 0, jugado: 0, retirado: 0, disponible: 0 };
@@ -710,6 +661,32 @@ Harold Eliezer Galea Sanchez
         let sonidoActivo = false;
         let ultimoTotalMensajes = -1;
         let ultimoConteoSinLeerAdmin = 0;
+
+        function limpiarControlesAdminDelDOM() {
+            if (!ES_ADMIN) {
+                const strip = document.getElementById('admin-finance-strip');
+                const modal = document.getElementById('modal-movimiento');
+                const sidebar = document.getElementById('admin-sidebar');
+                const btnDel = document.getElementById('btn-delete-chat');
+                const btnBack = document.getElementById('btn-back-admin');
+                const btnFin = document.getElementById('btn-toggle-fin');
+                if (strip) strip.style.display = 'none';
+                if (modal) modal.style.display = 'none';
+                if (sidebar) sidebar.style.display = 'none';
+                if (btnDel) btnDel.style.display = 'none';
+                if (btnBack) btnBack.style.display = 'none';
+                if (btnFin) btnFin.style.display = 'none';
+            }
+        }
+
+        function togglePanelFinancieroAdmin() {
+            if (!ES_ADMIN) return;
+            panelFinAbierto = !panelFinAbierto;
+            const strip = document.getElementById('admin-finance-strip');
+            const btn = document.getElementById('btn-toggle-fin');
+            strip.style.display = panelFinAbierto ? 'flex' : 'none';
+            btn.textContent = panelFinAbierto ? '📊 Cuenta ▲' : '📊 Cuenta ▼';
+        }
 
         function registrarSalidaApp() {
             if (!sesionBloqueada) {
@@ -737,14 +714,20 @@ Harold Eliezer Galea Sanchez
                 ES_ADMIN = false;
                 adminKey = "";
                 sessionStorage.removeItem("harold_admin_key");
+                limpiarControlesAdminDelDOM();
                 mostrarLoginAdmin("🔒 Sesión cerrada tras 15 min fuera de la app. Ingresa tu clave para continuar:");
             } else {
+                limpiarControlesAdminDelDOM();
                 mostrarRegistroCliente("🔒 Sesión cerrada tras 15 min fuera de la app. Verifica tu número para continuar:");
             }
         }
 
         function cerrarSesionManual() {
             localStorage.removeItem("harold_last_exit_ts");
+            if (ES_ADMIN) {
+                localStorage.removeItem("harold_admin_key");
+                sessionStorage.removeItem("harold_admin_key");
+            }
             bloquearPorInactividad();
         }
 
@@ -801,13 +784,12 @@ Harold Eliezer Galea Sanchez
         }
 
         function iniciarPantallaBienvenida() {
+            limpiarControlesAdminDelDOM();
             const saludo = obtenerSaludoHorario(miNombre || "");
             document.getElementById('welcome-title').textContent = saludo.titulo;
             document.getElementById('welcome-msg').textContent = saludo.mensaje;
 
             if (verificarExpiracionAlVolver()) return;
-
-            const quiereAdmin = new URLSearchParams(window.location.search).has("admin");
 
             if (ES_ADMIN) {
                 sesionBloqueada = false;
@@ -819,7 +801,7 @@ Harold Eliezer Galea Sanchez
                     activarNotificaciones();
                     switchTab('chat', document.getElementById('tab-chat-btn'));
                 }, 900);
-            } else if (quiereAdmin) {
+            } else if (quiereAdminURL) {
                 mostrarLoginAdmin();
             } else if (miChatId && miClientToken && miNombre && miVerificado) {
                 sesionBloqueada = false;
@@ -879,6 +861,13 @@ Harold Eliezer Galea Sanchez
                 if (!data.ok) {
                     return alert(`❌ ${data.error || "Código inválido"}`);
                 }
+
+                // Asegurar modo cliente limpio
+                ES_ADMIN = false;
+                adminKey = "";
+                localStorage.removeItem("harold_admin_key");
+                sessionStorage.removeItem("harold_admin_key");
+                limpiarControlesAdminDelDOM();
 
                 miChatId = data.chatId;
                 miClientToken = data.clientToken;
@@ -1143,6 +1132,7 @@ Harold Eliezer Galea Sanchez
         }
 
         function inicializarVistaChat() {
+            limpiarControlesAdminDelDOM();
             if (ES_ADMIN) {
                 document.getElementById('admin-sidebar').style.display = 'flex';
                 if (adminChatActivo) {
@@ -1165,18 +1155,17 @@ Harold Eliezer Galea Sanchez
         }
 
         async function cargarListaAdmin() {
-            const claveConsulta = adminKey || localStorage.getItem("harold_admin_saved_input");
-            if (!claveConsulta) return;
+            if (!ES_ADMIN || !adminKey) return;
             try {
                 const res = await fetch(`${API_URL}/chat/list?_t=${Date.now()}`, {
                     cache: "no-store",
-                    headers: { "X-Admin-Key": claveConsulta }
+                    headers: { "X-Admin-Key": adminKey }
                 });
                 if (res.status === 403) return;
                 const data = await res.json();
                 if (!data.ok) return;
 
-                listaContactosCache = data.chats || [];
+                listaContactosCache = (data.chats || []).filter(c => !chatsEliminadosRecientes.has(c.chatId));
 
                 const totalSinLeer = listaContactosCache.reduce((acc, c) => acc + (c.sinLeerCount || (c.sinLeer ? 1 : 0)), 0);
                 actualizarGlobitoRojo(totalSinLeer);
@@ -1191,7 +1180,7 @@ Harold Eliezer Galea Sanchez
                 }
                 ultimoConteoSinLeerAdmin = totalSinLeer;
 
-                if (ES_ADMIN) renderizarListaContactos(listaContactosCache);
+                renderizarListaContactos(listaContactosCache);
             } catch (e) {}
         }
 
@@ -1216,7 +1205,7 @@ Harold Eliezer Galea Sanchez
                                 <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;">${c.hora}</div>
                                 ${badgeNum > 0 ? `<span class="badge-new">${badgeNum}</span>` : ''}
                             </div>
-                            <button class="btn-del-row" title="Borrar chat" onclick="event.stopPropagation(); borrarChatPorId('${c.chatId}', '${nomSeguro}')">🗑️</button>
+                            <button type="button" class="btn-del-row" title="Borrar chat" onclick="event.stopPropagation(); borrarChatPorId('${c.chatId}', '${nomSeguro}')">🗑️</button>
                         </div>
                     </div>
                 `;
@@ -1232,32 +1221,48 @@ Harold Eliezer Galea Sanchez
         }
 
         async function borrarChatPorId(chatId, nombre) {
-            if (!confirm(`¿Seguro que deseas borrar todo el chat de "${nombre}"?\n\nNota: El candado del bono de 1.000 Bs permanece activo para evitar cobros repetidos.`)) return;
-            await fetch(`${API_URL}/chat/delete`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Admin-Key": adminKey
-                },
-                body: JSON.stringify({ chatId })
-            });
+            if (!ES_ADMIN) return;
+            if (!confirm(`¿Seguro que deseas borrar todo el chat de "${nombre}"?\n\nEl candado del bono de 1.000 Bs permanece activo.`)) return;
+
+            chatsEliminadosRecientes.add(chatId);
+            setTimeout(() => chatsEliminadosRecientes.delete(chatId), 45000);
+
+            listaContactosCache = listaContactosCache.filter(c => c.chatId !== chatId);
+            renderizarListaContactos(listaContactosCache);
+
             if (adminChatActivo && adminChatActivo.chatId === chatId) {
                 adminChatActivo = null;
                 document.getElementById('active-room').style.display = 'none';
                 document.getElementById('no-chat-selected').style.display = 'flex';
+                if (window.innerWidth <= 768) {
+                    document.getElementById('admin-sidebar').classList.remove('mobile-hide');
+                    document.getElementById('chat-main-pane').classList.add('mobile-hide');
+                }
             }
-            cargarListaAdmin();
+
+            try {
+                await fetch(`${API_URL}/chat/delete`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Admin-Key": adminKey
+                    },
+                    body: JSON.stringify({ chatId })
+                });
+            } catch (e) {}
         }
 
         function borrarChatActual() {
-            if (!adminChatActivo) return;
+            if (!ES_ADMIN || !adminChatActivo) return;
             borrarChatPorId(adminChatActivo.chatId, adminChatActivo.nombre);
         }
 
         function actualizarBarraFinancieraAdmin(fin) {
             if (!ES_ADMIN) return;
             finanzasActivas = fin || { cashea: 0, depositado: 0, jugado: 0, retirado: 0, disponible: 0 };
-            document.getElementById('admin-finance-strip').style.display = 'flex';
+            document.getElementById('btn-toggle-fin').style.display = 'inline-block';
+            document.getElementById('admin-finance-strip').style.display = panelFinAbierto ? 'flex' : 'none';
+
             const lblDisp = document.getElementById('fin-lbl-disp');
             if (finanzasActivas.disponible < 0) {
                 lblDisp.className = "fin-pill negativo";
@@ -1266,14 +1271,14 @@ Harold Eliezer Galea Sanchez
                 lblDisp.className = "fin-pill retirable";
                 lblDisp.textContent = `💰 Retirable: ${fmtBs(finanzasActivas.disponible)}`;
             }
-            document.getElementById('fin-lbl-cashea').textContent = `💳 Cashea/Promo (No retirable): ${fmtBs(finanzasActivas.cashea)}`;
+            document.getElementById('fin-lbl-cashea').textContent = `💳 Cashea/Promo: ${fmtBs(finanzasActivas.cashea)}`;
             document.getElementById('fin-lbl-dep').textContent = `📥 Dep: ${fmtBs(finanzasActivas.depositado)}`;
             document.getElementById('fin-lbl-jug').textContent = `🎲 Jug: ${fmtBs(finanzasActivas.jugado)}`;
             document.getElementById('fin-lbl-ret').textContent = `📤 Ret: ${fmtBs(finanzasActivas.retirado)}`;
         }
 
         function abrirModalMovimiento(accion) {
-            if (!adminChatActivo) return;
+            if (!ES_ADMIN || !adminChatActivo) return;
             accionModalActual = accion;
             document.getElementById('modal-mov-monto').value = "";
             document.getElementById('modal-retiro-opciones').style.display = 'none';
@@ -1335,6 +1340,7 @@ Harold Eliezer Galea Sanchez
         }
 
         async function confirmarMovimientoFinanciero() {
+            if (!ES_ADMIN) return;
             const monto = parseFloat(document.getElementById('modal-mov-monto').value) || 0;
             if (monto <= 0) return alert("Ingresa un monto mayor a 0.");
             if (accionModalActual === "retiro" && monto > finanzasActivas.disponible) {
@@ -1365,7 +1371,7 @@ Harold Eliezer Galea Sanchez
         }
 
         async function aprobarDepositoComprobante(msgId, montoDetectado, referencia) {
-            if (!adminChatActivo) return;
+            if (!ES_ADMIN || !adminChatActivo) return;
             const montoStr = prompt("Confirma el monto exacto en Bs a sumar al saldo del cliente:", montoDetectado || "");
             if (montoStr === null) return;
             const montoNum = parseFloat(String(montoStr).replace(/\./g, "").replace(",", ".")) || 0;
@@ -1393,7 +1399,7 @@ Harold Eliezer Galea Sanchez
         }
 
         async function enviarEstadoCuentaAlChat() {
-            if (!adminChatActivo) return;
+            if (!ES_ADMIN || !adminChatActivo) return;
             const res = await fetch(`${API_URL}/chat/finance`, {
                 method: "POST",
                 headers: {
@@ -1418,6 +1424,7 @@ Harold Eliezer Galea Sanchez
         }
 
         function abrirSalaAdmin(chatId, nombre) {
+            if (!ES_ADMIN) return;
             adminChatActivo = { chatId, nombre };
             ultimoTotalMensajes = -1;
 
@@ -1425,6 +1432,7 @@ Harold Eliezer Galea Sanchez
             document.getElementById('active-room').style.display = 'flex';
             document.getElementById('room-title').textContent = `👤 ${nombre}`;
             document.getElementById('btn-delete-chat').style.display = 'inline-block';
+            document.getElementById('btn-toggle-fin').style.display = 'inline-block';
 
             if (window.innerWidth <= 768) {
                 document.getElementById('admin-sidebar').classList.add('mobile-hide');
@@ -1457,7 +1465,7 @@ Harold Eliezer Galea Sanchez
             }
 
             const btnAprobar = (ES_ADMIN && !ap.aprobado)
-                ? `<button class="btn-approve-receipt" onclick="aprobarDepositoComprobante(${m.id}, ${ap.montoNumerico || 0}, '${String(ap.referencia || '').replace(/'/g, '')}')">➕ Aprobar y Sumar ${ap.monto || ''}</button>`
+                ? `<button type="button" class="btn-approve-receipt" onclick="aprobarDepositoComprobante(${m.id}, ${ap.montoNumerico || 0}, '${String(ap.referencia || '').replace(/'/g, '')}')">➕ Aprobar y Sumar ${ap.monto || ''}</button>`
                 : "";
 
             return `
@@ -1535,9 +1543,24 @@ Harold Eliezer Galea Sanchez
             if (!texto && !imagenBase64) return;
 
             const destinoId = ES_ADMIN ? (adminChatActivo && adminChatActivo.chatId) : miChatId;
-            if (!destinoId) return;
+            if (!destinoId) {
+                alert("Verifica tu sesión antes de enviar mensajes.");
+                return;
+            }
 
             if (textoForzado === null) input.value = '';
+
+            // Mostrar mensaje inmediatamente en pantalla mientras llega la confirmación
+            const box = document.getElementById('chat-box');
+            const horaAhora = new Date().toLocaleTimeString("es-VE", { hour: "2-digit", minute: "2-digit", hour12: true });
+            box.innerHTML += `
+                <div class="msg out" style="opacity:0.85;">
+                    ${imagenBase64 ? `<img src="${imagenBase64}" alt="Enviando...">` : ''}
+                    ${texto ? `<div>${formatearTextoChat(texto)}</div>` : ''}
+                    <div class="msg-time">${horaAhora} ⏳</div>
+                </div>
+            `;
+            box.scrollTop = box.scrollHeight;
 
             const headers = {
                 "Content-Type": "application/json",
@@ -1546,30 +1569,34 @@ Harold Eliezer Galea Sanchez
             if (ES_ADMIN) headers["X-Admin-Key"] = adminKey;
             else headers["X-Client-Token"] = miClientToken;
 
-            const res = await fetch(`${API_URL}/chat/send`, {
-                method: "POST",
-                headers,
-                body: JSON.stringify({
-                    chatId: destinoId,
-                    nombre: ES_ADMIN ? null : miNombre,
-                    telefono: ES_ADMIN ? null : miTelefono,
-                    deviceId: DEVICE_ID,
-                    texto: texto,
-                    imagen: imagenBase64,
-                    sender: ES_ADMIN ? "admin" : "client"
-                })
-            });
+            try {
+                const res = await fetch(`${API_URL}/chat/send`, {
+                    method: "POST",
+                    headers,
+                    body: JSON.stringify({
+                        chatId: destinoId,
+                        nombre: ES_ADMIN ? null : miNombre,
+                        telefono: ES_ADMIN ? null : miTelefono,
+                        deviceId: DEVICE_ID,
+                        texto: texto,
+                        imagen: imagenBase64,
+                        sender: ES_ADMIN ? "admin" : "client"
+                    })
+                });
 
-            if (res.status === 403 && !ES_ADMIN) {
-                localStorage.removeItem("harold_verificado");
-                miVerificado = false;
-                mostrarRegistroCliente("⚠️ Tu sesión requiere verificar tu teléfono nuevamente en Telegram.");
-                document.getElementById('welcome-overlay').style.display = 'flex';
-                return;
+                if (res.status === 403 && !ES_ADMIN) {
+                    localStorage.removeItem("harold_verificado");
+                    miVerificado = false;
+                    mostrarRegistroCliente("⚠️ Tu sesión requiere verificar tu teléfono nuevamente en Telegram.");
+                    document.getElementById('welcome-overlay').style.display = 'flex';
+                    return;
+                }
+
+                await cargarHistorial(destinoId, ES_ADMIN ? "admin" : "client");
+                if (ES_ADMIN) cargarListaAdmin();
+            } catch (e) {
+                alert("Error de red al enviar el mensaje. Revisa tu conexión.");
             }
-
-            cargarHistorial(destinoId, ES_ADMIN ? "admin" : "client");
-            if (ES_ADMIN) cargarListaAdmin();
         }
 
         function enviarPagoMovil() {
@@ -1759,9 +1786,9 @@ Harold Eliezer Galea Sanchez
         cargarFlyers();
         setInterval(() => { cargarResultados(); cargarFlyers(); }, 60000);
         setInterval(() => {
-            if (ES_ADMIN || localStorage.getItem("harold_admin_saved_input")) {
+            if (ES_ADMIN) {
                 cargarListaAdmin();
-                if (ES_ADMIN && adminChatActivo && !sesionBloqueada) {
+                if (adminChatActivo && !sesionBloqueada) {
                     cargarHistorial(adminChatActivo.chatId, "admin");
                 }
             } else if (miChatId && miClientToken) {
