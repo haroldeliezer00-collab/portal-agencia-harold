@@ -695,9 +695,6 @@ function seleccionarGaceta(loteria, btn) {
 }
 
 function renderCruzNodo(etiqueta, item, esCentro = false) {
-  if (!item) {
-    return `<div class="cruz-nodo ${esCentro ? "centro" : ""}"><div class="cruz-lbl">${etiqueta}</div><div class="cruz-val">--</div></div>`;
-  }
   return `
     <div class="cruz-nodo ${esCentro ? "centro" : ""}">
       <div class="cruz-lbl">${etiqueta}</div>
@@ -722,7 +719,7 @@ async function cargarGacetaWinbig(loteria) {
             <div class="dato-sub">${d.ultimoSorteo.hora || "Sorteo reciente"} • Agencia Harold José</div>
           </div>
         </div>`
-      : `<div style="font-size:12px;color:var(--muted);">Esperando sorteo</div>`;
+      : "";
 
     const radarHtml = (d.radar || []).map(it => `
       <div class="mini-ficha">
@@ -734,7 +731,7 @@ async function cargarGacetaWinbig(loteria) {
       </div>
     `).join("");
 
-    const filasPir = (d.piramideFilas || []).map((fila, idx) => {
+    const filasPir = (d.piramideFilas || []).map(fila => {
       const esPunta = fila.length === 1;
       return `<div class="piramide-row">${fila.map(dig => `<div class="piramide-cell ${esPunta ? "punta" : ""}">${dig}</div>`).join("")}</div>`;
     }).join("");
@@ -780,7 +777,7 @@ async function cargarGacetaWinbig(loteria) {
         <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
         <div>
           <div class="dato-num">${it.numero} - ${it.animal}</div>
-          <div class="dato-sub">Mayor frecuencia • Agencia Harold José</div>
+          <div class="dato-sub">${it.extra || "Mayor frecuencia"} • Agencia Harold José</div>
         </div>
       </div>
     `).join("");
@@ -803,14 +800,14 @@ async function cargarGacetaWinbig(loteria) {
         </div>
         <div class="gaceta-box">
           <div class="gaceta-box-title"><span>🎯 Radar de Atracción</span><span>Agencia Harold José</span></div>
-          <div class="tripleta-cards">${radarHtml || `<span style="font-size:12px;color:var(--muted);">Sin datos</span>`}</div>
+          <div class="tripleta-cards">${radarHtml}</div>
         </div>
       </div>
 
       <div class="gaceta-top-row">
         <div class="gaceta-box">
           <div class="gaceta-box-title"><span>🔺 La Pirámide de la Fecha</span><span>Agencia Harold José</span></div>
-          <div class="piramide-rows">${filasPir || `<span style="font-size:12px;color:var(--muted);">Sin datos</span>`}</div>
+          <div class="piramide-rows">${filasPir}</div>
           <div class="gaceta-box-title"><span>Fichas Resultantes</span></div>
           <div class="datos-grid" style="margin-bottom:0;">${fichasPirHtml}</div>
         </div>
@@ -821,25 +818,19 @@ async function cargarGacetaWinbig(loteria) {
         </div>
       </div>
 
-      ${tripletaHtml ? `
-        <div class="tripleta-banner">
-          <div>
-            <div style="font-size:11px;color:var(--gold);font-weight:800;">👑 JUGADA MAESTRA • AGENCIA HAROLD JOSÉ</div>
-            <div style="font-size:14px;font-weight:900;color:#fff;">La Tripleta Millonaria</div>
-          </div>
-          <div class="tripleta-cards">${tripletaHtml}</div>
+      <div class="tripleta-banner">
+        <div>
+          <div style="font-size:11px;color:var(--gold);font-weight:800;">👑 JUGADA MAESTRA • AGENCIA HAROLD JOSÉ</div>
+          <div style="font-size:14px;font-weight:900;color:#fff;">La Tripleta Millonaria</div>
         </div>
-      ` : ""}
+        <div class="tripleta-cards">${tripletaHtml}</div>
+      </div>
 
-      ${rachaHtml ? `
-        <div class="gaceta-box-title">🔥 Animalitos en Racha • Agencia Harold José</div>
-        <div class="datos-grid">${rachaHtml}</div>
-      ` : ""}
+      <div class="gaceta-box-title">🔥 Animalitos en Racha • Agencia Harold José</div>
+      <div class="datos-grid">${rachaHtml}</div>
 
-      ${elemHtml ? `
-        <div class="gaceta-box-title">⚡ Los 4 Elementos del Día • Agencia Harold José</div>
-        <div class="datos-grid">${elemHtml}</div>
-      ` : ""}
+      <div class="gaceta-box-title">⚡ Los 4 Elementos del Día • Agencia Harold José</div>
+      <div class="datos-grid">${elemHtml}</div>
     `;
   } catch (e) {
     cont.innerHTML = `<div class="dato-item"><div>No se pudieron cargar los datos en este momento.</div></div>`;
