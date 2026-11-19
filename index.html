@@ -75,6 +75,45 @@
   .view { display: none; flex: 1; flex-direction: column; }
   .view.active { display: flex; }
 
+  /* BARRA EN MOVIMIENTO DE ÚLTIMOS RESULTADOS */
+  .ticker-wrap {
+    background: linear-gradient(90deg, #102028, #182b36, #102028);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 8px 0;
+    position: relative;
+  }
+  .ticker-track {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    animation: tickerScroll 36s linear infinite;
+    padding-left: 14px;
+  }
+  .ticker-wrap:hover .ticker-track,
+  .ticker-wrap:active .ticker-track {
+    animation-play-state: paused;
+  }
+  @keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 11px 4px 6px;
+    font-size: 11.5px;
+  }
+  .ticker-item img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+  .ticker-lot { color: var(--muted); font-weight: 700; font-size: 10.5px; }
+  .ticker-res { color: var(--gold); font-weight: 800; }
+  .ticker-hr { color: #25d366; font-size: 10px; font-weight: 700; }
+
   /* RESULTADOS */
   .toolbar { padding: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .toolbar input {
@@ -128,6 +167,20 @@
   .section-pad { padding: 14px; display: grid; gap: 14px; }
   .info-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
   .info-card h2 { font-size: 16px; color: var(--gold); margin-bottom: 10px; }
+  .datos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .dato-item {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .dato-item img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+  .dato-num { font-size: 15px; font-weight: 900; color: var(--gold); }
+  .dato-ani { font-size: 12px; font-weight: 800; color: var(--text); }
+  .dato-tag { font-size: 10.5px; color: #25d366; font-weight: 700; }
   .bank-box { background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; font-size: 13px; line-height: 1.6; }
   .flyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
   .flyer-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
@@ -296,16 +349,41 @@
 <main>
   <!-- TAB 1: RESULTADOS -->
   <section id="tab-resultados" class="view active">
+    <!-- BARRA DESLIZANTE DE ÚLTIMOS RESULTADOS -->
+    <div class="ticker-wrap" id="tickerBar">
+      <div class="ticker-track" id="tickerTrack">
+        <span style="font-size:12px;color:var(--muted);">Cargando últimos sorteos en vivo...</span>
+      </div>
+    </div>
+
     <div class="toolbar">
-      <input type="text" id="searchLoteria" placeholder="🔍 Buscar lotería (ej: Lotto Activo, Guácharo, Selva)..." oninput="renderLoterias()" />
+      <input
+        type="search"
+        id="searchLoteria"
+        name="filtro_sorteos_agencia_hj"
+        placeholder="🔍 Buscar lotería (ej: Lotto Activo, Guácharo, Selva)..."
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+        readonly
+        onfocus="this.removeAttribute('readonly')"
+        oninput="renderLoterias()"
+      />
       <button class="pill green" onclick="cargarResultados()">🔄 Actualizar</button>
     </div>
     <div id="gridLoterias" class="grid-loterias"></div>
   </section>
 
-  <!-- TAB 2: DATOS Y CUENTAS -->
+  <!-- TAB 2: DATOS DEL DÍA Y CUENTAS DE PAGO -->
   <section id="tab-datos" class="view">
     <div class="section-pad">
+      <div class="info-card">
+        <h2>🍀 Datos y Pronósticos del Día • Agencia Harold José</h2>
+        <div id="datosPronosticosGrid" class="datos-grid"></div>
+        <p style="font-size:11.5px;color:var(--muted);">💡 Sugerencias orientativas generadas según la tendencia de los sorteos de hoy. Juega con responsabilidad.</p>
+      </div>
+
       <div class="info-card">
         <h2>💳 Datos Oficiales de Pago • Agencia Harold José</h2>
         <div class="bank-box">
@@ -336,25 +414,24 @@
 
   <!-- TAB 4: JUGAR / TAQUILLA -->
   <section id="tab-jugar" class="view">
-    <!-- LOGIN CLIENTE -->
     <div id="loginBox" class="auth-box">
       <h2>🎟️ Entrar a Taquilla Digital</h2>
       <p class="sub">Verifica tu número una sola vez por Telegram y recibe tu bono de bienvenida de <strong>1.000,00 Bs.</strong></p>
 
       <div class="field">
         <label>Tu Nombre y Apellido</label>
-        <input type="text" id="inpNombre" placeholder="Ej: Carlos Pérez" />
+        <input type="text" id="inpNombre" placeholder="Ej: Carlos Pérez" autocomplete="off" />
       </div>
       <div class="field">
         <label>Tu Teléfono (Venezuela)</label>
-        <input type="tel" id="inpTelefono" placeholder="Ej: 04121234567" maxlength="11" />
+        <input type="tel" id="inpTelefono" placeholder="Ej: 04121234567" maxlength="11" autocomplete="off" />
       </div>
 
       <button class="btn btn-tg" onclick="abrirTelegramBot()">📲 1. Obtener Código en Telegram</button>
 
       <div class="field" style="margin-top:14px;">
         <label>Código de 6 dígitos recibido en Telegram</label>
-        <input type="text" id="inpCodigo" placeholder="Ej: 482910" maxlength="6" inputmode="numeric" />
+        <input type="text" id="inpCodigo" placeholder="Ej: 482910" maxlength="6" inputmode="numeric" autocomplete="one-time-code" />
       </div>
       <button class="btn btn-green" onclick="verificarOtpCliente()">✅ 2. Entrar y Jugar</button>
 
@@ -367,7 +444,6 @@
       </div>
     </div>
 
-    <!-- SALA DE CHAT CLIENTE -->
     <div id="clientChatBox" class="chat-wrap" style="display:none;">
       <div class="chat-topbar">
         <div><span class="status-dot"></span><span id="lblClientHeader">Taquilla Harold José</span></div>
@@ -383,12 +459,11 @@
       <div class="chat-input-bar">
         <input type="file" id="fileCapture" accept="image/*" style="display:none" onchange="subirCapture(event)" />
         <button class="icon-btn" onclick="document.getElementById('fileCapture').click()" title="Adjuntar comprobante">📎</button>
-        <input type="text" id="txtClientMsg" placeholder="Escribe tu jugada o mensaje aquí..." onkeydown="if(event.key==='Enter') enviarMensajeCliente()" />
+        <input type="text" id="txtClientMsg" placeholder="Escribe tu jugada o mensaje aquí..." autocomplete="off" onkeydown="if(event.key==='Enter') enviarMensajeCliente()" />
         <button class="icon-btn send" onclick="enviarMensajeCliente()">➤</button>
       </div>
     </div>
 
-    <!-- PANEL ADMINISTRADOR -->
     <div id="adminPanelBox" class="admin-grid" style="display:none;">
       <div class="admin-list" id="adminChatList"></div>
       <div class="chat-wrap">
@@ -407,7 +482,7 @@
         </div>
         <div id="adminMessages" class="messages-area"></div>
         <div class="chat-input-bar">
-          <input type="text" id="txtAdminMsg" placeholder="Responder al cliente..." onkeydown="if(event.key==='Enter') enviarMensajeAdmin()" />
+          <input type="text" id="txtAdminMsg" placeholder="Responder al cliente..." autocomplete="off" onkeydown="if(event.key==='Enter') enviarMensajeAdmin()" />
           <button class="icon-btn send" onclick="enviarMensajeAdmin()">➤</button>
         </div>
       </div>
@@ -444,6 +519,7 @@ function switchTab(tab, btn) {
   document.querySelectorAll("main .view").forEach(v => v.classList.remove("active"));
   document.getElementById("tab-" + tab).classList.add("active");
   if (tab === "promos") cargarFlyers();
+  if (tab === "datos") renderDatosPronosticos();
 }
 
 async function cargarResultados() {
@@ -453,13 +529,53 @@ async function cargarResultados() {
     if (d.ok && Array.isArray(d.loterias)) {
       loteriasData = d.loterias;
       document.getElementById("badgeCount").textContent = `• ${loteriasData.length} LOTERÍAS`;
+      renderTicker();
       renderLoterias();
+      renderDatosPronosticos();
     }
   } catch (e) {}
 }
 
+function renderTicker() {
+  const track = document.getElementById("tickerTrack");
+  if (!track) return;
+
+  const ultimos = [];
+  for (const lot of loteriasData) {
+    const salidos = (lot.sorteos || []).filter(s => s.animal && s.animal !== "PENDIENTE" && s.numero !== "--");
+    if (salidos.length > 0) {
+      const ultimo = salidos[salidos.length - 1];
+      ultimos.push({
+        loteria: lot.nombre,
+        numero: ultimo.numero,
+        animal: ultimo.animal,
+        hora: ultimo.hora,
+        img: ultimo.img
+      });
+    }
+  }
+
+  if (ultimos.length === 0) {
+    track.innerHTML = `<span style="font-size:12px;color:var(--muted);">Esperando primeros resultados oficiales del día...</span>`;
+    return;
+  }
+
+  const itemsHtml = ultimos.slice(0, 18).map(u => `
+    <div class="ticker-item">
+      <img src="${u.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${u.animal}" />
+      <span class="ticker-lot">${u.loteria}:</span>
+      <span class="ticker-res">${u.numero} - ${u.animal}</span>
+      <span class="ticker-hr">${u.hora}</span>
+    </div>
+  `).join("");
+
+  // Duplicado para desplazamiento continuo sin salto
+  track.innerHTML = itemsHtml + itemsHtml;
+}
+
 function renderLoterias() {
-  const q = (document.getElementById("searchLoteria").value || "").toLowerCase().trim();
+  const inp = document.getElementById("searchLoteria");
+  const q = (inp ? inp.value : "").toLowerCase().trim();
   const grid = document.getElementById("gridLoterias");
   const filtradas = q ? loteriasData.filter(l => l.nombre.toLowerCase().includes(q)) : loteriasData;
 
@@ -481,6 +597,45 @@ function renderLoterias() {
             </div>
           `;
         }).join("")}
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderDatosPronosticos() {
+  const grid = document.getElementById("datosPronosticosGrid");
+  if (!grid) return;
+
+  const candidatos = [];
+  for (const lot of loteriasData) {
+    const salidos = (lot.sorteos || []).filter(s => s.animal && s.animal !== "PENDIENTE" && s.numero !== "--");
+    if (salidos.length > 0) {
+      const base = salidos[salidos.length - 1];
+      const numInt = parseInt(base.numero, 10);
+      const sugeridoNum = isNaN(numInt) ? "07" : String((numInt + 7) % 100).padStart(2, "0");
+      candidatos.push({
+        loteria: lot.nombre,
+        numero: sugeridoNum,
+        animal: `DATO ${lot.nombre.split(" ")[0]}`,
+        img: base.img,
+        etiqueta: "🔥 DATO DEL DÍA"
+      });
+    }
+    if (candidatos.length >= 6) break;
+  }
+
+  if (candidatos.length === 0) {
+    grid.innerHTML = `<div class="bank-box">Cargando datos del día...</div>`;
+    return;
+  }
+
+  grid.innerHTML = candidatos.map(d => `
+    <div class="dato-item">
+      <img src="${d.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${d.animal}" />
+      <div>
+        <div class="dato-tag">${d.etiqueta} • ${d.loteria}</div>
+        <div class="dato-num">#${d.numero}</div>
+        <div class="dato-ani">${d.animal}</div>
       </div>
     </div>
   `).join("");
@@ -515,7 +670,6 @@ function jugarDesdePromo(titulo) {
   if (inp) inp.value = `Quiero jugar: ${titulo} - `;
 }
 
-/* FLUJO DE VERIFICACIÓN SIN POPUP DE ADVERTENCIA */
 function abrirTelegramBot() {
   const nombre = document.getElementById("inpNombre").value.trim();
   const tlf = document.getElementById("inpTelefono").value.replace(/\D/g, "");
@@ -700,7 +854,6 @@ function subirCapture(ev) {
   ev.target.value = "";
 }
 
-/* FUNCIONES ADMIN */
 async function cargarListaChatsAdmin() {
   const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
   if (!ses || ses.role !== "admin") return;
@@ -790,6 +943,12 @@ async function borrarChatActual() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  const buscador = document.getElementById("searchLoteria");
+  if (buscador) {
+    buscador.value = "";
+    setTimeout(() => { buscador.value = ""; }, 150);
+  }
+
   const tmpNom = localStorage.getItem("hj_tmp_nombre");
   const tmpTlf = localStorage.getItem("hj_tmp_tlf");
   if (tmpNom) document.getElementById("inpNombre").value = tmpNom;
