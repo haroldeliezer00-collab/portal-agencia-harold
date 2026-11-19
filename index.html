@@ -1,2715 +1,804 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Agencia Harold José - Seguridad, Confianza y Experiencia</title>
-    <link id="dynamic-favicon" rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0b141a">
-    <style>
-        :root {
-            --bg-dark: #0b141a;
-            --bg-panel: #111b21;
-            --bg-card: #1f2c33;
-            --accent-green: #00a884;
-            --accent-gold: #f59e0b;
-            --text-main: #e9edef;
-            --text-muted: #8696a0;
-            --chat-out: #005c4b;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Agencia Harold José - Seguridad, Confianza y Experiencia</title>
+<link rel="icon" type="image/png" href="logo.png" />
+<style>
+  :root {
+    --bg: #0b141a;
+    --panel: #111b21;
+    --panel2: #202c33;
+    --border: #2a3942;
+    --text: #e9edef;
+    --muted: #8696a0;
+    --green: #00a884;
+    --green-dark: #005c4b;
+    --gold: #f59e0b;
+    --red: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        html, body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            height: 100dvh;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+  header {
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .brand img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; flex-shrink: 0; }
+  .brand-txt h1 { font-size: 15px; font-weight: 800; color: var(--gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .brand-txt p { font-size: 10px; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .pill {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .pill.green { background: rgba(0,168,132,.15); border-color: var(--green); color: #25d366; }
+  .pill.red { background: rgba(239,68,68,.15); border-color: var(--red); color: #fca5a5; }
 
-        /* PANTALLA DE BIENVENIDA / REGISTRO TELEGRAM / BLOQUEO */
-        #welcome-overlay {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at top, #172730 0%, #0b141a 75%);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            text-align: center;
-            overflow-y: auto;
-        }
-        .welcome-box {
-            max-width: 400px;
-            width: 100%;
-            background: var(--bg-panel);
-            border: 1px solid #2a3942;
-            border-radius: 20px;
-            padding: 24px 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-            animation: popIn 0.4s ease;
-        }
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.92); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .welcome-logo {
-            width: 82px;
-            height: 82px;
-            border-radius: 20px;
-            object-fit: cover;
-            border: 3px solid var(--accent-gold);
-            margin-bottom: 12px;
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.35);
-        }
-        .welcome-greeting {
-            font-size: 1.32rem;
-            font-weight: 800;
-            color: var(--accent-gold);
-            margin-bottom: 6px;
-        }
-        .welcome-sub {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-            margin-bottom: 14px;
-        }
-        .promo-badge-reg {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(0, 168, 132, 0.22));
-            border: 1px solid var(--accent-gold);
-            color: #fde68a;
-            padding: 9px 11px;
-            border-radius: 12px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            line-height: 1.35;
-        }
-        .loader-bar-wrap {
-            width: 100%;
-            height: 6px;
-            background: #202c33;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-        .loader-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--accent-green), var(--accent-gold));
-            transition: width 1.1s ease-in-out;
-        }
-        .welcome-form { display: flex; flex-direction: column; gap: 9px; margin-top: 10px; }
-        .welcome-form input[type="text"],
-        .welcome-form input[type="tel"],
-        .welcome-form input[type="password"] {
-            background: var(--bg-card);
-            border: 1px solid #374151;
-            padding: 11px 14px;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 0.92rem;
-            outline: none;
-            width: 100%;
-        }
-        .welcome-form input:focus { border-color: var(--accent-green); }
-        .otp-input {
-            text-align: center;
-            font-size: 1.2rem !important;
-            font-weight: 900;
-            letter-spacing: 5px;
-            border-color: var(--accent-gold) !important;
-        }
-        .btn-tg-otp {
-            background: #229ED9;
-            color: #fff;
-            border: none;
-            padding: 11px;
-            border-radius: 10px;
-            font-size: 0.88rem;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            text-decoration: none;
-        }
-        .pass-wrap { position: relative; display: flex; align-items: center; }
-        .pass-wrap input { padding-right: 42px; }
-        .toggle-pass-btn {
-            position: absolute;
-            right: 10px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            cursor: pointer;
-        }
-        .remember-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.82rem;
-            color: var(--text-main);
-            cursor: pointer;
-            user-select: none;
-            text-align: left;
-        }
-        .remember-row input { width: 16px; height: 16px; accent-color: var(--accent-gold); }
-        .btn-enter-portal {
-            background: var(--accent-green);
-            color: #fff;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 2px;
-        }
-        .admin-link-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.72rem;
-            margin-top: 12px;
-            cursor: pointer;
-            text-decoration: underline;
-            opacity: 0.7;
-        }
+  nav.tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  nav.tabs button {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--muted);
+    padding: 11px 4px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+  }
+  nav.tabs button.active { color: var(--green); border-bottom-color: var(--green); background: rgba(0,168,132,.06); }
 
-        /* HEADER CON LOGO */
-        header {
-            background-color: var(--bg-panel);
-            padding: 8px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #2a3942;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-        .brand-wrap { display: flex; align-items: center; gap: 9px; min-width: 0; }
-        .brand-logo {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            object-fit: cover;
-            border: 1.5px solid var(--accent-gold);
-            flex-shrink: 0;
-        }
-        .brand { min-width: 0; }
-        .brand h1 { font-size: 0.96rem; font-weight: 800; color: var(--accent-gold); letter-spacing: 0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .brand span { font-size: 0.65rem; color: var(--text-muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
-        .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-        .sound-btn {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--accent-gold);
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            padding: 4px 8px;
-            border-radius: 14px;
-            font-size: 0.68rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .sound-btn.active { background: rgba(0, 168, 132, 0.2); color: #34d399; border-color: #00a884; }
-        .lock-btn {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            padding: 4px 8px;
-            border-radius: 14px;
-            font-size: 0.68rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .status-badge { background: rgba(0, 168, 132, 0.15); color: var(--accent-green); padding: 4px 8px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; white-space: nowrap; }
+  main { flex: 1; display: flex; flex-direction: column; max-width: 1200px; width: 100%; margin: 0 auto; }
+  .view { display: none; flex: 1; flex-direction: column; }
+  .view.active { display: flex; }
 
-        /* NAVEGACIÓN PRINCIPAL */
-        nav { display: flex; background-color: var(--bg-panel); border-bottom: 1px solid #2a3942; flex-shrink: 0; overflow-x: auto; }
-        .tab-btn { flex: 1; padding: 10px 6px; background: none; border: none; color: var(--text-muted); font-size: 0.72rem; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; position: relative; white-space: nowrap; }
-        .tab-btn.active { color: var(--accent-green); border-bottom-color: var(--accent-green); }
-        .tab-btn.datos-tab.active { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
-        .unread-badge {
-            display: none;
-            background: #ef4444;
-            color: #fff;
-            font-size: 0.66rem;
-            font-weight: 900;
-            padding: 2px 6px;
-            border-radius: 12px;
-            margin-left: 3px;
-            animation: pulseBadge 1.2s infinite;
-        }
-        @keyframes pulseBadge {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.18); }
-        }
+  /* RESULTADOS */
+  .toolbar { padding: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .toolbar input {
+    flex: 1;
+    min-width: 180px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+  .grid-loterias { padding: 0 12px 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 14px; }
+  .card-loteria { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .card-loteria-head {
+    background: linear-gradient(90deg, #16222a, #202c33);
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-loteria-head h3 { font-size: 13px; font-weight: 800; color: var(--gold); }
+  .badge-activa { font-size: 10px; background: rgba(0,168,132,.2); color: #25d366; padding: 2px 8px; border-radius: 999px; font-weight: 700; }
+  .sorteos-grid { padding: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .sorteo-item {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 6px 4px;
+    text-align: center;
+    position: relative;
+  }
+  .sorteo-num-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--gold);
+    color: #000;
+    font-weight: 900;
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 6px;
+  }
+  .sorteo-item img { width: 46px; height: 46px; object-fit: contain; border-radius: 50%; margin: 2px auto 4px; display: block; }
+  .sorteo-hora { font-size: 10px; color: var(--muted); font-weight: 700; }
+  .sorteo-ani { font-size: 10px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+  .sorteo-ani.pendiente { color: var(--muted); font-weight: 600; }
 
-        /* BANNER DESCARGA APK */
-        .app-banner-bar {
-            background: linear-gradient(90deg, #064e3b, #065f46);
-            border-bottom: 1px solid #047857;
-            padding: 6px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        .app-banner-text { font-size: 0.73rem; color: #ecfdf5; display: flex; align-items: center; gap: 6px; }
-        .btn-download-apk {
-            background: var(--accent-gold);
-            color: #000;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 0.68rem;
-            font-weight: 900;
-            white-space: nowrap;
-            cursor: pointer;
-        }
+  /* DATOS Y PROMOS */
+  .section-pad { padding: 14px; display: grid; gap: 14px; }
+  .info-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+  .info-card h2 { font-size: 16px; color: var(--gold); margin-bottom: 10px; }
+  .bank-box { background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; font-size: 13px; line-height: 1.6; }
+  .flyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .flyer-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+  .flyer-card img { width: 100%; max-height: 360px; object-fit: cover; background: #0f172a; }
+  .flyer-body { padding: 12px; flex: 1; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .flyer-body h4 { font-size: 12px; color: var(--gold); margin-bottom: 4px; }
+  .flyer-body p { font-size: 11px; color: var(--muted); }
 
-        /* CINTA DESLIZANTE DE ÚLTIMOS RESULTADOS */
-        .ticker-wrap {
-            background: linear-gradient(90deg, #0f1c22 0%, #16262e 50%, #0f1c22 100%);
-            border: 1px solid #2a3942;
-            border-radius: 10px;
-            height: 40px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
-        .ticker-label {
-            background: var(--accent-gold);
-            color: #000;
-            font-size: 0.68rem;
-            font-weight: 900;
-            padding: 0 10px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex-shrink: 0;
-            z-index: 2;
-            letter-spacing: 0.3px;
-        }
-        .ticker-viewport {
-            flex: 1;
-            overflow: hidden;
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
-        .ticker-track {
-            display: flex;
-            align-items: center;
-            width: max-content;
-            animation: tickerScroll 45s linear infinite;
-        }
-        .ticker-viewport:hover .ticker-track {
-            animation-play-state: paused;
-        }
-        .ticker-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 0 18px;
-            border-right: 1px solid #2a3942;
-            white-space: nowrap;
-            font-size: 0.78rem;
-        }
-        .ticker-lot {
-            color: var(--accent-gold);
-            font-weight: 900;
-            text-transform: uppercase;
-        }
-        .ticker-detalle {
-            color: #e9edef;
-            font-weight: 600;
-        }
-        .ticker-detalle strong {
-            color: #34d399;
-            font-weight: 900;
-        }
-        .ticker-item img {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1.5px solid var(--accent-gold);
-            background: #0b141a;
-        }
-        @keyframes tickerScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+  /* AUTH & CHAT */
+  .auth-box {
+    max-width: 420px;
+    width: 92%;
+    margin: 24px auto;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .auth-box h2 { color: var(--gold); font-size: 18px; margin-bottom: 6px; text-align: center; }
+  .auth-box p.sub { color: var(--muted); font-size: 12px; text-align: center; margin-bottom: 16px; }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+  .field input {
+    width: 100%;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 11px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+  .btn {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .btn-green { background: var(--green); color: #041b15; }
+  .btn-tg { background: #24a1de; color: #fff; }
+  .btn-dark { background: var(--panel2); color: var(--text); border: 1px solid var(--border); }
 
-        main { flex: 1; overflow-y: auto; padding: 12px; max-width: 1100px; width: 100%; margin: 0 auto; }
-        .section { display: none; }
-        .section.active { display: block; }
+  /* SALA DE CHAT */
+  .chat-wrap { flex: 1; display: flex; flex-direction: column; height: calc(100vh - 105px); }
+  .chat-topbar {
+    background: var(--panel2);
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .status-dot { width: 9px; height: 9px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 6px; }
+  .messages-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #0b141a;
+  }
+  .msg {
+    max-width: 82%;
+    padding: 9px 12px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+  .msg.client { align-self: flex-end; background: var(--green-dark); color: #e9edef; border-bottom-right-radius: 3px; }
+  .msg.admin { align-self: flex-start; background: var(--panel2); color: #e9edef; border-bottom-left-radius: 3px; border: 1px solid var(--border); }
+  .msg img { max-width: 240px; border-radius: 8px; margin-bottom: 6px; display: block; }
+  .msg-meta { font-size: 10px; color: rgba(255,255,255,.65); text-align: right; margin-top: 4px; }
 
-        .search-bar { display: flex; gap: 8px; margin-bottom: 12px; }
-        .search-bar input { flex: 1; background: var(--bg-card); border: 1px solid #2e3d47; padding: 9px 13px; border-radius: 10px; color: var(--text-main); font-size: 0.9rem; outline: none; }
-        .refresh-btn { background: var(--bg-card); border: 1px solid #2e3d47; color: var(--accent-green); padding: 0 14px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+  .quick-chips {
+    display: flex;
+    gap: 6px;
+    padding: 8px 10px;
+    overflow-x: auto;
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+  }
+  .chip {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    white-space: nowrap;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .chat-input-bar {
+    background: var(--panel);
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .chat-input-bar input[type="text"] {
+    flex: 1;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 11px 14px;
+    border-radius: 999px;
+    font-size: 14px;
+  }
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--panel2);
+    color: var(--text);
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .icon-btn.send { background: var(--green); color: #041b15; font-weight: 900; }
 
-        .loteria-block { background: var(--bg-card); border-radius: 12px; padding: 12px; margin-bottom: 14px; border: 1px solid #2a3942; }
-        .loteria-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3942; padding-bottom: 6px; margin-bottom: 10px; }
-        .loteria-header h2 { font-size: 0.9rem; font-weight: 800; color: #fff; text-transform: uppercase; }
-        .loteria-tag { background: rgba(0, 168, 132, 0.15); color: var(--accent-green); font-size: 0.62rem; font-weight: 800; padding: 2px 7px; border-radius: 6px; }
-
-        .sorteos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
-        .sorteo-cell { background: var(--bg-panel); border-radius: 10px; padding: 7px 4px; text-align: center; border: 1px solid #26333b; display: flex; flex-direction: column; align-items: center; position: relative; }
-        .num-pill { position: absolute; top: 4px; right: 4px; background: var(--accent-gold); color: #000; font-size: 0.65rem; font-weight: 900; padding: 1px 5px; border-radius: 10px; }
-        .sorteo-cell img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-bottom: 5px; background: #0b141a; border: 2px solid #2e3d47; }
-        .sorteo-time { font-size: 0.65rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 2px; }
-        .sorteo-animal { font-size: 0.68rem; font-weight: 800; color: #fff; text-transform: uppercase; line-height: 1.1; word-break: break-word; }
-
-        /* ESTILOS DE DATOS GRATIS Y EFECTIVIDAD EN VIVO */
-        .datos-loterias-bar {
-            display: flex;
-            gap: 7px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            margin-bottom: 10px;
-            scrollbar-width: thin;
-        }
-        .datos-lot-pill {
-            background: var(--bg-card);
-            border: 1px solid #2e3d47;
-            color: var(--text-main);
-            padding: 8px 13px;
-            border-radius: 10px;
-            font-size: 0.76rem;
-            font-weight: 800;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: 0.18s;
-            text-transform: uppercase;
-        }
-        .datos-lot-pill.active {
-            background: linear-gradient(135deg, var(--accent-gold), #d97706);
-            color: #000;
-            border-color: var(--accent-gold);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
-        }
-        .datos-hero {
-            background: linear-gradient(135deg, #16282a 0%, #1c272e 60%, #241f14 100%);
-            border: 1px solid rgba(245, 158, 11, 0.45);
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 12px;
-            text-align: center;
-        }
-        .datos-hero-badge {
-            display: inline-block;
-            background: rgba(0, 168, 132, 0.2);
-            color: #34d399;
-            font-size: 0.66rem;
-            font-weight: 800;
-            padding: 3px 10px;
-            border-radius: 20px;
-            margin-bottom: 6px;
-            letter-spacing: 0.4px;
-        }
-        .datos-hero h2 { font-size: 1.15rem; font-weight: 900; color: #fff; letter-spacing: 0.5px; }
-        .datos-hero p { font-size: 0.74rem; color: var(--accent-gold); font-weight: 700; margin-top: 3px; }
-        .datos-meta-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            margin-top: 9px;
-        }
-        .datos-date-pill {
-            background: #0b141a;
-            border: 1px solid #2e3d47;
-            padding: 5px 12px;
-            border-radius: 14px;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            font-weight: 700;
-        }
-        .efectividad-pill {
-            background: linear-gradient(135deg, #dc2626, #b91c1c);
-            color: #fff;
-            padding: 5px 13px;
-            border-radius: 14px;
-            font-size: 0.72rem;
-            font-weight: 900;
-            letter-spacing: 0.3px;
-            box-shadow: 0 3px 12px rgba(239, 68, 68, 0.45);
-        }
-        .efectividad-pill.cero {
-            background: rgba(0, 168, 132, 0.18);
-            color: #34d399;
-            border: 1px solid rgba(0, 168, 132, 0.4);
-            box-shadow: none;
-        }
-
-        /* AVATAR OFICIAL DEL ANIMALITO */
-        .an-avatar {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1.5px solid var(--accent-gold);
-            background: #ffffff;
-            flex-shrink: 0;
-        }
-        .an-avatar.sm { width: 28px; height: 28px; border-width: 1px; }
-        .an-avatar.lg { width: 52px; height: 52px; border-width: 2px; }
-        .an-emoji-badge {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            border: 1.5px solid var(--accent-gold);
-            background: radial-gradient(circle at 30% 30%, #243842, #0d161c);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.45rem;
-            flex-shrink: 0;
-        }
-        .an-emoji-badge.sm { width: 28px; height: 28px; font-size: 0.92rem; }
-        .an-emoji-badge.lg { width: 52px; height: 52px; font-size: 1.65rem; }
-
-        /* ETIQUETAS Y RESALTADO DE ACIERTOS EN VIVO */
-        .hit-ribbon {
-            display: inline-block;
-            background: #ef4444;
-            color: #fff;
-            font-size: 0.58rem;
-            font-weight: 900;
-            padding: 2px 6px;
-            border-radius: 7px;
-            letter-spacing: 0.2px;
-            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.55);
-            margin-bottom: 3px;
-            text-transform: uppercase;
-        }
-        .is-hit {
-            border: 2px solid #ef4444 !important;
-            background: linear-gradient(180deg, rgba(239, 68, 68, 0.18) 0%, var(--bg-panel) 100%) !important;
-            box-shadow: 0 0 12px rgba(239, 68, 68, 0.32);
-        }
-
-        .radar-strip {
-            background: linear-gradient(90deg, #101c22, #18262e);
-            border: 1px solid #2e3d47;
-            border-radius: 12px;
-            padding: 10px 12px;
-            margin-bottom: 12px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .radar-last { display: flex; align-items: center; gap: 9px; }
-        .radar-jaladores { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-        .jala-chip {
-            background: var(--bg-panel);
-            border: 1px solid rgba(0, 168, 132, 0.45);
-            border-radius: 10px;
-            padding: 5px 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            font-size: 0.72rem;
-            font-weight: 800;
-        }
-
-        .datos-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 12px; margin-bottom: 12px; }
-        .datos-card {
-            background: var(--bg-card);
-            border: 1px solid #2a3942;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 12px;
-        }
-        .datos-grid-2 .datos-card { margin-bottom: 0; }
-        .datos-card-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #2a3942;
-            padding-bottom: 7px;
-            margin-bottom: 10px;
-        }
-        .datos-card-head h3 { font-size: 0.84rem; font-weight: 900; color: var(--accent-gold); }
-        .datos-card-tag { font-size: 0.62rem; background: #0b141a; color: var(--text-muted); padding: 2px 7px; border-radius: 6px; font-weight: 700; }
-
-        /* PIRÁMIDE NUMÉRICA */
-        .piramide-rows { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 12px; }
-        .piramide-row { display: flex; gap: 4px; justify-content: center; }
-        .pir-digit {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            background: var(--bg-panel);
-            border: 1px solid #2e3d47;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.74rem;
-            font-weight: 800;
-            color: #fff;
-        }
-        .pir-digit.punta { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); font-weight: 900; }
-
-        .mini-animal-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .mini-animal-box {
-            background: var(--bg-panel);
-            border: 1px solid #2e3d47;
-            border-radius: 9px;
-            padding: 6px 4px;
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .mini-animal-box:hover { border-color: var(--accent-green); }
-        .mini-animal-box .num { position: absolute; top: 3px; right: 3px; background: var(--accent-gold); color: #000; font-size: 0.6rem; font-weight: 900; padding: 1px 4px; border-radius: 8px; }
-        .mini-animal-box .nom { font-size: 0.62rem; font-weight: 800; color: #fff; margin-top: 3px; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; }
-
-        /* CRUZ DE LA SUERTE */
-        .cruz-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            align-items: center;
-            justify-items: center;
-            padding: 4px 0;
-        }
-        .cruz-cell {
-            background: var(--bg-panel);
-            border: 1px solid #2e3d47;
-            border-radius: 10px;
-            padding: 7px 5px;
-            text-align: center;
-            width: 100%;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .cruz-cell.rey { border: 2px solid var(--accent-gold); background: rgba(245, 158, 11, 0.12); }
-        .cruz-pos { font-size: 0.6rem; font-weight: 900; color: var(--accent-gold); letter-spacing: 0.5px; margin-bottom: 3px; }
-        .cruz-name { font-size: 0.64rem; font-weight: 800; color: #fff; margin-top: 3px; text-transform: uppercase; }
-
-        /* TRIPLETA DEL DÍA */
-        .tripleta-banner {
-            background: linear-gradient(135deg, #102a43 0%, #1e3a5f 100%);
-            border: 1px solid rgba(56, 189, 248, 0.45);
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 12px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-        .tripleta-items { display: flex; gap: 8px; align-items: stretch; flex-wrap: wrap; }
-        .tripleta-item {
-            text-align: center;
-            background: rgba(11, 20, 26, 0.78);
-            padding: 7px 8px;
-            border-radius: 10px;
-            border: 1px solid rgba(245, 158, 11, 0.5);
-            min-width: 82px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .tripleta-item span.t-nom { display: block; font-size: 0.65rem; font-weight: 900; color: #fff; margin-top: 3px; text-transform: uppercase; }
-        .tripleta-item span.t-hora { display: block; font-size: 0.6rem; font-weight: 800; color: #fbbf24; margin-top: 1px; }
-
-        /* RACHA Y ELEMENTOS */
-        .racha-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 8px; }
-        .elementos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
-        .elem-card {
-            background: var(--bg-panel);
-            border: 1px solid #2e3d47;
-            border-radius: 10px;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        .elem-card:hover { border-color: var(--accent-gold); }
-
-        .flyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 14px; align-items: start; }
-        .flyer-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid #2a3942; display: flex; flex-direction: column; justify-content: flex-start; }
-        .flyer-img { width: 100%; height: auto; display: block; object-fit: contain; background: #0b141a; }
-        .flyer-body { padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; border-top: 1px solid #2a3942; }
-        .flyer-info { min-width: 0; flex: 1; }
-        .flyer-title { font-size: 0.82rem; font-weight: 800; color: #fff; display: block; line-height: 1.25; }
-        .flyer-schedule { font-size: 0.72rem; color: var(--accent-gold); font-weight: 700; display: block; margin-top: 3px; }
-        .btn-play { background: var(--accent-green); color: #fff; border: none; padding: 8px 13px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.78rem; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: inline-block; }
-        .btn-register { background: var(--accent-gold); color: #000; border: none; padding: 8px 13px; border-radius: 8px; font-weight: 900; cursor: pointer; font-size: 0.78rem; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: inline-block; }
-
-        /* CHAT CONTENEDOR PRINCIPAL AJUSTADO AL ALTO REAL */
-        #chat-wrapper { flex: 1; min-height: 0; display: none; flex-direction: column; overflow: hidden; background: #0b141a; }
-        .whatsapp-layout { display: flex; flex: 1; min-height: 0; overflow: hidden; width: 100%; }
-        
-        .admin-sidebar { width: 32%; min-width: 270px; max-width: 380px; border-right: 1px solid #2a3942; display: flex; flex-direction: column; background: var(--bg-panel); min-height: 0; }
-        .admin-bar { background: #075e54; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; font-weight: bold; flex-shrink: 0; gap: 6px; }
-        .sidebar-search { padding: 8px; background: var(--bg-panel); border-bottom: 1px solid #1f2c33; flex-shrink: 0; }
-        .sidebar-search input { width: 100%; background: var(--bg-card); border: none; padding: 8px 12px; border-radius: 8px; color: #fff; font-size: 0.82rem; outline: none; }
-        .admin-list { flex: 1; overflow-y: auto; min-height: 0; }
-        
-        .chat-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 12px; border-bottom: 1px solid #1f2c33; cursor: pointer; transition: background 0.15s; gap: 8px; }
-        .chat-row:hover { background: var(--bg-card); }
-        .chat-row.selected { background: #2a3942; border-left: 4px solid var(--accent-green); }
-        .chat-row-info { min-width: 0; flex: 1; }
-        .chat-row-info h4 { font-size: 0.88rem; color: #fff; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .chat-row-info p { font-size: 0.76rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .badge-new { background: #ef4444; color: #fff; font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 10px; display: inline-block; }
-        .btn-del-row { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 5px 8px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; }
-        .btn-del-row:hover { background: #ef4444; color: #fff; }
-
-        .chat-main-pane { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; background: #0b141a; position: relative; }
-        .empty-chat-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); text-align: center; padding: 20px; }
-        .empty-chat-placeholder img { width: 70px; height: 70px; border-radius: 16px; margin-bottom: 12px; opacity: 0.8; border: 2px solid var(--accent-gold); }
-
-        .admin-finance-strip {
-            background: #131e24;
-            border-bottom: 1px solid #2a3942;
-            padding: 7px 10px;
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-        .fin-metrics { display: flex; flex-wrap: wrap; gap: 5px; font-size: 0.71rem; }
-        .fin-pill { background: var(--bg-card); border: 1px solid #2e3d47; padding: 3px 7px; border-radius: 7px; font-weight: 700; }
-        .fin-pill.retirable { border-color: var(--accent-green); color: #34d399; }
-        .fin-pill.negativo { border-color: #ef4444; color: #f87171; }
-        .fin-pill.cashea { border-color: var(--accent-gold); color: #fbbf24; }
-        .fin-actions { display: flex; flex-wrap: wrap; gap: 4px; }
-        .fin-btn { border: none; padding: 5px 8px; border-radius: 6px; font-size: 0.69rem; font-weight: 800; cursor: pointer; color: #fff; }
-        .fin-btn.play { background: #2563eb; }
-        .fin-btn.prize { background: #059669; }
-        .fin-btn.withdraw { background: #d97706; }
-        .fin-btn.cashea { background: #7c3aed; }
-        .fin-btn.statement { background: #374151; border: 1px solid #4b5563; }
-
-        .chat-messages { flex: 1; min-height: 0; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        .msg { max-width: 84%; padding: 8px 12px; border-radius: 12px; font-size: 0.86rem; line-height: 1.38; word-wrap: break-word; }
-        .msg.in { background-color: var(--bg-card); align-self: flex-start; border-top-left-radius: 2px; }
-        .msg.out { background-color: var(--chat-out); align-self: flex-end; border-top-right-radius: 2px; }
-        .msg img { max-width: 240px; width: 100%; border-radius: 8px; margin-bottom: 6px; display: block; cursor: pointer; }
-        .msg-time { font-size: 0.62rem; color: rgba(255,255,255,0.6); text-align: right; margin-top: 3px; }
-
-        .receipt-card {
-            background: #0b141a;
-            border-radius: 8px;
-            padding: 8px 10px;
-            margin: 6px 0;
-            font-size: 0.78rem;
-            line-height: 1.35;
-            border-left: 4px solid var(--accent-green);
-        }
-        .receipt-card.warn { border-left-color: #f59e0b; }
-        .receipt-card.dup { border-left-color: #ef4444; background: rgba(239, 68, 68, 0.12); }
-        .receipt-status { font-weight: 900; font-size: 0.8rem; margin-bottom: 4px; display: block; }
-        .btn-approve-receipt {
-            margin-top: 6px;
-            background: var(--accent-green);
-            color: #fff;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 7px;
-            font-size: 0.74rem;
-            font-weight: 800;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        #modal-movimiento {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            z-index: 9998;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        .modal-card {
-            background: var(--bg-card);
-            border: 1px solid #374151;
-            border-radius: 14px;
-            padding: 18px;
-            max-width: 370px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 11px;
-        }
-        .modal-card h3 { font-size: 1rem; color: var(--accent-gold); }
-        .modal-card input[type="number"], .modal-card select {
-            background: var(--bg-panel);
-            border: 1px solid #374151;
-            padding: 10px 12px;
-            border-radius: 9px;
-            color: #fff;
-            font-size: 0.95rem;
-            outline: none;
-            width: 100%;
-        }
-        .calc-box {
-            background: #0b141a;
-            border: 1px dashed var(--accent-gold);
-            border-radius: 9px;
-            padding: 10px;
-            font-size: 0.82rem;
-            line-height: 1.45;
-        }
-
-        .quick-bar { background: var(--bg-panel); padding: 6px 8px; display: flex; gap: 6px; overflow-x: auto; border-top: 1px solid #2a3942; flex-shrink: 0; }
-        .chip { background: var(--bg-card); color: var(--text-main); border: 1px solid #374151; padding: 5px 10px; border-radius: 14px; font-size: 0.72rem; white-space: nowrap; cursor: pointer; }
-        .chip:hover { border-color: var(--accent-green); }
-
-        .chat-input-area {
-            background: var(--bg-card);
-            padding: 8px 10px calc(10px + env(safe-area-inset-bottom, 0px)) 10px;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-shrink: 0;
-            border-top: 1px solid #2a3942;
-        }
-        .chat-input-area input[type="text"] { flex: 1; background: #2a3942; border: none; padding: 10px 14px; border-radius: 20px; color: #fff; font-size: 0.92rem; outline: none; min-width: 0; }
-        .icon-btn { background: #2a3942; border: none; width: 40px; height: 40px; border-radius: 50%; color: var(--text-main); font-size: 1.15rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .send-btn { background: var(--accent-green); border: none; width: 40px; height: 40px; border-radius: 50%; color: #fff; font-size: 1.05rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-
-        @media (max-width: 768px) {
-            .admin-sidebar { width: 100%; max-width: none; border-right: none; }
-            .mobile-hide { display: none !important; }
-        }
-    </style>
+  /* ADMIN LAYOUT */
+  .admin-grid { display: grid; grid-template-columns: 280px 1fr; flex: 1; height: calc(100vh - 105px); }
+  @media (max-width: 760px) { .admin-grid { grid-template-columns: 1fr; } }
+  .admin-list { background: var(--panel); border-right: 1px solid var(--border); overflow-y: auto; }
+  .chat-row { padding: 12px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .chat-row:hover, .chat-row.active { background: var(--panel2); }
+  .badge-unread { background: var(--green); color: #000; font-weight: 800; font-size: 11px; padding: 2px 7px; border-radius: 999px; }
+  .fin-bar { background: #16222a; padding: 8px 12px; border-bottom: 1px solid var(--border); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 11px; }
+  .fin-bar button { background: var(--panel2); border: 1px solid var(--border); color: var(--gold); padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+</style>
 </head>
 <body>
 
-    <!-- PANTALLA DE BIENVENIDA / VERIFICACIÓN TELEGRAM / BLOQUEO -->
-    <div id="welcome-overlay">
-        <div class="welcome-box">
-            <img src="logo.png" alt="Agencia Harold José" class="welcome-logo">
-            <div class="welcome-greeting" id="welcome-title">¡Bienvenido!</div>
-            <p class="welcome-sub" id="welcome-msg">Cargando resultados y promociones del día...</p>
+<header>
+  <div class="brand">
+    <img src="logo.png" alt="Logo" />
+    <div class="brand-txt">
+      <h1>Agencia Harold José</h1>
+      <p>Seguridad • Confianza • Experiencia</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="pill" id="btnSound" onclick="toggleSound()">🔔 Sonido ON</button>
+    <button class="pill red" id="btnLogout" style="display:none" onclick="cerrarSesion()">🔒 Salir</button>
+    <span class="pill green" id="badgeCount">• 39 LOTERÍAS</span>
+  </div>
+</header>
 
-            <div id="welcome-loader" style="display:none;">
-                <div class="loader-bar-wrap">
-                    <div class="loader-bar-fill" id="loader-fill"></div>
-                </div>
-            </div>
+<nav class="tabs">
+  <button class="active" onclick="switchTab('resultados', this)">🏆 RESULTADOS</button>
+  <button onclick="switchTab('datos', this)">🍀 DATOS</button>
+  <button onclick="switchTab('promos', this)">📢 PROMOS</button>
+  <button onclick="switchTab('jugar', this)">💬 JUGAR</button>
+</nav>
 
-            <div id="welcome-register" class="welcome-form" style="display:none;">
-                <div class="promo-badge-reg">
-                    🎁 ¡PROMO DE BIENVENIDA! Verifica tu teléfono real en Telegram, entra al chat y recibe <strong>1.000,00 Bs</strong> para jugar.
-                </div>
-                <input type="text" id="reg-nombre" placeholder="1. Tu Nombre y Apellido (ej: Carlos Pérez)">
-                <input type="tel" id="reg-tlf" placeholder="2. Tu Teléfono (ej: 04141234567)">
-                
-                <button type="button" class="btn-tg-otp" onclick="abrirTelegramParaCodigo()">
-                    📲 3. Obtener Código en Telegram
-                </button>
+<main>
+  <!-- TAB 1: RESULTADOS -->
+  <section id="tab-resultados" class="view active">
+    <div class="toolbar">
+      <input type="text" id="searchLoteria" placeholder="🔍 Buscar lotería (ej: Lotto Activo, Guácharo, Selva)..." oninput="renderLoterias()" />
+      <button class="pill green" onclick="cargarResultados()">🔄 Actualizar</button>
+    </div>
+    <div id="gridLoterias" class="grid-loterias"></div>
+  </section>
 
-                <input type="text" id="reg-otp" class="otp-input" maxlength="6" inputmode="numeric" placeholder="CÓDIGO 6 DÍGITOS">
-                <button class="btn-enter-portal" id="btn-verificar-entrar" onclick="verificarCodigoYEntrar()">Verificar y Entrar ➤</button>
-            </div>
-
-            <form id="welcome-admin-login" class="welcome-form" style="display:none;" onsubmit="event.preventDefault(); validarClaveAdmin();">
-                <input type="text" name="username" value="Taquilla Harold" autocomplete="username" style="display:none;">
-                <div class="pass-wrap">
-                    <input type="password" id="reg-admin-pass" name="password" autocomplete="current-password" placeholder="Contraseña Maestra de Taquilla">
-                    <button type="button" class="toggle-pass-btn" onclick="toggleVerClave()" title="Mostrar/Ocultar contraseña">👁️</button>
-                </div>
-                <label class="remember-row">
-                    <input type="checkbox" id="chk-remember-admin" checked>
-                    <span>Recordar contraseña e iniciar directo</span>
-                </label>
-                <button type="submit" class="btn-enter-portal" style="background:#f59e0b; color:#000;">Entrar como Administrador 🔐</button>
-                <button type="button" class="admin-link-btn" onclick="mostrarRegistroCliente()">← Volver a vista de cliente</button>
-            </form>
-
-            <button class="admin-link-btn" id="btn-show-admin" onclick="mostrarLoginAdmin()">Acceso Taquilla</button>
+  <!-- TAB 2: DATOS Y CUENTAS -->
+  <section id="tab-datos" class="view">
+    <div class="section-pad">
+      <div class="info-card">
+        <h2>💳 Datos Oficiales de Pago • Agencia Harold José</h2>
+        <div class="bank-box">
+          <strong>📲 PAGO MÓVIL (BANCO DE VENEZUELA - 0102)</strong><br/>
+          • Teléfono: <strong>0412-4489363</strong><br/>
+          • Cédula: <strong>V-18.274.410</strong><br/>
+          • Titular: <strong>Harold José</strong>
         </div>
+        <div class="bank-box">
+          <strong>🏦 TRANSFERENCIA BANCARIA (BANCO DE VENEZUELA)</strong><br/>
+          • Cuenta Corriente: <strong>0102-0453-45-0000950163</strong><br/>
+          • Cédula: <strong>V-18.274.410</strong>
+        </div>
+        <p style="font-size:12px;color:var(--muted);">⚠️ Envía siempre el capture del comprobante en la pestaña <strong>💬 JUGAR</strong> antes de la hora de cierre del sorteo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: PROMOS Y POLLAS -->
+  <section id="tab-promos" class="view">
+    <div class="section-pad">
+      <div class="info-card">
+        <h2>📢 Pollas Millonarias, Dupletas y Promociones</h2>
+        <div id="flyersGrid" class="flyers-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 4: JUGAR / TAQUILLA -->
+  <section id="tab-jugar" class="view">
+    <!-- LOGIN CLIENTE -->
+    <div id="loginBox" class="auth-box">
+      <h2>🎟️ Entrar a Taquilla Digital</h2>
+      <p class="sub">Verifica tu número una sola vez por Telegram y recibe tu bono de bienvenida de <strong>1.000,00 Bs.</strong></p>
+
+      <div class="field">
+        <label>Tu Nombre y Apellido</label>
+        <input type="text" id="inpNombre" placeholder="Ej: Carlos Pérez" />
+      </div>
+      <div class="field">
+        <label>Tu Teléfono (Venezuela)</label>
+        <input type="tel" id="inpTelefono" placeholder="Ej: 04121234567" maxlength="11" />
+      </div>
+
+      <button class="btn btn-tg" onclick="abrirTelegramBot()">📲 1. Obtener Código en Telegram</button>
+
+      <div class="field" style="margin-top:14px;">
+        <label>Código de 6 dígitos recibido en Telegram</label>
+        <input type="text" id="inpCodigo" placeholder="Ej: 482910" maxlength="6" inputmode="numeric" />
+      </div>
+      <button class="btn btn-green" onclick="verificarOtpCliente()">✅ 2. Entrar y Jugar</button>
+
+      <div style="margin-top:18px;border-top:1px solid var(--border);padding-top:12px;text-align:center;">
+        <button class="btn btn-dark" style="font-size:12px;padding:8px;" onclick="toggleAdminLogin()">🔐 Acceso Administrador Taquilla</button>
+        <div id="adminLoginFields" style="display:none;margin-top:10px;">
+          <input type="password" id="inpAdminPass" placeholder="Clave de taquilla" style="width:100%;padding:10px;border-radius:8px;background:var(--panel2);border:1px solid var(--border);color:#fff;margin-bottom:8px;" />
+          <button class="btn btn-green" onclick="entrarAdmin()">Entrar como Taquilla</button>
+        </div>
+      </div>
     </div>
 
-    <!-- MODAL MOVIMIENTOS Y CALCULADORA 0.3% (SOLO ADMIN) -->
-    <div id="modal-movimiento">
-        <div class="modal-card">
-            <h3 id="modal-mov-titulo">Registrar Movimiento</h3>
-            <input type="number" id="modal-mov-monto" placeholder="Monto en Bs (ej: 1000)" step="0.01" oninput="recalcularModalRetiro()">
-            
-            <div id="modal-retiro-opciones" style="display:none; flex-direction:column; gap:8px;">
-                <label style="font-size:0.78rem; color:var(--text-muted);">Destino de pago al cliente:</label>
-                <select id="modal-retiro-banco" onchange="recalcularModalRetiro()">
-                    <option value="otro">Pago Móvil / Otro Banco (Descuenta 0,3% comisión)</option>
-                    <option value="bdv">Transferencia Mismo Banco Venezuela (0% comisión)</option>
-                </select>
-                <div class="calc-box" id="modal-retiro-resumen">
-                    Escribe un monto para ver el cálculo exacto a transferir.
-                </div>
-            </div>
-
-            <label id="modal-notif-wrap" class="remember-row">
-                <input type="checkbox" id="modal-mov-notif" checked>
-                <span>Notificar comprobante en el chat del cliente</span>
-            </label>
-
-            <div style="display:flex; gap:8px; margin-top:4px;">
-                <button onclick="cerrarModalMovimiento()" style="flex:1; background:#374151; color:#fff; border:none; padding:10px; border-radius:9px; font-weight:bold; cursor:pointer;">Cancelar</button>
-                <button onclick="confirmarMovimientoFinanciero()" style="flex:1; background:var(--accent-green); color:#fff; border:none; padding:10px; border-radius:9px; font-weight:bold; cursor:pointer;">Confirmar ✓</button>
-            </div>
-        </div>
+    <!-- SALA DE CHAT CLIENTE -->
+    <div id="clientChatBox" class="chat-wrap" style="display:none;">
+      <div class="chat-topbar">
+        <div><span class="status-dot"></span><span id="lblClientHeader">Taquilla Harold José</span></div>
+        <span id="lblSaldoCliente" style="color:var(--gold);font-size:12px;">Saldo: 0,00 Bs.</span>
+      </div>
+      <div id="clientMessages" class="messages-area"></div>
+      <div class="quick-chips">
+        <button class="chip" onclick="insertarTexto('Lotto Activo: ')">🦁 Lotto Activo</button>
+        <button class="chip" onclick="insertarTexto('La Granjita: ')">🐮 La Granjita</button>
+        <button class="chip" onclick="insertarTexto('Guácharo Activo: ')">🦅 Guácharo</button>
+        <button class="chip" onclick="enviarMensajeCliente('saldo')">📊 Mi Saldo</button>
+      </div>
+      <div class="chat-input-bar">
+        <input type="file" id="fileCapture" accept="image/*" style="display:none" onchange="subirCapture(event)" />
+        <button class="icon-btn" onclick="document.getElementById('fileCapture').click()" title="Adjuntar comprobante">📎</button>
+        <input type="text" id="txtClientMsg" placeholder="Escribe tu jugada o mensaje aquí..." onkeydown="if(event.key==='Enter') enviarMensajeCliente()" />
+        <button class="icon-btn send" onclick="enviarMensajeCliente()">➤</button>
+      </div>
     </div>
 
-    <header>
-        <div class="brand-wrap">
-            <img src="logo.png" alt="Agencia Harold José" class="brand-logo">
-            <div class="brand">
-                <h1>Agencia Harold José</h1>
-                <span>SEGURIDAD • CONFIANZA • EXPERIENCIA</span>
-            </div>
+    <!-- PANEL ADMINISTRADOR -->
+    <div id="adminPanelBox" class="admin-grid" style="display:none;">
+      <div class="admin-list" id="adminChatList"></div>
+      <div class="chat-wrap">
+        <div class="chat-topbar">
+          <span id="lblAdminActiveChat">Selecciona un cliente</span>
+          <button class="pill red" onclick="borrarChatActual()">🗑️ Borrar</button>
         </div>
-
-        <div class="header-actions">
-            <button class="sound-btn" id="btn-sound" onclick="activarNotificaciones()">🔔 Activar Sonido</button>
-            <button class="lock-btn" onclick="cerrarSesionManual()" title="Bloquear sesión">🔒 Salir</button>
-            <div class="status-badge" id="sync-status">● EN VIVO</div>
+        <div class="fin-bar" id="adminFinBar" style="display:none;">
+          <span id="lblAdminFinStats" style="color:#fff;font-weight:700;"></span>
+          <button onclick="accionFinanciera('aprobar_deposito')">+ Depósito</button>
+          <button onclick="accionFinanciera('jugada')">- Jugada</button>
+          <button onclick="accionFinanciera('premio')">+ Premio</button>
+          <button onclick="accionFinanciera('retiro')">- Retiro</button>
+          <button onclick="accionFinanciera('cashea_sumar')">+ Promo</button>
+          <button onclick="accionFinanciera('enviar_estado')">📊 Estado</button>
         </div>
-    </header>
-
-    <nav>
-        <button class="tab-btn active" onclick="switchTab('resultados', this)">🏆 RESULTADOS</button>
-        <button class="tab-btn datos-tab" onclick="switchTab('datos-gratis', this)">🍀 DATOS</button>
-        <button class="tab-btn" onclick="switchTab('flyers', this)">📢 PROMOS</button>
-        <button class="tab-btn" id="tab-chat-btn" onclick="switchTab('chat', this)">
-            💬 JUGAR
-            <span class="unread-badge" id="chat-badge">0</span>
-        </button>
-    </nav>
-
-    <div class="app-banner-bar" id="apk-banner" onclick="descargarOInstalarApp()">
-        <div class="app-banner-text">
-            📲 <strong>App Oficial Android</strong> • Resultados y jugadas más rápido
+        <div id="adminMessages" class="messages-area"></div>
+        <div class="chat-input-bar">
+          <input type="text" id="txtAdminMsg" placeholder="Responder al cliente..." onkeydown="if(event.key==='Enter') enviarMensajeAdmin()" />
+          <button class="icon-btn send" onclick="enviarMensajeAdmin()">➤</button>
         </div>
-        <button class="btn-download-apk">⬇ DESCARGAR APK</button>
+      </div>
     </div>
+  </section>
+</main>
 
-    <main id="main-scroll">
-        <section id="resultados" class="section active">
-            <div class="ticker-wrap" id="ultimos-ticker-wrap" style="display:none;">
-                <div class="ticker-label">🔥 ÚLTIMOS</div>
-                <div class="ticker-viewport">
-                    <div class="ticker-track" id="ultimos-ticker-track"></div>
-                </div>
+<script>
+const API_BASE = "https://api-resultados-harold.agharoldjose.workers.dev";
+// COLOCA AQUÍ EL @USERNAME DE TU BOT DE VERIFICACIÓN (SIN @)
+const BOT_USERNAME = "VerificacionAgenciaHaroldBot";
+
+let loteriasData = [];
+let soundOn = true;
+let pollTimer = null;
+
+function getDeviceId() {
+  let id = localStorage.getItem("hj_device_id");
+  if (!id) {
+    id = "dev_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem("hj_device_id", id);
+  }
+  return id;
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById("btnSound").textContent = soundOn ? "🔔 Sonido ON" : "🔕 Sonido OFF";
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll("nav.tabs button").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  document.querySelectorAll("main .view").forEach(v => v.classList.remove("active"));
+  document.getElementById("tab-" + tab).classList.add("active");
+  if (tab === "promos") cargarFlyers();
+}
+
+async function cargarResultados() {
+  try {
+    const r = await fetch(API_BASE + "/");
+    const d = await r.json();
+    if (d.ok && Array.isArray(d.loterias)) {
+      loteriasData = d.loterias;
+      document.getElementById("badgeCount").textContent = `• ${loteriasData.length} LOTERÍAS`;
+      renderLoterias();
+    }
+  } catch (e) {}
+}
+
+function renderLoterias() {
+  const q = (document.getElementById("searchLoteria").value || "").toLowerCase().trim();
+  const grid = document.getElementById("gridLoterias");
+  const filtradas = q ? loteriasData.filter(l => l.nombre.toLowerCase().includes(q)) : loteriasData;
+
+  grid.innerHTML = filtradas.map(lot => `
+    <div class="card-loteria">
+      <div class="card-loteria-head">
+        <h3>${lot.nombre}</h3>
+        <span class="badge-activa">• ACTIVA</span>
+      </div>
+      <div class="sorteos-grid">
+        ${lot.sorteos.map(s => {
+          const pend = s.animal === "PENDIENTE" || s.numero === "--";
+          return `
+            <div class="sorteo-item">
+              ${!pend ? `<span class="sorteo-num-badge">${s.numero}</span>` : ""}
+              <img src="${s.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${s.animal}" />
+              <div class="sorteo-hora">${s.hora}</div>
+              <div class="sorteo-ani ${pend ? "pendiente" : ""}">${pend ? "POR SALIR" : `${s.numero} - ${s.animal}`}</div>
             </div>
-
-            <div class="search-bar">
-                <input type="text" id="filtro-loteria" placeholder="🔍 Filtrar lotería (ej: Lotto Activo, Granjita)..." oninput="filtrarLoterias()">
-                <button class="refresh-btn" onclick="cargarResultados()">↻</button>
-            </div>
-
-            <div id="loterias-container">
-                <p style="color: var(--text-muted); text-align: center; padding: 30px;">Cargando sorteos del día...</p>
-            </div>
-        </section>
-
-        <section id="datos-gratis" class="section">
-            <div class="datos-loterias-bar" id="datos-loterias-bar"></div>
-            <div id="datos-gratis-content">
-                <p style="color: var(--text-muted); text-align: center; padding: 30px;">Calculando pronósticos del día...</p>
-            </div>
-        </section>
-
-        <section id="flyers" class="section">
-            <div id="flyers-container" class="flyers-grid">
-                <p style="color: var(--text-muted); text-align: center; grid-column: 1/-1; padding: 30px;">Cargando promociones...</p>
-            </div>
-        </section>
-    </main>
-
-    <div id="chat-wrapper">
-        <div id="whatsapp-workspace" class="whatsapp-layout">
-            
-            <div class="admin-sidebar" id="admin-sidebar" style="display:none;">
-                <div class="admin-bar">
-                    <span>👑 TAQUILLA EN VIVO</span>
-                    <button onclick="cargarListaAdmin()" style="background:none; border:1px solid rgba(255,255,255,0.5); color:#fff; padding:2px 8px; border-radius:6px; font-size:0.72rem; cursor:pointer;">↻</button>
-                </div>
-                <div class="sidebar-search">
-                    <input type="text" id="buscar-contacto" placeholder="🔍 Buscar cliente o teléfono..." oninput="filtrarContactos()">
-                </div>
-                <div class="admin-list" id="admin-chat-list">
-                    <p style="text-align:center; color:var(--text-muted); padding:20px;">Cargando conversaciones...</p>
-                </div>
-            </div>
-
-            <div class="chat-main-pane" id="chat-main-pane">
-                
-                <div id="no-chat-selected" class="empty-chat-placeholder" style="display:none;">
-                    <img src="logo.png" alt="Logo">
-                    <h3 style="color:#fff; margin-bottom:6px;">Panel de Atención Agencia Harold José</h3>
-                    <p style="font-size:0.85rem; max-width:320px;">Selecciona un cliente de la lista izquierda para ver sus jugadas, comprobantes validados y controlar su estado de cuenta.</p>
-                </div>
-
-                <div id="active-room" style="display:none; flex-direction:column; flex:1; min-height:0; overflow:hidden;">
-                    <div class="admin-bar" id="room-header" style="background:#1c272e; border-bottom:1px solid #2a3942;">
-                        <span id="room-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🟢 Taquilla Agencia Harold José</span>
-                        <div style="display:flex; gap:5px; align-items:center; flex-shrink:0;">
-                            <button id="btn-toggle-fin" onclick="togglePanelFinancieroAdmin()" style="display:none; background:#2563eb; border:none; color:#fff; padding:4px 8px; border-radius:6px; font-size:0.7rem; font-weight:bold; cursor:pointer;">📊 Cuenta ▼</button>
-                            <button id="btn-delete-chat" onclick="borrarChatActual()" style="display:none; background:#ef4444; border:none; color:#fff; padding:4px 8px; border-radius:6px; font-size:0.7rem; font-weight:bold; cursor:pointer;">🗑️</button>
-                            <button id="btn-back-admin" onclick="volverBandejaMobile()" style="display:none; background:#00a884; border:none; color:#fff; padding:4px 9px; border-radius:6px; font-size:0.72rem; font-weight:bold; cursor:pointer;">← Lista</button>
-                        </div>
-                    </div>
-
-                    <div class="admin-finance-strip" id="admin-finance-strip">
-                        <div class="fin-metrics">
-                            <span class="fin-pill retirable" id="fin-lbl-disp">💰 Retirable: 0,00 Bs.</span>
-                            <span class="fin-pill cashea" id="fin-lbl-cashea">💳 Cashea/Promo: 0,00 Bs.</span>
-                            <span class="fin-pill" id="fin-lbl-dep">📥 Dep: 0,00</span>
-                            <span class="fin-pill" id="fin-lbl-jug">🎲 Jug: 0,00</span>
-                            <span class="fin-pill" id="fin-lbl-ret">📤 Ret: 0,00</span>
-                        </div>
-                        <div class="fin-actions">
-                            <button class="fin-btn play" onclick="abrirModalMovimiento('jugada')">🎟️ - Jugada</button>
-                            <button class="fin-btn prize" onclick="abrirModalMovimiento('premio')">🏆 + Premio</button>
-                            <button class="fin-btn withdraw" onclick="abrirModalMovimiento('retiro')">💸 - Retiro (0,3%)</button>
-                            <button class="fin-btn cashea" onclick="abrirModalMovimiento('cashea_sumar')">💳 + Cashea</button>
-                            <button class="fin-btn statement" onclick="enviarEstadoCuentaAlChat()">📊 Enviar Estado</button>
-                        </div>
-                    </div>
-
-                    <div class="chat-messages" id="chat-box"></div>
-
-                    <div class="quick-bar">
-                        <button class="chip" onclick="insertarTexto('Lotto Activo: ')">🦁 Lotto Activo</button>
-                        <button class="chip" onclick="insertarTexto('La Granjita: ')">🐮 La Granjita</button>
-                        <button class="chip" onclick="insertarTexto('Guácharo: ')">🦅 Guácharo</button>
-                        <button class="chip" onclick="consultarMiSaldoRapido()">📊 Mi Saldo</button>
-                        <button class="chip" onclick="enviarPagoMovil()">💳 Datos Pago y Reglas</button>
-                    </div>
-
-                    <div class="chat-input-area">
-                        <input type="file" id="foto-input" accept="image/*" style="display:none;" onchange="enviarImagen(this)">
-                        <button type="button" class="icon-btn" onclick="document.getElementById('foto-input').click()" title="Enviar capture de pago">📎</button>
-                        <input type="text" id="chat-input" placeholder="Escribe un mensaje aquí..." onkeypress="if(event.key==='Enter') enviarMensaje()">
-                        <button type="button" class="send-btn" onclick="enviarMensaje()">➤</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+          `;
+        }).join("")}
+      </div>
     </div>
-
-    <script>
-        const API_URL = "https://api-resultados-harold.agharoldjose.workers.dev";
-        const BOT_TELEGRAM_USER = "AgenciaHaroldRegistroBot";
-        const TITULO_ORIGINAL = "Agencia Harold José - Seguridad, Confianza y Experiencia";
-        const TIEMPO_EXPIRACION_MS = 15 * 60 * 1000;
-        const ROLLERCOIN_REF_URL = "https://rollercoin.com/?r=kqmow2ag";
-
-        const ANIMALITOS_BASE = [
-            { num: "0", nombre: "DELFÍN", icono: "🐬" },
-            { num: "00", nombre: "BALLENA", icono: "🐋" },
-            { num: "01", nombre: "CARNERO", icono: "🐏" },
-            { num: "02", nombre: "TORO", icono: "🐂" },
-            { num: "03", nombre: "CIEMPIÉS", icono: "🐛" },
-            { num: "04", nombre: "ALACRÁN", icono: "🦂" },
-            { num: "05", nombre: "LEÓN", icono: "🦁" },
-            { num: "06", nombre: "RANA", icono: "🐸" },
-            { num: "07", nombre: "PERICO", icono: "🦜" },
-            { num: "08", nombre: "RATÓN", icono: "🐭" },
-            { num: "09", nombre: "ÁGUILA", icono: "🦅" },
-            { num: "10", nombre: "TIGRE", icono: "🐯" },
-            { num: "11", nombre: "GATO", icono: "🐱" },
-            { num: "12", nombre: "CABALLO", icono: "🐴" },
-            { num: "13", nombre: "MONO", icono: "🐒" },
-            { num: "14", nombre: "PALOMA", icono: "🕊️" },
-            { num: "15", nombre: "ZORRO", icono: "🦊" },
-            { num: "16", nombre: "OSO", icono: "🐻" },
-            { num: "17", nombre: "PAVO", icono: "🦃" },
-            { num: "18", nombre: "BURRO", icono: "🫏" },
-            { num: "19", nombre: "CHIVO", icono: "🐐" },
-            { num: "20", nombre: "COCHINO", icono: "🐷" },
-            { num: "21", nombre: "GALLO", icono: "🐓" },
-            { num: "22", nombre: "CAMELLO", icono: "🐪" },
-            { num: "23", nombre: "CEBRA", icono: "🦓" },
-            { num: "24", nombre: "IGUANA", icono: "🦎" },
-            { num: "25", nombre: "GALLINA", icono: "🐔" },
-            { num: "26", nombre: "VACA", icono: "🐄" },
-            { num: "27", nombre: "PERRO", icono: "🐕" },
-            { num: "28", nombre: "ZAMURO", icono: "🦅" },
-            { num: "29", nombre: "ELEFANTE", icono: "🐘" },
-            { num: "30", nombre: "CAIMÁN", icono: "🐊" },
-            { num: "31", nombre: "LAPA", icono: "🦫" },
-            { num: "32", nombre: "ARDILLA", icono: "🐿️" },
-            { num: "33", nombre: "PESCADO", icono: "🐟" },
-            { num: "34", nombre: "VENADO", icono: "🦌" },
-            { num: "35", nombre: "JIRAFA", icono: "🦒" },
-            { num: "36", nombre: "CULEBRA", icono: "🐍" }
-        ];
-
-        const REGLAS_Y_DATOS_TEXTO = `*📝 REGLAS DE JUEGO ACTUALIZADAS*
-💰 MONTOS MÍNIMOS
-🐾 Animalito: *50,00 Bs*
-🎉 Tripletas: *100,00 Bs*
-*📜 FORMATO DE ENVÍO*
-(Animalito / Monto / Ruleta / Hora)
-*⚠️ CIERRE DE SISTEMA*
-⏰ Minutos : *24 y :54* (Sin excepción)
-*🏆 CONDICIONES*
-Notificar tickets ganadores.
-⏳ 3 min. para revisión de jugada.
-*🚫 No fío / No vendo filtros.*
-
-🏦 DATOS DE PAGO
-Bancos: (0102 -- 0134)
-Cédula: 18274410
-Teléfono: 04124489363
-🔗 Pagos +500: son por Transferencia
-
-*Transferencia Venezuela (VES):*
-01020453450000950163
-V18274410
-Harold Eliezer Galea Sanchez
-
-01020453460000965527
-V18274410
-Harold Eliezer Galea Sanchez
-
-01020613810000317201
-V18274410
-Harold Eliezer Galea Sanchez
-
-*Pago móvil:*
-0102 / 18274410 / 04124489363
-0134 / 18274410 / 04124489363`;
-
-        function obtenerDeviceId() {
-            let saved = localStorage.getItem("harold_device_fp");
-            if (saved) return saved;
-            const raw = [
-                navigator.userAgent,
-                screen.width + "x" + screen.height,
-                screen.colorDepth,
-                Intl.DateTimeFormat().resolvedOptions().timeZone,
-                navigator.language,
-                navigator.hardwareConcurrency || "0"
-            ].join("|");
-            let hash = 0;
-            for (let i = 0; i < raw.length; i++) {
-                hash = ((hash << 5) - hash) + raw.charCodeAt(i);
-                hash |= 0;
-            }
-            saved = "dev_" + Math.abs(hash).toString(36) + "_" + (screen.width * screen.height).toString(36);
-            localStorage.setItem("harold_device_fp", saved);
-            return saved;
-        }
-
-        const DEVICE_ID = obtenerDeviceId();
-        let todasLasLoterias = [];
-        let loteriaDatosIdxSeleccionada = 0;
-        let listaContactosCache = [];
-        let chatsEliminadosRecientes = new Set();
-        let miChatId = localStorage.getItem("harold_chat_id");
-        let miClientToken = localStorage.getItem("harold_client_token");
-        let miNombre = localStorage.getItem("harold_chat_nombre");
-        let miTelefono = localStorage.getItem("harold_chat_tlf");
-        let miVerificado = localStorage.getItem("harold_verificado") === "1";
-
-        const quiereAdminURL = new URLSearchParams(window.location.search).has("admin");
-        const esModoClienteEstricto = !quiereAdminURL;
-
-        if (esModoClienteEstricto) {
-            localStorage.removeItem("harold_admin_key");
-            sessionStorage.removeItem("harold_admin_key");
-        }
-
-        let adminKey = quiereAdminURL
-            ? (localStorage.getItem("harold_admin_key") || sessionStorage.getItem("harold_admin_key") || "")
-            : "";
-        let ES_ADMIN = Boolean(quiereAdminURL && adminKey);
-        let sesionBloqueada = false;
-        let panelFinAbierto = false;
-
-        let adminChatActivo = null;
-        let finanzasActivas = { cashea: 0, depositado: 0, jugado: 0, retirado: 0, disponible: 0 };
-        let accionModalActual = "";
-        let audioCtx = null;
-        let sonidoActivo = false;
-        let ultimoTotalMensajes = -1;
-        let ultimoConteoSinLeerAdmin = 0;
-
-        function limpiarControlesAdminDelDOM() {
-            if (!ES_ADMIN) {
-                const strip = document.getElementById('admin-finance-strip');
-                const modal = document.getElementById('modal-movimiento');
-                const sidebar = document.getElementById('admin-sidebar');
-                const btnDel = document.getElementById('btn-delete-chat');
-                const btnBack = document.getElementById('btn-back-admin');
-                const btnFin = document.getElementById('btn-toggle-fin');
-                if (strip) strip.remove();
-                if (modal) modal.remove();
-                if (sidebar) sidebar.remove();
-                if (btnDel) btnDel.remove();
-                if (btnBack) btnBack.remove();
-                if (btnFin) btnFin.remove();
-                if (esModoClienteEstricto) {
-                    const formAdmin = document.getElementById('welcome-admin-login');
-                    const btnShowAdmin = document.getElementById('btn-show-admin');
-                    if (formAdmin) formAdmin.remove();
-                    if (btnShowAdmin) btnShowAdmin.remove();
-                }
-            }
-        }
-
-        function togglePanelFinancieroAdmin() {
-            if (!ES_ADMIN) return;
-            panelFinAbierto = !panelFinAbierto;
-            const strip = document.getElementById('admin-finance-strip');
-            const btn = document.getElementById('btn-toggle-fin');
-            if (strip) strip.style.display = panelFinAbierto ? 'flex' : 'none';
-            if (btn) btn.textContent = panelFinAbierto ? '📊 Cuenta ▲' : '📊 Cuenta ▼';
-        }
-
-        function registrarSalidaApp() {
-            if (!sesionBloqueada) {
-                localStorage.setItem("harold_last_exit_ts", String(Date.now()));
-            }
-        }
-
-        function verificarExpiracionAlVolver() {
-            const salidaTs = parseInt(localStorage.getItem("harold_last_exit_ts") || "0", 10);
-            if (salidaTs > 0 && (Date.now() - salidaTs) > TIEMPO_EXPIRACION_MS) {
-                localStorage.removeItem("harold_last_exit_ts");
-                bloquearPorInactividad();
-                return true;
-            }
-            return false;
-        }
-
-        function bloquearPorInactividad() {
-            sesionBloqueada = true;
-            const overlay = document.getElementById('welcome-overlay');
-            overlay.style.display = 'flex';
-            document.getElementById('welcome-loader').style.display = 'none';
-
-            if (ES_ADMIN) {
-                ES_ADMIN = false;
-                adminKey = "";
-                sessionStorage.removeItem("harold_admin_key");
-                limpiarControlesAdminDelDOM();
-                mostrarLoginAdmin("🔒 Sesión cerrada tras 15 min fuera de la app. Ingresa tu clave para continuar:");
-            } else {
-                limpiarControlesAdminDelDOM();
-                mostrarRegistroCliente("🔒 Sesión cerrada tras 15 min fuera de la app. Verifica tu número para continuar:");
-            }
-        }
-
-        function cerrarSesionManual() {
-            localStorage.removeItem("harold_last_exit_ts");
-            if (ES_ADMIN) {
-                localStorage.removeItem("harold_admin_key");
-                sessionStorage.removeItem("harold_admin_key");
-            }
-            bloquearPorInactividad();
-        }
-
-        document.addEventListener("visibilitychange", () => {
-            if (document.hidden) registrarSalidaApp();
-            else verificarExpiracionAlVolver();
-        });
-        window.addEventListener("pagehide", registrarSalidaApp);
-        window.addEventListener("beforeunload", registrarSalidaApp);
-
-        function fmtBs(val) {
-            return (Number(val) || 0).toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " Bs.";
-        }
-
-        function formatearTextoChat(str) {
-            return String(str || "")
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/\*([^*]+)\*/g, "<strong>$1</strong>")
-                .replace(/\n/g, "<br>");
-        }
-
-        function toggleVerClave() {
-            const inp = document.getElementById('reg-admin-pass');
-            if (inp) inp.type = inp.type === 'password' ? 'text' : 'password';
-        }
-
-        function obtenerSaludoHorario(nombreUsuario = "") {
-            const horaVE = parseInt(new Date().toLocaleTimeString("en-US", {
-                timeZone: "America/Caracas",
-                hour: "2-digit",
-                hour12: false
-            }), 10);
-
-            const sufijo = nombreUsuario ? `, ${nombreUsuario}` : "";
-
-            if (horaVE >= 5 && horaVE < 12) {
-                return {
-                    titulo: `☀️ ¡Buenos días${sufijo}!`,
-                    mensaje: "Que la suerte te acompañe hoy. Consulta los resultados al instante y realiza tus jugadas en Agencia Harold José."
-                };
-            } else if (horaVE >= 12 && horaVE < 19) {
-                return {
-                    titulo: `🌤️ ¡Buenas tardes${sufijo}!`,
-                    mensaje: "Revisa los animales ganadores de la jornada y asegura tus jugadas de la tarde con total confianza."
-                };
-            } else {
-                return {
-                    titulo: `🌙 ¡Buenas noches${sufijo}!`,
-                    mensaje: "Verifica los resultados del día o juega en los sorteos nocturnos. ¡Mucho éxito!"
-                };
-            }
-        }
-
-        function iniciarPantallaBienvenida() {
-            limpiarControlesAdminDelDOM();
-            const saludo = obtenerSaludoHorario(miNombre || "");
-            document.getElementById('welcome-title').textContent = saludo.titulo;
-            document.getElementById('welcome-msg').textContent = saludo.mensaje;
-
-            if (verificarExpiracionAlVolver()) return;
-
-            if (ES_ADMIN && quiereAdminURL) {
-                sesionBloqueada = false;
-                document.getElementById('welcome-loader').style.display = 'block';
-                setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
-                setTimeout(() => {
-                    document.getElementById('welcome-overlay').style.display = 'none';
-                    activarNotificaciones();
-                    switchTab('chat', document.getElementById('tab-chat-btn'));
-                }, 900);
-            } else if (quiereAdminURL) {
-                mostrarLoginAdmin();
-            } else if (miChatId && miClientToken && miNombre && miVerificado) {
-                sesionBloqueada = false;
-                document.getElementById('welcome-loader').style.display = 'block';
-                setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
-                setTimeout(() => {
-                    document.getElementById('welcome-overlay').style.display = 'none';
-                }, 1200);
-            } else {
-                mostrarRegistroCliente();
-            }
-        }
-
-        function abrirTelegramParaCodigo() {
-            const nom = document.getElementById('reg-nombre').value.trim();
-            const tlf = document.getElementById('reg-tlf').value.replace(/\D/g, "");
-            if (!nom || nom.length < 2) return alert("Primero escribe tu Nombre y Apellido.");
-            if (!/^0(412|422|414|424|416|426)\d{7}$/.test(tlf)) {
-                return alert("Escribe un número venezolano válido de 11 dígitos (ej: 04141234567).");
-            }
-            const urlBot = `https://t.me/${BOT_TELEGRAM_USER}?start=${tlf}`;
-            window.open(urlBot, "_blank");
-        }
-
-        async function verificarCodigoYEntrar() {
-            const nom = document.getElementById('reg-nombre').value.trim();
-            const tlf = document.getElementById('reg-tlf').value.replace(/\D/g, "");
-            const codigo = document.getElementById('reg-otp').value.trim();
-
-            if (!nom || nom.length < 2) return alert("Ingresa tu nombre y apellido.");
-            if (!/^0(412|422|414|424|416|426)\d{7}$/.test(tlf)) return alert("Ingresa un teléfono venezolano válido (ej: 04141234567).");
-            if (!/^\d{6}$/.test(codigo)) return alert("Ingresa el código de 6 dígitos que recibiste en Telegram.");
-
-            const btn = document.getElementById('btn-verificar-entrar');
-            btn.disabled = true;
-            btn.textContent = "Verificando...";
-
-            try {
-                const res = await fetch(`${API_URL}/auth/verify-otp`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-Device-Id": DEVICE_ID
-                    },
-                    body: JSON.stringify({
-                        nombre: nom,
-                        telefono: tlf,
-                        codigo,
-                        deviceId: DEVICE_ID
-                    })
-                });
-                const data = await res.json();
-                btn.disabled = false;
-                btn.textContent = "Verificar y Entrar ➤";
-
-                if (!data.ok) {
-                    return alert(`❌ ${data.error || "Código inválido"}`);
-                }
-
-                ES_ADMIN = false;
-                adminKey = "";
-                localStorage.removeItem("harold_admin_key");
-                sessionStorage.removeItem("harold_admin_key");
-                limpiarControlesAdminDelDOM();
-
-                miChatId = data.chatId;
-                miClientToken = data.clientToken;
-                miNombre = data.nombre;
-                miTelefono = data.telefono;
-                miVerificado = true;
-                sesionBloqueada = false;
-                localStorage.removeItem("harold_last_exit_ts");
-
-                localStorage.setItem("harold_chat_id", miChatId);
-                localStorage.setItem("harold_client_token", miClientToken);
-                localStorage.setItem("harold_chat_nombre", miNombre);
-                localStorage.setItem("harold_chat_tlf", miTelefono);
-                localStorage.setItem("harold_verificado", "1");
-
-                activarNotificaciones();
-
-                document.getElementById('welcome-register').style.display = 'none';
-                const saludo = obtenerSaludoHorario(miNombre);
-                document.getElementById('welcome-title').textContent = saludo.titulo;
-                document.getElementById('welcome-msg').textContent = "¡Cuenta verificada! Entra al chat y envíanos un saludo para activar tu bono.";
-                document.getElementById('welcome-loader').style.display = 'block';
-                setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 50);
-                setTimeout(() => {
-                    document.getElementById('welcome-overlay').style.display = 'none';
-                }, 900);
-            } catch (e) {
-                btn.disabled = false;
-                btn.textContent = "Verificar y Entrar ➤";
-                alert("Error de conexión verificando el código.");
-            }
-        }
-
-        function mostrarLoginAdmin(mensajePersonalizado = null) {
-            if (!quiereAdminURL) return mostrarRegistroCliente();
-            document.getElementById('welcome-register').style.display = 'none';
-            document.getElementById('welcome-title').textContent = "👑 Acceso Privado Taquilla";
-            document.getElementById('welcome-msg').textContent = mensajePersonalizado || "Ingresa tu contraseña maestra para administrar el chat en vivo:";
-            const formAdmin = document.getElementById('welcome-admin-login');
-            if (formAdmin) formAdmin.style.display = 'flex';
-
-            const guardada = localStorage.getItem("harold_admin_saved_input");
-            const passInp = document.getElementById('reg-admin-pass');
-            if (guardada && passInp) passInp.value = guardada;
-        }
-
-        function mostrarRegistroCliente(mensajePersonalizado = null) {
-            const formAdmin = document.getElementById('welcome-admin-login');
-            if (formAdmin) formAdmin.style.display = 'none';
-            const saludo = obtenerSaludoHorario("");
-            document.getElementById('welcome-title').textContent = saludo.titulo;
-            document.getElementById('welcome-msg').textContent = mensajePersonalizado || saludo.mensaje;
-            document.getElementById('welcome-register').style.display = 'flex';
-
-            if (miNombre) document.getElementById('reg-nombre').value = miNombre;
-            if (miTelefono) document.getElementById('reg-tlf').value = miTelefono;
-        }
-
-        async function validarClaveAdmin() {
-            if (!quiereAdminURL) return;
-            const passInp = document.getElementById('reg-admin-pass');
-            const pass = passInp ? passInp.value.trim() : "";
-            const chk = document.getElementById('chk-remember-admin');
-            const recordar = chk ? chk.checked : false;
-            if (!pass) return alert("Escribe tu contraseña.");
-
-            try {
-                const res = await fetch(`${API_URL}/auth/admin`, {
-                    method: "POST",
-                    headers: { "X-Admin-Key": pass }
-                });
-                const data = await res.json();
-                if (data.ok) {
-                    adminKey = pass;
-                    ES_ADMIN = true;
-                    sesionBloqueada = false;
-                    localStorage.removeItem("harold_last_exit_ts");
-
-                    if (recordar) {
-                        localStorage.setItem("harold_admin_key", pass);
-                        localStorage.setItem("harold_admin_saved_input", pass);
-                    } else {
-                        sessionStorage.setItem("harold_admin_key", pass);
-                        localStorage.removeItem("harold_admin_key");
-                        localStorage.removeItem("harold_admin_saved_input");
-                    }
-                    activarNotificaciones();
-                    document.getElementById('welcome-overlay').style.display = 'none';
-                    switchTab('chat', document.getElementById('tab-chat-btn'));
-                } else {
-                    alert(`❌ ${data.error || "Contraseña incorrecta"}`);
-                }
-            } catch (e) {
-                alert("Error de conexión verificando clave.");
-            }
-        }
-
-        function activarNotificaciones() {
-            try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                sonidoActivo = true;
-                tocarTimbreFuerte();
-
-                const btn = document.getElementById('btn-sound');
-                btn.textContent = "🔔 Sonido ON";
-                btn.classList.add('active');
-
-                if ("Notification" in window && Notification.permission === "default") {
-                    Notification.requestPermission();
-                }
-            } catch (e) {}
-        }
-
-        function tocarTimbreFuerte() {
-            if (!sonidoActivo || !audioCtx) return;
-            try {
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const now = audioCtx.currentTime;
-
-                const notas = [
-                    { freq: 880, start: 0, dur: 0.14 },
-                    { freq: 1174.66, start: 0.15, dur: 0.16 },
-                    { freq: 1318.51, start: 0.32, dur: 0.28 }
-                ];
-
-                notas.forEach(n => {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(n.freq, now + n.start);
-                    gain.gain.setValueAtTime(0.95, now + n.start);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + n.start + n.dur);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(now + n.start);
-                    osc.stop(now + n.start + n.dur);
-                });
-
-                if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-            } catch (e) {}
-        }
-
-        function actualizarGlobitoRojo(cantidad) {
-            const badge = document.getElementById('chat-badge');
-            if (cantidad > 0) {
-                badge.textContent = cantidad;
-                badge.style.display = 'inline-block';
-                document.title = `(${cantidad}) 🔔 Agencia Harold José`;
-            } else {
-                badge.style.display = 'none';
-                document.title = TITULO_ORIGINAL;
-            }
-
-            if ('setAppBadge' in navigator) {
-                if (cantidad > 0) navigator.setAppBadge(cantidad).catch(() => {});
-                else navigator.clearAppBadge().catch(() => {});
-            }
-
-            actualizarFaviconConNumero(cantidad);
-        }
-
-        function actualizarFaviconConNumero(cantidad) {
-            const link = document.getElementById('dynamic-favicon');
-            if (!cantidad || cantidad <= 0) {
-                link.href = 'logo.png';
-                return;
-            }
-            const img = new Image();
-            img.src = 'logo.png';
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = 64;
-                canvas.height = 64;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, 64, 64);
-
-                ctx.fillStyle = '#ef4444';
-                ctx.beginPath();
-                ctx.arc(46, 46, 17, 0, Math.PI * 2);
-                ctx.fill();
-
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 22px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(cantidad > 9 ? '9+' : String(cantidad), 46, 47);
-
-                link.href = canvas.toDataURL('image/png');
-            };
-        }
-
-        function dispararAlertaCompleta(titulo, cuerpo, cantidad) {
-            tocarTimbreFuerte();
-            actualizarGlobitoRojo(cantidad);
-            if ("Notification" in window && Notification.permission === "granted" && (document.hidden || sesionBloqueada)) {
-                new Notification(titulo, { body: cuerpo, icon: "logo.png" });
-            }
-        }
-
-        document.addEventListener("click", () => {
-            if (!sonidoActivo) activarNotificaciones();
-        }, { once: true });
-
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-            const banner = document.getElementById('apk-banner');
-            if (banner) banner.style.display = 'none';
-        }
-
-        let deferredPrompt = null;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-        });
-
-        async function descargarOInstalarApp() {
-            try {
-                const check = await fetch("AgenciaHaroldJose.apk", { method: "HEAD" });
-                if (check.ok) {
-                    const a = document.createElement("a");
-                    a.href = "AgenciaHaroldJose.apk";
-                    a.download = "AgenciaHaroldJose.apk";
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                    return;
-                }
-            } catch (e) {}
-
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt = null;
-            } else {
-                alert("📲 Para instalar la App:\n\n1. Toca los 3 puntitos (⋮) de tu navegador.\n2. Elige 'Instalar aplicación' o 'Agregar a pantalla principal'.");
-            }
-        }
-
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const mainScroll = document.getElementById('main-scroll');
-            const chatWrap = document.getElementById('chat-wrapper');
-
-            if (tabId === 'chat') {
-                mainScroll.style.display = 'none';
-                chatWrap.style.display = 'flex';
-                if (!ES_ADMIN) actualizarGlobitoRojo(0);
-                inicializarVistaChat();
-            } else {
-                chatWrap.style.display = 'none';
-                mainScroll.style.display = 'block';
-                document.querySelectorAll('#main-scroll .section').forEach(s => s.classList.remove('active'));
-                document.getElementById(tabId).classList.add('active');
-                if (tabId === 'datos-gratis') renderizarDatosGratis();
-            }
-        }
-
-        function irAlChat(mensaje) {
-            switchTab('chat', document.getElementById('tab-chat-btn'));
-            setTimeout(() => {
-                const input = document.getElementById('chat-input');
-                if (input) { input.value = mensaje; input.focus(); }
-            }, 150);
-        }
-
-        /* ================= DATOS GRATIS CON IMÁGENES OFICIALES ================= */
-        function limpiarTextoSinAcentos(txt) {
-            return String(txt || "")
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .toUpperCase()
-                .trim();
-        }
-
-        function normalizarNumeroAnimal(numRaw) {
-            let s = String(numRaw || "").trim();
-            if (s === "00") return "00";
-            const n = parseInt(s, 10);
-            if (isNaN(n)) return "0";
-            if (n === 0) return "0";
-            const mod = Math.abs(n) % 37;
-            return mod === 0 ? "0" : String(mod).padStart(2, "0");
-        }
-
-        function resolverAnimalSoloDeSuLoteria(numRaw, lotObj) {
-            const nStr = normalizarNumeroAnimal(numRaw);
-            const nSinCero = nStr === "00" ? "00" : String(parseInt(nStr, 10));
-            const base = ANIMALITOS_BASE.find(a => a.num === nStr) || ANIMALITOS_BASE[0];
-            const nombreBaseLimpio = limpiarTextoSinAcentos(base.nombre);
-
-            let imgOficial = "";
-
-            if (lotObj && Array.isArray(lotObj.sorteos)) {
-                const matchHoy = lotObj.sorteos.find(s => {
-                    if (!s.img || s.img.includes("logowin")) return false;
-                    const sNum = String(s.numero || "").trim();
-                    const sNom = limpiarTextoSinAcentos(s.animal);
-                    return (sNum === nStr || sNum === nSinCero) && sNom.includes(nombreBaseLimpio);
-                });
-                if (matchHoy) imgOficial = matchHoy.img;
-            }
-
-            return { ...base, img: imgOficial };
-        }
-
-        function renderAvatarAnimal(an, sizeClass = "") {
-            if (an.img) {
-                return `<img class="an-avatar ${sizeClass}" src="${an.img}" alt="${an.nombre}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';"><span class="an-emoji-badge ${sizeClass}" style="display:none;">${an.icono || '🐾'}</span>`;
-            }
-            return `<span class="an-emoji-badge ${sizeClass}">${an.icono || '🐾'}</span>`;
-        }
-
-        function construirPiramideFecha(fechaStr) {
-            let fila = fechaStr.replace(/\D/g, "").split("").map(Number);
-            if (fila.length < 8) fila = [1, 9, 1, 1, 2, 0, 2, 6];
-            const filas = [fila];
-            while (fila.length > 1) {
-                const siguiente = [];
-                for (let i = 0; i < fila.length - 1; i++) {
-                    siguiente.push((fila[i] + fila[i + 1]) % 10);
-                }
-                filas.push(siguiente);
-                fila = siguiente;
-            }
-            return filas;
-        }
-
-        function hashSemilla(str) {
-            let h = 2166136261;
-            for (let i = 0; i < str.length; i++) {
-                h ^= str.charCodeAt(i);
-                h = Math.imul(h, 16777619);
-            }
-            return Math.abs(h);
-        }
-
-        function obtenerLoteriasUnicasDatos() {
-            const base = todasLasLoterias.length > 0
-                ? todasLasLoterias
-                : [{ nombre: "LOTTO ACTIVO", sorteos: [] }, { nombre: "LA GRANJITA", sorteos: [] }, { nombre: "GUÁCHARO ACTIVO", sorteos: [] }];
-
-            const vistos = new Map();
-            base.forEach((lot, idx) => {
-                const clave = limpiarTextoSinAcentos(lot.nombre);
-                const salidosCount = (lot.sorteos || []).filter(s => !s.animal.toUpperCase().includes("PENDIENTE")).length;
-                if (!vistos.has(clave)) {
-                    vistos.set(clave, { lot, idx, salidosCount });
-                } else if (salidosCount > vistos.get(clave).salidosCount) {
-                    vistos.set(clave, { lot, idx, salidosCount });
-                }
-            });
-            return Array.from(vistos.values()).map(v => v.lot);
-        }
-
-        function seleccionarLoteriaDatos(idx) {
-            loteriaDatosIdxSeleccionada = idx;
-            renderizarDatosGratis();
-        }
-
-        function renderizarDatosGratis() {
-            const bar = document.getElementById('datos-loterias-bar');
-            const cont = document.getElementById('datos-gratis-content');
-            if (!bar || !cont) return;
-
-            const listaLots = obtenerLoteriasUnicasDatos();
-            if (loteriaDatosIdxSeleccionada >= listaLots.length || loteriaDatosIdxSeleccionada < 0) {
-                const prefIdx = listaLots.findIndex(l => limpiarTextoSinAcentos(l.nombre).includes("LOTTO ACTIVO"));
-                loteriaDatosIdxSeleccionada = prefIdx >= 0 ? prefIdx : 0;
-            }
-
-            bar.innerHTML = listaLots.map((l, idx) => `
-                <button class="datos-lot-pill ${idx === loteriaDatosIdxSeleccionada ? 'active' : ''}"
-                    onclick="seleccionarLoteriaDatos(${idx})">
-                    ${l.nombre}
-                </button>
-            `).join('');
-
-            const lotObj = listaLots[loteriaDatosIdxSeleccionada] || listaLots[0];
-
-            const ahoraVE = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Caracas" }));
-            const dd = String(ahoraVE.getDate()).padStart(2, "0");
-            const mm = String(ahoraVE.getMonth() + 1).padStart(2, "0");
-            const yyyy = ahoraVE.getFullYear();
-            const fechaCorta = `${dd}${mm}${yyyy}`;
-            const fechaLarga = ahoraVE.toLocaleDateString("es-VE", {
-                weekday: "long", day: "numeric", month: "long", year: "numeric"
-            });
-
-            const seed = hashSemilla(`${limpiarTextoSinAcentos(lotObj.nombre)}_${fechaCorta}`);
-
-            const salidos = (lotObj.sorteos || []).filter(s =>
-                !s.animal.toUpperCase().includes("PENDIENTE") && !s.img.includes("logowin")
-            );
-            const mapaSalidosHoy = {};
-            salidos.forEach(s => {
-                const k = String(s.numero || "").trim();
-                const kPad = normalizarNumeroAnimal(k);
-                if (!mapaSalidosHoy[k]) mapaSalidosHoy[k] = s.hora;
-                if (!mapaSalidosHoy[kPad]) mapaSalidosHoy[kPad] = s.hora;
-            });
-
-            const horaAcierto = (an) => mapaSalidosHoy[an.num] || mapaSalidosHoy[String(parseInt(an.num, 10))] || null;
-
-            // 1. Último sorteo real de esta lotería + 3 jaladores
-            const ultimoSorteo = salidos.length > 0 ? salidos[salidos.length - 1] : null;
-            const numBaseRadar = ultimoSorteo ? (parseInt(ultimoSorteo.numero, 10) || 5) : (seed % 37);
-
-            const jaladores = [
-                resolverAnimalSoloDeSuLoteria((numBaseRadar + 11) % 37, lotObj),
-                resolverAnimalSoloDeSuLoteria((36 - numBaseRadar + 7) % 37, lotObj),
-                resolverAnimalSoloDeSuLoteria((numBaseRadar * 3 + 4) % 37, lotObj)
-            ];
-
-            // 2. Pirámide de la fecha + 4 fichas resultantes
-            const filasPiramide = construirPiramideFecha(fechaCorta);
-            const punta = filasPiramide[filasPiramide.length - 1][0];
-            const prePunta = filasPiramide[filasPiramide.length - 2] || [2, 8];
-            const fichasPiramide = [
-                resolverAnimalSoloDeSuLoteria((prePunta[0] * 10 + prePunta[1] + (seed % 7)) % 37, lotObj),
-                resolverAnimalSoloDeSuLoteria((prePunta[1] * 10 + punta + (seed % 11)) % 37, lotObj),
-                resolverAnimalSoloDeSuLoteria((punta + prePunta[0] + 13 + (seed % 5)) % 37, lotObj),
-                resolverAnimalSoloDeSuLoteria(((prePunta[0] + prePunta[1]) * 3 + (seed % 9)) % 37, lotObj)
-            ];
-
-            // 3. La Cruz de la Suerte
-            const cruz = {
-                norte: resolverAnimalSoloDeSuLoteria((seed + 2) % 37, lotObj),
-                oeste: resolverAnimalSoloDeSuLoteria((seed + 14) % 37, lotObj),
-                rey: resolverAnimalSoloDeSuLoteria((seed + 5) % 37, lotObj),
-                este: resolverAnimalSoloDeSuLoteria((seed + 23) % 37, lotObj),
-                sur: resolverAnimalSoloDeSuLoteria((seed + 31) % 37, lotObj)
-            };
-
-            // 4. Tripleta Sugerida Harold José
-            const tripleta = [fichasPiramide[0], cruz.norte, cruz.este];
-            if (tripleta[1].num === tripleta[0].num) tripleta[1] = cruz.oeste;
-            if (tripleta[2].num === tripleta[0].num || tripleta[2].num === tripleta[1].num) tripleta[2] = cruz.sur;
-
-            // 5. Animalitos en racha
-            const racha = [
-                { animal: resolverAnimalSoloDeSuLoteria((seed + 9) % 37, lotObj), salidas: (seed % 4) + 3 },
-                { animal: resolverAnimalSoloDeSuLoteria((seed + 19) % 37, lotObj), salidas: ((seed + 2) % 4) + 3 },
-                { animal: resolverAnimalSoloDeSuLoteria((seed + 27) % 37, lotObj), salidas: ((seed + 1) % 4) + 3 }
-            ];
-
-            // 6. Los 4 Elementos del Día
-            const elementos = [
-                { elem: "🔥 FUEGO", animal: resolverAnimalSoloDeSuLoteria((seed + 3) % 37, lotObj) },
-                { elem: "🌿 TIERRA", animal: resolverAnimalSoloDeSuLoteria((seed + 12) % 37, lotObj) },
-                { elem: "💨 AIRE", animal: resolverAnimalSoloDeSuLoteria((seed + 21) % 37, lotObj) },
-                { elem: "💧 AGUA", animal: resolverAnimalSoloDeSuLoteria((seed + 29) % 37, lotObj) }
-            ];
-
-            // Contar aciertos únicos comprobados hoy
-            const pronosticosFijos = [
-                ...fichasPiramide,
-                cruz.norte, cruz.oeste, cruz.rey, cruz.este, cruz.sur,
-                ...tripleta,
-                ...racha.map(r => r.animal),
-                ...elementos.map(e => e.animal)
-            ];
-            const numerosAcertadosUnicos = new Set();
-            pronosticosFijos.forEach(an => {
-                if (horaAcierto(an)) numerosAcertadosUnicos.add(an.num);
-            });
-            const totalAciertosHoy = numerosAcertadosUnicos.size;
-
-            const jugarIndividual = (an) => `irAlChat('Hola, quiero jugar en ${lotObj.nombre}: ${an.num} - ${an.nombre}')`;
-            const txtTripleta = `Hola, quiero jugar Tripleta en ${lotObj.nombre}: ${tripleta[0].num} (${tripleta[0].nombre}), ${tripleta[1].num} (${tripleta[1].nombre}) y ${tripleta[2].num} (${tripleta[2].nombre})`;
-
-            const renderCruzCell = (posLabel, an, esRey = false) => {
-                const h = horaAcierto(an);
-                return `
-                    <div class="cruz-cell ${esRey ? 'rey' : ''} ${h ? 'is-hit' : ''}" onclick="${jugarIndividual(an)}">
-                        ${h ? `<span class="hit-ribbon">🎯 ¡SALIÓ! ${h}</span>` : `<div class="cruz-pos">${posLabel}</div>`}
-                        ${renderAvatarAnimal(an)}
-                        <div class="cruz-name">${an.num} - ${an.nombre}</div>
-                    </div>
-                `;
-            };
-
-            let estadoEfectividadHtml = `⏳ ESPERANDO PRIMEROS SORTEOS DE ${lotObj.nombre.toUpperCase()}`;
-            if (totalAciertosHoy > 0) {
-                estadoEfectividadHtml = `🎯 ¡EFECTIVIDAD COMPROBADA! • ${totalAciertosHoy} ACIERTO(S) HOY EN ${lotObj.nombre.toUpperCase()}`;
-            } else if (salidos.length > 0) {
-                estadoEfectividadHtml = `📊 ${salidos.length} SORTEO(S) JUGADO(S) • 0 ACIERTOS AÚN EN ${lotObj.nombre.toUpperCase()}`;
-            }
-
-            cont.innerHTML = `
-                <div class="datos-hero">
-                    <span class="datos-hero-badge">🍀 PRONÓSTICOS GRATUITOS • AGENCIA HAROLD JOSÉ</span>
-                    <h2>DATOS GRATIS • ${lotObj.nombre.toUpperCase()}</h2>
-                    <p>ANÁLISIS MATEMÁTICO, PIRÁMIDE Y ESTADÍSTICA REAL EN VIVO</p>
-                    <div class="datos-meta-row">
-                        <span class="datos-date-pill">📅 ${fechaLarga}</span>
-                        <span class="efectividad-pill ${totalAciertosHoy === 0 ? 'cero' : ''}">
-                            ${estadoEfectividadHtml}
-                        </span>
-                    </div>
-                </div>
-
-                <div class="radar-strip">
-                    <div class="radar-last">
-                        ${ultimoSorteo
-                            ? `<img class="an-avatar" src="${ultimoSorteo.img}" alt="Último" onerror="this.src='logo.png'">`
-                            : renderAvatarAnimal(cruz.rey)}
-                        <div>
-                            <div style="font-size:0.65rem; color:var(--accent-gold); font-weight:800;">
-                                ${ultimoSorteo ? `● ÚLTIMO SORTEO (${ultimoSorteo.hora})` : '● ANIMALITO BASE DEL DÍA'}
-                            </div>
-                            <div style="font-size:0.92rem; font-weight:900; color:#fff;">
-                                ${ultimoSorteo ? `${ultimoSorteo.numero} - ${ultimoSorteo.animal.toUpperCase()}` : `${cruz.rey.num} - ${cruz.rey.nombre}`}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="radar-jaladores">
-                        <span style="font-size:0.68rem; color:var(--accent-green); font-weight:900;">⚡ JALA AHORA:</span>
-                        ${jaladores.map(j => {
-                            const h = horaAcierto(j);
-                            return `
-                                <div class="jala-chip ${h ? 'is-hit' : ''}" onclick="${jugarIndividual(j)}" title="Toca para jugar">
-                                    ${renderAvatarAnimal(j, "sm")}
-                                    <span>${h ? `🎯 ${j.num} ${j.nombre}` : `${j.num} ${j.nombre}`}</span>
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                </div>
-
-                <div class="datos-grid-2">
-                    <div class="datos-card">
-                        <div class="datos-card-head">
-                            <h3>🔺 LA PIRÁMIDE DE LA FECHA</h3>
-                            <span class="datos-card-tag">CÁLCULO MATEMÁTICO</span>
-                        </div>
-                        <div class="piramide-rows">
-                            ${filasPiramide.map((f, idx) => `
-                                <div class="piramide-row">
-                                    ${f.map(d => `<span class="pir-digit ${idx === filasPiramide.length - 1 ? 'punta' : ''}">${d}</span>`).join('')}
-                                </div>
-                            `).join('')}
-                        </div>
-                        <div style="font-size:0.68rem; color:var(--text-muted); text-align:center; margin-bottom:7px; font-weight:800;">
-                            ✦ FICHAS RESULTANTES DE LA PIRÁMIDE ✦
-                        </div>
-                        <div class="mini-animal-grid">
-                            ${fichasPiramide.map(a => {
-                                const h = horaAcierto(a);
-                                return `
-                                    <div class="mini-animal-box ${h ? 'is-hit' : ''}" onclick="${jugarIndividual(a)}">
-                                        ${h ? `<span class="hit-ribbon">🎯 ${h}</span>` : ''}
-                                        <span class="num">${a.num}</span>
-                                        ${renderAvatarAnimal(a)}
-                                        <div class="nom">${a.nombre}</div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                    </div>
-
-                    <div class="datos-card">
-                        <div class="datos-card-head">
-                            <h3>✚ LA CRUZ DE LA SUERTE</h3>
-                            <span class="datos-card-tag">MÍSTICA</span>
-                        </div>
-                        <div class="cruz-grid">
-                            <div></div>
-                            ${renderCruzCell("NORTE", cruz.norte, false)}
-                            <div></div>
-
-                            ${renderCruzCell("OESTE", cruz.oeste, false)}
-                            ${renderCruzCell("★ REY ★", cruz.rey, true)}
-                            ${renderCruzCell("ESTE", cruz.este, false)}
-
-                            <div></div>
-                            ${renderCruzCell("SUR", cruz.sur, false)}
-                            <div></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tripleta-banner">
-                    <div>
-                        <div style="font-size:0.68rem; color:#38bdf8; font-weight:900;">👑 JUGADA MAESTRA DEL DÍA</div>
-                        <div style="font-size:1rem; font-weight:900; color:#fff; margin-top:2px;">TRIPLETA SUGERIDA HAROLD JOSÉ</div>
-                        <div style="font-size:0.72rem; color:#cbd5e1; margin-top:2px;">Combinatoria de alta cuota para ${lotObj.nombre}</div>
-                        <button class="btn-play" style="margin-top:8px;" onclick="irAlChat('${txtTripleta.replace(/'/g, "")}')">🎟️ Jugar esta Tripleta</button>
-                    </div>
-                    <div class="tripleta-items">
-                        ${tripleta.map(t => {
-                            const h = horaAcierto(t);
-                            return `
-                                <div class="tripleta-item ${h ? 'is-hit' : ''}">
-                                    ${h ? `<span class="hit-ribbon">🎯 ¡PEGADO!</span>` : ''}
-                                    ${renderAvatarAnimal(t)}
-                                    <span class="t-nom">${t.num} - ${t.nombre}</span>
-                                    ${h ? `<span class="t-hora">${h}</span>` : ''}
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                </div>
-
-                <div class="datos-card">
-                    <div class="datos-card-head">
-                        <h3>🔥 ANIMALITOS EN RACHA (MAYOR FRECUENCIA 7 DÍAS)</h3>
-                        <span class="datos-card-tag">ESTADÍSTICA PURA</span>
-                    </div>
-                    <div class="racha-grid">
-                        ${racha.map(r => {
-                            const h = horaAcierto(r.animal);
-                            return `
-                                <div class="elem-card ${h ? 'is-hit' : ''}" onclick="${jugarIndividual(r.animal)}">
-                                    ${renderAvatarAnimal(r.animal)}
-                                    <div>
-                                        ${h ? `<span class="hit-ribbon">🎯 ¡SALIÓ ${h}!</span>` : ''}
-                                        <div style="font-size:0.8rem; font-weight:900; color:#fff;">${r.animal.num} - ${r.animal.nombre}</div>
-                                        <div style="font-size:0.68rem; color:${h ? '#34d399' : 'var(--accent-gold)'}; font-weight:700;">
-                                            ${h ? `✓ Acertado a las ${h}` : `🔥 ${r.salidas} salidas (Últimos 7 días)`}
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                </div>
-
-                <div class="datos-card">
-                    <div class="datos-card-head">
-                        <h3>✦ LOS 4 ELEMENTOS DEL DÍA (INFLUENCIA ASTRAL)</h3>
-                        <span class="datos-card-tag">ZODÍACO</span>
-                    </div>
-                    <div class="elementos-grid">
-                        ${elementos.map(el => {
-                            const h = horaAcierto(el.animal);
-                            return `
-                                <div class="elem-card ${h ? 'is-hit' : ''}" onclick="${jugarIndividual(el.animal)}">
-                                    ${renderAvatarAnimal(el.animal)}
-                                    <div>
-                                        ${h ? `<span class="hit-ribbon">🎯 ¡SALIÓ ${h}!</span>` : `<div style="font-size:0.64rem; color:var(--accent-gold); font-weight:900;">${el.elem}</div>`}
-                                        <div style="font-size:0.78rem; font-weight:900; color:#fff;">${el.animal.num} - ${el.animal.nombre}</div>
-                                    </div>
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        function inicializarVistaChat() {
-            limpiarControlesAdminDelDOM();
-            if (ES_ADMIN && quiereAdminURL) {
-                const sidebar = document.getElementById('admin-sidebar');
-                if (sidebar) sidebar.style.display = 'flex';
-                if (adminChatActivo) {
-                    abrirSalaAdmin(adminChatActivo.chatId, adminChatActivo.nombre);
-                } else {
-                    document.getElementById('no-chat-selected').style.display = 'flex';
-                    document.getElementById('active-room').style.display = 'none';
-                    if (window.innerWidth <= 768) {
-                        document.getElementById('chat-main-pane').classList.add('mobile-hide');
-                    }
-                }
-                cargarListaAdmin();
-            } else {
-                document.getElementById('no-chat-selected').style.display = 'none';
-                document.getElementById('active-room').style.display = 'flex';
-                document.getElementById('room-title').textContent = `🟢 Taquilla Harold José (${miNombre || 'Cliente'})`;
-                if (miChatId) cargarHistorial(miChatId, "client");
-            }
-        }
-
-        async function cargarListaAdmin() {
-            if (!ES_ADMIN || !quiereAdminURL || !adminKey) return;
-            try {
-                const res = await fetch(`${API_URL}/chat/list?_t=${Date.now()}`, {
-                    cache: "no-store",
-                    headers: { "X-Admin-Key": adminKey }
-                });
-                if (res.status === 403) return;
-                const data = await res.json();
-                if (!data.ok) return;
-
-                listaContactosCache = (data.chats || []).filter(c => !chatsEliminadosRecientes.has(c.chatId));
-
-                const totalSinLeer = listaContactosCache.reduce((acc, c) => acc + (c.sinLeerCount || (c.sinLeer ? 1 : 0)), 0);
-                actualizarGlobitoRojo(totalSinLeer);
-
-                if (totalSinLeer > ultimoConteoSinLeerAdmin) {
-                    const primeroNuevo = listaContactosCache.find(c => c.sinLeer);
-                    dispararAlertaCompleta(
-                        primeroNuevo ? `Mensaje de ${primeroNuevo.nombre}` : "Nuevo mensaje en Taquilla",
-                        primeroNuevo ? primeroNuevo.ultimoMsg : "Tienes mensajes sin leer",
-                        totalSinLeer
-                    );
-                }
-                ultimoConteoSinLeerAdmin = totalSinLeer;
-
-                renderizarListaContactos(listaContactosCache);
-            } catch (e) {}
-        }
-
-        function renderizarListaContactos(lista) {
-            const listDiv = document.getElementById('admin-chat-list');
-            if (!listDiv) return;
-            if (!lista.length) {
-                listDiv.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:30px;">Aún no hay mensajes de clientes.</p>`;
-                return;
-            }
-            listDiv.innerHTML = lista.map(c => {
-                const seleccionado = adminChatActivo && adminChatActivo.chatId === c.chatId;
-                const badgeNum = c.sinLeerCount || (c.sinLeer ? 1 : 0);
-                const nomSeguro = c.nombre.replace(/'/g, "");
-                return `
-                    <div class="chat-row ${seleccionado ? 'selected' : ''}" onclick="abrirSalaAdmin('${c.chatId}', '${nomSeguro}')">
-                        <div class="chat-row-info">
-                            <h4>${c.nombre} <small style="color:var(--accent-gold);">${c.telefono || ''}</small></h4>
-                            <p>${c.ultimoMsg}</p>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-                            <div style="text-align:right;">
-                                <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;">${c.hora}</div>
-                                ${badgeNum > 0 ? `<span class="badge-new">${badgeNum}</span>` : ''}
-                            </div>
-                            <button type="button" class="btn-del-row" title="Borrar chat" onclick="event.stopPropagation(); borrarChatPorId('${c.chatId}', '${nomSeguro}')">🗑️</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function filtrarContactos() {
-            const inp = document.getElementById('buscar-contacto');
-            if (!inp) return;
-            const q = inp.value.toLowerCase().trim();
-            const filtrados = listaContactosCache.filter(c =>
-                c.nombre.toLowerCase().includes(q) || (c.telefono && c.telefono.includes(q))
-            );
-            renderizarListaContactos(filtrados);
-        }
-
-        async function borrarChatPorId(chatId, nombre) {
-            if (!ES_ADMIN || !quiereAdminURL) return;
-            if (!confirm(`¿Seguro que deseas borrar todo el chat de "${nombre}"?\n\nEl candado del bono de 1.000 Bs permanece activo.`)) return;
-
-            chatsEliminadosRecientes.add(chatId);
-            setTimeout(() => chatsEliminadosRecientes.delete(chatId), 45000);
-
-            listaContactosCache = listaContactosCache.filter(c => c.chatId !== chatId);
-            renderizarListaContactos(listaContactosCache);
-
-            if (adminChatActivo && adminChatActivo.chatId === chatId) {
-                adminChatActivo = null;
-                document.getElementById('active-room').style.display = 'none';
-                document.getElementById('no-chat-selected').style.display = 'flex';
-                if (window.innerWidth <= 768) {
-                    const sb = document.getElementById('admin-sidebar');
-                    if (sb) sb.classList.remove('mobile-hide');
-                    document.getElementById('chat-main-pane').classList.add('mobile-hide');
-                }
-            }
-
-            try {
-                await fetch(`${API_URL}/chat/delete`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-Admin-Key": adminKey
-                    },
-                    body: JSON.stringify({ chatId })
-                });
-            } catch (e) {}
-        }
-
-        function borrarChatActual() {
-            if (!ES_ADMIN || !adminChatActivo) return;
-            borrarChatPorId(adminChatActivo.chatId, adminChatActivo.nombre);
-        }
-
-        function actualizarBarraFinancieraAdmin(fin) {
-            if (!ES_ADMIN || !quiereAdminURL) return;
-            finanzasActivas = fin || { cashea: 0, depositado: 0, jugado: 0, retirado: 0, disponible: 0 };
-            const btnFin = document.getElementById('btn-toggle-fin');
-            const strip = document.getElementById('admin-finance-strip');
-            if (btnFin) btnFin.style.display = 'inline-block';
-            if (strip) strip.style.display = panelFinAbierto ? 'flex' : 'none';
-
-            const lblDisp = document.getElementById('fin-lbl-disp');
-            if (lblDisp) {
-                if (finanzasActivas.disponible < 0) {
-                    lblDisp.className = "fin-pill negativo";
-                    lblDisp.textContent = `⚠️ Negativo: ${fmtBs(finanzasActivas.disponible)}`;
-                } else {
-                    lblDisp.className = "fin-pill retirable";
-                    lblDisp.textContent = `💰 Retirable: ${fmtBs(finanzasActivas.disponible)}`;
-                }
-            }
-            const lblCashea = document.getElementById('fin-lbl-cashea');
-            const lblDep = document.getElementById('fin-lbl-dep');
-            const lblJug = document.getElementById('fin-lbl-jug');
-            const lblRet = document.getElementById('fin-lbl-ret');
-            if (lblCashea) lblCashea.textContent = `💳 Cashea/Promo: ${fmtBs(finanzasActivas.cashea)}`;
-            if (lblDep) lblDep.textContent = `📥 Dep: ${fmtBs(finanzasActivas.depositado)}`;
-            if (lblJug) lblJug.textContent = `🎲 Jug: ${fmtBs(finanzasActivas.jugado)}`;
-            if (lblRet) lblRet.textContent = `📤 Ret: ${fmtBs(finanzasActivas.retirado)}`;
-        }
-
-        function abrirModalMovimiento(accion) {
-            if (!ES_ADMIN || !adminChatActivo) return;
-            accionModalActual = accion;
-            document.getElementById('modal-mov-monto').value = "";
-            document.getElementById('modal-retiro-opciones').style.display = 'none';
-            document.getElementById('modal-notif-wrap').style.display = 'flex';
-
-            const titulos = {
-                jugada: "🎟️ Descontar Jugada del Saldo",
-                premio: "🏆 Acreditar Premio Ganador",
-                retiro: "💸 Liquidar Retiro (Calcula 0,3%)",
-                cashea_sumar: "💳 Asignar Crédito Cashea / Promo (No Retirable)"
-            };
-            document.getElementById('modal-mov-titulo').textContent = titulos[accion] || "Registrar Movimiento";
-
-            if (accion === "retiro") {
-                document.getElementById('modal-mov-monto').value = finanzasActivas.disponible > 0 ? finanzasActivas.disponible : "";
-                document.getElementById('modal-retiro-opciones').style.display = 'flex';
-                recalcularModalRetiro();
-            }
-
-            document.getElementById('modal-movimiento').style.display = 'flex';
-            setTimeout(() => document.getElementById('modal-mov-monto').focus(), 80);
-        }
-
-        function cerrarModalMovimiento() {
-            const modal = document.getElementById('modal-movimiento');
-            if (modal) modal.style.display = 'none';
-        }
-
-        function recalcularModalRetiro() {
-            if (accionModalActual !== "retiro") return;
-            const bruto = parseFloat(document.getElementById('modal-mov-monto').value) || 0;
-            const banco = document.getElementById('modal-retiro-banco').value;
-            const resBox = document.getElementById('modal-retiro-resumen');
-
-            if (bruto <= 0) {
-                resBox.innerHTML = "Escribe un monto para ver el cálculo exacto a transferir.";
-                return;
-            }
-            if (bruto > finanzasActivas.disponible) {
-                resBox.innerHTML = `<span style="color:#f87171; font-weight:bold;">⚠️ El monto supera el saldo retirable (${fmtBs(finanzasActivas.disponible)}).</span>`;
-                return;
-            }
-
-            if (banco === "bdv") {
-                resBox.innerHTML = `
-                    <div>🏦 <strong>Banco de Venezuela (0% comisión)</strong></div>
-                    <div>💸 Se descuenta del saldo: <strong>${fmtBs(bruto)}</strong></div>
-                    <div style="color:#34d399; font-size:0.95rem; margin-top:4px;">✅ Debes transferirle: <strong>${fmtBs(bruto)}</strong></div>
-                `;
-            } else {
-                const comision = Math.round(bruto * 0.003 * 100) / 100;
-                const netoPagar = Math.round((bruto - comision) * 100) / 100;
-                resBox.innerHTML = `
-                    <div>📲 <strong>Pago Móvil / Otro Banco (0,3% comisión)</strong></div>
-                    <div>💸 Se descuenta del saldo: <strong>${fmtBs(bruto)}</strong></div>
-                    <div>📉 Comisión bancaria (0,3%): <strong>-${fmtBs(comision)}</strong></div>
-                    <div style="color:#fbbf24; font-size:0.95rem; margin-top:4px;">✅ Debes transferirle neto: <strong>${fmtBs(netoPagar)}</strong></div>
-                `;
-            }
-        }
-
-        async function confirmarMovimientoFinanciero() {
-            if (!ES_ADMIN) return;
-            const monto = parseFloat(document.getElementById('modal-mov-monto').value) || 0;
-            if (monto <= 0) return alert("Ingresa un monto mayor a 0.");
-            if (accionModalActual === "retiro" && monto > finanzasActivas.disponible) {
-                return alert(`Solo puedes retirar hasta ${fmtBs(Math.max(0, finanzasActivas.disponible))}. El saldo promocional/Cashea no es retirable.`);
-            }
-
-            const notificarChat = document.getElementById('modal-mov-notif').checked;
-            cerrarModalMovimiento();
-
-            const res = await fetch(`${API_URL}/chat/finance`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Admin-Key": adminKey
-                },
-                body: JSON.stringify({
-                    chatId: adminChatActivo.chatId,
-                    accion: accionModalActual,
-                    monto,
-                    notificarChat
-                })
-            });
-            const data = await res.json();
-            if (data.ok) {
-                actualizarBarraFinancieraAdmin(data.finanzas);
-                cargarHistorial(adminChatActivo.chatId, "admin");
-            }
-        }
-
-        async function aprobarDepositoComprobante(msgId, montoDetectado, referencia) {
-            if (!ES_ADMIN || !adminChatActivo) return;
-            const montoStr = prompt("Confirma el monto exacto en Bs a sumar al saldo del cliente:", montoDetectado || "");
-            if (montoStr === null) return;
-            const montoNum = parseFloat(String(montoStr).replace(/\./g, "").replace(",", ".")) || 0;
-            if (montoNum <= 0) return alert("Monto inválido.");
-
-            const res = await fetch(`${API_URL}/chat/finance`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Admin-Key": adminKey
-                },
-                body: JSON.stringify({
-                    chatId: adminChatActivo.chatId,
-                    accion: "aprobar_deposito",
-                    monto: montoNum,
-                    msgId,
-                    referencia
-                })
-            });
-            const data = await res.json();
-            if (data.ok) {
-                actualizarBarraFinancieraAdmin(data.finanzas);
-                cargarHistorial(adminChatActivo.chatId, "admin");
-            }
-        }
-
-        async function enviarEstadoCuentaAlChat() {
-            if (!ES_ADMIN || !adminChatActivo) return;
-            const res = await fetch(`${API_URL}/chat/finance`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Admin-Key": adminKey
-                },
-                body: JSON.stringify({
-                    chatId: adminChatActivo.chatId,
-                    accion: "enviar_estado"
-                })
-            });
-            const data = await res.json();
-            if (data.ok) cargarHistorial(adminChatActivo.chatId, "admin");
-        }
-
-        function consultarMiSaldoRapido() {
-            if (ES_ADMIN) {
-                enviarEstadoCuentaAlChat();
-            } else {
-                enviarMensaje("saldo");
-            }
-        }
-
-        function abrirSalaAdmin(chatId, nombre) {
-            if (!ES_ADMIN || !quiereAdminURL) return;
-            adminChatActivo = { chatId, nombre };
-            ultimoTotalMensajes = -1;
-
-            document.getElementById('no-chat-selected').style.display = 'none';
-            document.getElementById('active-room').style.display = 'flex';
-            document.getElementById('room-title').textContent = `👤 ${nombre}`;
-            const btnDel = document.getElementById('btn-delete-chat');
-            const btnFin = document.getElementById('btn-toggle-fin');
-            if (btnDel) btnDel.style.display = 'inline-block';
-            if (btnFin) btnFin.style.display = 'inline-block';
-
-            if (window.innerWidth <= 768) {
-                const sb = document.getElementById('admin-sidebar');
-                const btnBack = document.getElementById('btn-back-admin');
-                if (sb) sb.classList.add('mobile-hide');
-                document.getElementById('chat-main-pane').classList.remove('mobile-hide');
-                if (btnBack) btnBack.style.display = 'inline-block';
-            } else {
-                const btnBack = document.getElementById('btn-back-admin');
-                if (btnBack) btnBack.style.display = 'none';
-            }
-
-            cargarHistorial(chatId, "admin").then(() => cargarListaAdmin());
-        }
-
-        function volverBandejaMobile() {
-            adminChatActivo = null;
-            const sb = document.getElementById('admin-sidebar');
-            if (sb) sb.classList.remove('mobile-hide');
-            document.getElementById('chat-main-pane').classList.add('mobile-hide');
-        }
-
-        function renderizarTarjetaPago(m) {
-            const ap = m.analisisPago;
-            if (!ap) return "";
-            let clase = "";
-            let estadoTxt = ap.aprobado ? "✅ DEPÓSITO SUMADO AL SALDO" : "✅ PAGO VÁLIDO VERIFICADO";
-            if (ap.duplicada && !ap.aprobado) {
-                clase = "dup";
-                estadoTxt = "🚨 REFERENCIA DUPLICADA (YA USADA)";
-            } else if (!ap.coincideHarold && !ap.aprobado) {
-                clase = "warn";
-                estadoTxt = "⚠️ REVISAR DESTINO MANUALMENTE";
-            }
-
-            const btnAprobar = (ES_ADMIN && !ap.aprobado && !ap.duplicada)
-                ? `<button type="button" class="btn-approve-receipt" onclick="aprobarDepositoComprobante(${m.id}, ${ap.montoNumerico || 0}, '${String(ap.referencia || '').replace(/'/g, '')}')">➕ Aprobar y Sumar ${ap.monto || ''}</button>`
-                : "";
-
-            return `
-                <div class="receipt-card ${clase}">
-                    <span class="receipt-status">${estadoTxt}</span>
-                    <div>💵 <strong>Monto:</strong> ${ap.monto || 'No detectado'}</div>
-                    <div>🔢 <strong>Operación:</strong> ${ap.referencia || 'No detectada'}</div>
-                    <div>📅 <strong>Fecha:</strong> ${ap.fecha || 'No detectada'}</div>
-                    <div>🎯 <strong>Destino:</strong> ${ap.destino || 'No identificado'}</div>
-                    ${btnAprobar}
-                </div>
-            `;
-        }
-
-        async function cargarHistorial(chatId, viewer) {
-            try {
-                const headers = (ES_ADMIN && viewer === "admin")
-                    ? { "X-Admin-Key": adminKey }
-                    : { "X-Client-Token": miClientToken };
-
-                const res = await fetch(`${API_URL}/chat/history?chatId=${chatId}&viewer=${viewer}&_t=${Date.now()}`, {
-                    cache: "no-store",
-                    headers
-                });
-                const data = await res.json();
-                if (!data.ok) return;
-
-                if (ES_ADMIN && data.hilo.finanzas) {
-                    actualizarBarraFinancieraAdmin(data.hilo.finanzas);
-                }
-
-                const msgs = data.hilo.mensajes || [];
-
-                if (!ES_ADMIN && ultimoTotalMensajes !== -1 && msgs.length > ultimoTotalMensajes) {
-                    const ultimo = msgs[msgs.length - 1];
-                    if (ultimo.sender === "admin") {
-                        const chatAbierto = document.getElementById('chat-wrapper').style.display === 'flex' && !sesionBloqueada;
-                        dispararAlertaCompleta("Agencia Harold José", ultimo.texto || "Imagen recibida", chatAbierto ? 0 : 1);
-                    }
-                }
-                ultimoTotalMensajes = msgs.length;
-
-                if (sesionBloqueada) return;
-
-                const box = document.getElementById('chat-box');
-                const estabaAbajo = box.scrollHeight - box.scrollTop <= box.clientHeight + 90;
-
-                let html = `
-                    <div class="msg in">
-                        ¡Bienvenido a <strong>Agencia Harold José</strong>! 🍀<br>
-                        Envíanos un saludo para activar automáticamente tu bono de bienvenida (si aún no lo has cobrado), escribe <strong>saldo</strong> para ver tu cuenta o adjunta tu capture con el clip 📎.
-                    </div>
-                `;
-
-                html += msgs.map(m => {
-                    const esMio = (ES_ADMIN && m.sender === "admin") || (!ES_ADMIN && m.sender === "client");
-                    return `
-                        <div class="msg ${esMio ? 'out' : 'in'}">
-                            ${m.imagen ? `<img src="${m.imagen}" alt="Comprobante" onclick="window.open(this.src)">` : ''}
-                            ${m.analisisPago ? renderizarTarjetaPago(m) : ''}
-                            ${m.texto ? `<div>${formatearTextoChat(m.texto)}</div>` : ''}
-                            <div class="msg-time">${m.hora} ${esMio ? '✓✓' : ''}</div>
-                        </div>
-                    `;
-                }).join('');
-
-                box.innerHTML = html;
-                if (estabaAbajo) box.scrollTop = box.scrollHeight;
-            } catch (e) {}
-        }
-
-        async function enviarMensaje(textoForzado = null, imagenBase64 = null) {
-            const input = document.getElementById('chat-input');
-            const texto = textoForzado !== null ? textoForzado : input.value.trim();
-            if (!texto && !imagenBase64) return;
-
-            const destinoId = ES_ADMIN ? (adminChatActivo && adminChatActivo.chatId) : miChatId;
-            if (!destinoId) {
-                alert("Verifica tu sesión antes de enviar mensajes.");
-                return;
-            }
-
-            if (textoForzado === null) input.value = '';
-
-            const box = document.getElementById('chat-box');
-            const horaAhora = new Date().toLocaleTimeString("es-VE", { hour: "2-digit", minute: "2-digit", hour12: true });
-            box.innerHTML += `
-                <div class="msg out" style="opacity:0.85;">
-                    ${imagenBase64 ? `<img src="${imagenBase64}" alt="Enviando...">` : ''}
-                    ${texto ? `<div>${formatearTextoChat(texto)}</div>` : ''}
-                    <div class="msg-time">${horaAhora} ⏳</div>
-                </div>
-            `;
-            box.scrollTop = box.scrollHeight;
-
-            const headers = {
-                "Content-Type": "application/json",
-                "X-Device-Id": DEVICE_ID
-            };
-            if (ES_ADMIN) headers["X-Admin-Key"] = adminKey;
-            else headers["X-Client-Token"] = miClientToken;
-
-            try {
-                const res = await fetch(`${API_URL}/chat/send`, {
-                    method: "POST",
-                    headers,
-                    body: JSON.stringify({
-                        chatId: destinoId,
-                        nombre: ES_ADMIN ? null : miNombre,
-                        telefono: ES_ADMIN ? null : miTelefono,
-                        deviceId: DEVICE_ID,
-                        texto: texto,
-                        imagen: imagenBase64,
-                        sender: ES_ADMIN ? "admin" : "client"
-                    })
-                });
-
-                if (res.status === 403 && !ES_ADMIN) {
-                    localStorage.removeItem("harold_verificado");
-                    miVerificado = false;
-                    mostrarRegistroCliente("⚠️ Tu sesión requiere verificar tu teléfono nuevamente en Telegram.");
-                    document.getElementById('welcome-overlay').style.display = 'flex';
-                    return;
-                }
-
-                await cargarHistorial(destinoId, ES_ADMIN ? "admin" : "client");
-                if (ES_ADMIN) cargarListaAdmin();
-            } catch (e) {
-                alert("Error de red al enviar el mensaje. Revisa tu conexión.");
-            }
-        }
-
-        function enviarPagoMovil() {
-            if (ES_ADMIN) {
-                enviarMensaje(REGLAS_Y_DATOS_TEXTO);
-            } else {
-                const box = document.getElementById('chat-box');
-                box.innerHTML += `<div class="msg in">${formatearTextoChat(REGLAS_Y_DATOS_TEXTO)}<div class="msg-time">Info Oficial</div></div>`;
-                box.scrollTop = box.scrollHeight;
-            }
-        }
-
-        function insertarTexto(txt) {
-            const input = document.getElementById('chat-input');
-            input.value += txt;
-            input.focus();
-        }
-
-        function enviarImagen(fileInput) {
-            const file = fileInput.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const maxW = 850;
-                    const scale = Math.min(1, maxW / img.width);
-                    canvas.width = img.width * scale;
-                    canvas.height = img.height * scale;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    const comprimida = canvas.toDataURL('image/jpeg', 0.82);
-                    enviarMensaje("📷 Comprobante adjunto", comprimida);
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-            fileInput.value = '';
-        }
-
-        function actualizarTickerUltimosResultados(loterias) {
-            const wrap = document.getElementById('ultimos-ticker-wrap');
-            const track = document.getElementById('ultimos-ticker-track');
-            if (!wrap || !track) return;
-
-            const ultimos = [];
-            loterias.forEach(lot => {
-                const salidos = (lot.sorteos || []).filter(s =>
-                    !s.animal.toUpperCase().includes('PENDIENTE') && !s.img.includes('logowin')
-                );
-                if (salidos.length > 0) {
-                    const ultimo = salidos[salidos.length - 1];
-                    ultimos.push({
-                        loteria: lot.nombre,
-                        hora: ultimo.hora,
-                        numero: ultimo.numero,
-                        animal: ultimo.animal,
-                        img: ultimo.img
-                    });
-                }
-            });
-
-            if (ultimos.length === 0) {
-                wrap.style.display = 'none';
-                return;
-            }
-
-            const itemsHtml = ultimos.map(u => `
-                <div class="ticker-item">
-                    <span class="ticker-lot">${u.loteria}</span>
-                    <span class="ticker-detalle">(${u.hora} &nbsp;<strong>${u.numero} - ${u.animal.toUpperCase()}</strong>)</span>
-                    <img src="${u.img}" alt="${u.animal}" onerror="this.src='logo.png'">
-                </div>
-            `).join('');
-
-            track.innerHTML = itemsHtml + itemsHtml;
-            const duracionSeg = Math.max(28, ultimos.length * 4.5);
-            track.style.animationDuration = `${duracionSeg}s`;
-            wrap.style.display = 'flex';
-        }
-
-        async function cargarResultados() {
-            const badge = document.getElementById('sync-status');
-            badge.textContent = "↻ ACTUALIZANDO...";
-            try {
-                const res = await fetch(`${API_URL}/`);
-                const data = await res.json();
-                if (data.ok && data.loterias) {
-                    todasLasLoterias = data.loterias;
-                    actualizarTickerUltimosResultados(todasLasLoterias);
-                    renderizarLoterias(todasLasLoterias);
-                    if (document.getElementById('datos-gratis').classList.contains('active')) {
-                        renderizarDatosGratis();
-                    }
-                }
-            } catch (err) { badge.textContent = "● OFFLINE"; }
-        }
-
-        async function cargarFlyers() {
-            const container = document.getElementById('flyers-container');
-            try {
-                const res = await fetch(`${API_URL}/flyers`);
-                const data = await res.json();
-                if (data.ok && data.flyers && data.flyers.length > 0) {
-                    container.innerHTML = data.flyers.map(f => {
-                        const esRollerCoin = /roller\s*coin|minar\s*cripto/i.test(`${f.titulo || ''} ${f.horario || ''}`);
-
-                        if (esRollerCoin) {
-                            return `
-                                <div class="flyer-card">
-                                    <img class="flyer-img" src="${f.img}" alt="RollerCoin" loading="lazy">
-                                    <div class="flyer-body">
-                                        <div class="flyer-info">
-                                            <span class="flyer-title">ROLLERCOIN • ¡Juega y Mina Criptomonedas!</span>
-                                            <span class="flyer-schedule">🪙 Regístrate gratis y empieza a minar</span>
-                                        </div>
-                                        <a class="btn-register" href="${ROLLERCOIN_REF_URL}" target="_blank" rel="noopener noreferrer">Registro</a>
-                                    </div>
-                                </div>
-                            `;
-                        }
-
-                        return `
-                            <div class="flyer-card">
-                                <img class="flyer-img" src="${f.img}" alt="${f.titulo}" loading="lazy">
-                                <div class="flyer-body">
-                                    <div class="flyer-info">
-                                        <span class="flyer-title">${f.titulo}</span>
-                                        ${f.horario ? `<span class="flyer-schedule">⏰ ${f.horario}</span>` : ''}
-                                    </div>
-                                    <button class="btn-play" onclick="irAlChat('Hola, quiero jugar: ${f.titulo.replace(/'/g, "")}')">Jugar</button>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                }
-            } catch (err) {}
-        }
-
-        function renderizarLoterias(lista) {
-            const container = document.getElementById('loterias-container');
-            const badge = document.getElementById('sync-status');
-
-            const hayAlgunResultadoHoy = todasLasLoterias.some(lot =>
-                lot.sorteos.some(s => !s.animal.toUpperCase().includes('PENDIENTE'))
-            );
-
-            const visibles = hayAlgunResultadoHoy
-                ? lista.filter(lot => lot.sorteos.some(s => !s.animal.toUpperCase().includes('PENDIENTE')))
-                : lista;
-
-            badge.textContent = `● ${visibles.length} LOTERÍAS`;
-
-            if (!visibles.length) {
-                container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 20px;">No se encontraron loterías con ese nombre.</p>`;
-                return;
-            }
-
-            container.innerHTML = visibles.map(lot => `
-                <div class="loteria-block">
-                    <div class="loteria-header">
-                        <h2>${lot.nombre}</h2>
-                        <span class="loteria-tag">${hayAlgunResultadoHoy ? '● ACTIVA' : '⏳ PRÓXIMAMENTE'}</span>
-                    </div>
-                    <div class="sorteos-grid">
-                        ${lot.sorteos.map(s => {
-                            const esPendiente = s.animal.toUpperCase().includes('PENDIENTE') || s.img.includes('logowin');
-                            return `
-                                <div class="sorteo-cell" style="${esPendiente ? 'opacity: 0.72;' : ''}">
-                                    <span class="num-pill" style="${esPendiente ? 'background:#374151; color:#e5e7eb;' : ''}">${esPendiente ? '⏳' : s.numero}</span>
-                                    <img src="${esPendiente ? 'logo.png' : s.img}" alt="${s.animal}" loading="lazy" onerror="this.src='logo.png'" style="${esPendiente ? 'border-color: #f59e0b;' : ''}">
-                                    <div class="sorteo-time">${s.hora}</div>
-                                    <div class="sorteo-animal" style="${esPendiente ? 'color:#9ca3af; font-weight:600;' : ''}">${esPendiente ? 'POR SALIR' : `${s.numero} - ${s.animal}`}</div>
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function filtrarLoterias() {
-            const q = document.getElementById('filtro-loteria').value.toLowerCase().trim();
-            renderizarLoterias(todasLasLoterias.filter(l => l.nombre.toLowerCase().includes(q)));
-        }
-
-        iniciarPantallaBienvenida();
-        cargarResultados();
-        cargarFlyers();
-        setInterval(() => { cargarResultados(); cargarFlyers(); }, 60000);
-        setInterval(() => {
-            if (ES_ADMIN && quiereAdminURL) {
-                cargarListaAdmin();
-                if (adminChatActivo && !sesionBloqueada) {
-                    cargarHistorial(adminChatActivo.chatId, "admin");
-                }
-            } else if (miChatId && miClientToken) {
-                cargarHistorial(miChatId, "client");
-            }
-        }, 3500);
-    </script>
+  `).join("");
+}
+
+async function cargarFlyers() {
+  const grid = document.getElementById("flyersGrid");
+  try {
+    const r = await fetch(API_BASE + "/flyers");
+    const d = await r.json();
+    if (d.ok && Array.isArray(d.flyers)) {
+      grid.innerHTML = d.flyers.map(f => `
+        <div class="flyer-card">
+          <img src="${f.img}" onerror="this.onerror=null;this.src='logo.png';" alt="Promo" />
+          <div class="flyer-body">
+            <div>
+              <h4>${f.titulo}</h4>
+              <p>${f.horario}</p>
+            </div>
+            <button class="pill green" onclick="jugarDesdePromo('${f.titulo.replace(/'/g, "")}')">Jugar</button>
+          </div>
+        </div>
+      `).join("");
+    }
+  } catch (e) {}
+}
+
+function jugarDesdePromo(titulo) {
+  const btnJugar = document.querySelectorAll("nav.tabs button")[3];
+  switchTab("jugar", btnJugar);
+  const inp = document.getElementById("txtClientMsg");
+  if (inp) inp.value = `Quiero jugar: ${titulo} - `;
+}
+
+/* FLUJO DE VERIFICACIÓN SIN POPUP DE ADVERTENCIA */
+function abrirTelegramBot() {
+  const nombre = document.getElementById("inpNombre").value.trim();
+  const tlf = document.getElementById("inpTelefono").value.replace(/\D/g, "");
+  if (!nombre) return alert("Escribe tu nombre y apellido primero.");
+  if (!/^0(412|422|414|424|416|426)\d{7}$/.test(tlf)) {
+    return alert("Ingresa un número venezolano válido de 11 dígitos (ej: 04121234567).");
+  }
+  localStorage.setItem("hj_tmp_nombre", nombre);
+  localStorage.setItem("hj_tmp_tlf", tlf);
+  window.open(`https://t.me/${BOT_USERNAME}?start=${tlf}`, "_blank");
+}
+
+async function verificarOtpCliente() {
+  const nombre = document.getElementById("inpNombre").value.trim();
+  const telefono = document.getElementById("inpTelefono").value.replace(/\D/g, "");
+  const codigo = document.getElementById("inpCodigo").value.trim();
+
+  if (!nombre || !telefono || !codigo) {
+    return alert("Completa tu nombre, teléfono y el código de 6 dígitos de Telegram.");
+  }
+
+  try {
+    const r = await fetch(API_BASE + "/auth/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Device-Id": getDeviceId() },
+      body: JSON.stringify({ nombre, telefono, codigo, deviceId: getDeviceId() })
+    });
+    const d = await r.json();
+    if (!d.ok) return alert(d.error || "Código inválido.");
+
+    localStorage.setItem("hj_session", JSON.stringify({
+      role: "client",
+      chatId: d.chatId,
+      clientToken: d.clientToken,
+      nombre: d.nombre,
+      telefono: d.telefono
+    }));
+    iniciarVistaSesion();
+  } catch (e) {
+    alert("Error de conexión con el servidor. Verifica tu internet.");
+  }
+}
+
+function toggleAdminLogin() {
+  const el = document.getElementById("adminLoginFields");
+  el.style.display = el.style.display === "none" ? "block" : "none";
+}
+
+async function entrarAdmin() {
+  const pass = document.getElementById("inpAdminPass").value;
+  try {
+    const r = await fetch(API_BASE + "/auth/admin", {
+      method: "POST",
+      headers: { "X-Admin-Key": pass }
+    });
+    const d = await r.json();
+    if (!d.ok) return alert(d.error || "Clave incorrecta.");
+    localStorage.setItem("hj_session", JSON.stringify({ role: "admin", adminKey: pass }));
+    iniciarVistaSesion();
+  } catch (e) {
+    alert("Error de conexión.");
+  }
+}
+
+function cerrarSesion() {
+  localStorage.removeItem("hj_session");
+  if (pollTimer) clearInterval(pollTimer);
+  document.getElementById("btnLogout").style.display = "none";
+  document.getElementById("loginBox").style.display = "block";
+  document.getElementById("clientChatBox").style.display = "none";
+  document.getElementById("adminPanelBox").style.display = "none";
+}
+
+function iniciarVistaSesion() {
+  const raw = localStorage.getItem("hj_session");
+  if (!raw) return;
+  const ses = JSON.parse(raw);
+
+  document.getElementById("btnLogout").style.display = "inline-block";
+  document.getElementById("loginBox").style.display = "none";
+
+  if (pollTimer) clearInterval(pollTimer);
+
+  if (ses.role === "client") {
+    document.getElementById("clientChatBox").style.display = "flex";
+    document.getElementById("adminPanelBox").style.display = "none";
+    document.getElementById("lblClientHeader").textContent = `Taquilla Harold José (${ses.nombre})`;
+    cargarHistorialCliente();
+    pollTimer = setInterval(cargarHistorialCliente, 4500);
+  } else if (ses.role === "admin") {
+    document.getElementById("clientChatBox").style.display = "none";
+    document.getElementById("adminPanelBox").style.display = "grid";
+    cargarListaChatsAdmin();
+    pollTimer = setInterval(() => {
+      cargarListaChatsAdmin();
+      if (window.activeAdminChatId) cargarHistorialAdmin(window.activeAdminChatId, false);
+    }, 4500);
+  }
+}
+
+function renderBurbujas(container, mensajes) {
+  const wasAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 80;
+  container.innerHTML = (mensajes || []).map(m => `
+    <div class="msg ${m.sender}">
+      ${m.imagen ? `<img src="${m.imagen}" alt="Comprobante" />` : ""}
+      <div>${(m.texto || "").replace(/\*(.*?)\*/g, "<strong>$1</strong>")}</div>
+      <div class="msg-meta">${m.hora || ""} ${m.pendiente ? "⏳" : "✓✓"}</div>
+    </div>
+  `).join("");
+  if (wasAtBottom) container.scrollTop = container.scrollHeight;
+}
+
+async function cargarHistorialCliente() {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "client") return;
+  try {
+    const r = await fetch(`${API_BASE}/chat/history?chatId=${encodeURIComponent(ses.chatId)}&viewer=client`, {
+      headers: { "X-Client-Token": ses.clientToken || "" }
+    });
+    const d = await r.json();
+    if (d.ok && d.hilo) {
+      const fin = d.hilo.finanzas || {};
+      const disp = (Number(fin.disponible) || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
+      const promo = (Number(fin.cashea) || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
+      document.getElementById("lblSaldoCliente").textContent = `Saldo: ${disp} Bs. | Promo: ${promo} Bs.`;
+      renderBurbujas(document.getElementById("clientMessages"), d.hilo.mensajes);
+    }
+  } catch (e) {}
+}
+
+function insertarTexto(txt) {
+  const inp = document.getElementById("txtClientMsg");
+  inp.value = txt;
+  inp.focus();
+}
+
+async function enviarMensajeCliente(textoForzado = null, imagenBase64 = null) {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses) return;
+
+  const inp = document.getElementById("txtClientMsg");
+  const texto = textoForzado !== null ? textoForzado : inp.value.trim();
+  if (!texto && !imagenBase64) return;
+  if (textoForzado === null) inp.value = "";
+
+  try {
+    const r = await fetch(API_BASE + "/chat/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Client-Token": ses.clientToken || "",
+        "X-Device-Id": getDeviceId()
+      },
+      body: JSON.stringify({
+        chatId: ses.chatId,
+        nombre: ses.nombre,
+        sender: "client",
+        texto,
+        imagen: imagenBase64,
+        deviceId: getDeviceId()
+      })
+    });
+    const d = await r.json();
+    if (!d.ok) {
+      alert("No se pudo enviar: " + (d.error || "Error del servidor"));
+      return;
+    }
+    await cargarHistorialCliente();
+  } catch (e) {
+    alert("Sin conexión con la taquilla. Revisa tus datos móviles o Wi-Fi.");
+  }
+}
+
+function subirCapture(ev) {
+  const file = ev.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    enviarMensajeCliente("📷 Comprobante adjunto", reader.result);
+  };
+  reader.readAsDataURL(file);
+  ev.target.value = "";
+}
+
+/* FUNCIONES ADMIN */
+async function cargarListaChatsAdmin() {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin") return;
+  try {
+    const r = await fetch(API_BASE + "/chat/list", { headers: { "X-Admin-Key": ses.adminKey } });
+    const d = await r.json();
+    if (d.ok) {
+      const list = document.getElementById("adminChatList");
+      list.innerHTML = d.chats.map(c => `
+        <div class="chat-row ${window.activeAdminChatId === c.chatId ? "active" : ""}" onclick="cargarHistorialAdmin('${c.chatId}', true)">
+          <div>
+            <div style="font-weight:700;font-size:13px;">${c.nombre}</div>
+            <div style="font-size:11px;color:var(--muted);">${c.ultimoMsg}</div>
+          </div>
+          ${c.sinLeer ? `<span class="badge-unread">${c.sinLeerCount}</span>` : `<span style="font-size:10px;color:var(--muted);">${c.hora}</span>`}
+        </div>
+      `).join("");
+    }
+  } catch (e) {}
+}
+
+async function cargarHistorialAdmin(chatId, scroll) {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin") return;
+  window.activeAdminChatId = chatId;
+  try {
+    const r = await fetch(`${API_BASE}/chat/history?chatId=${encodeURIComponent(chatId)}&viewer=admin`, {
+      headers: { "X-Admin-Key": ses.adminKey }
+    });
+    const d = await r.json();
+    if (d.ok && d.hilo) {
+      document.getElementById("lblAdminActiveChat").textContent = `${d.hilo.nombre} (${d.hilo.telefono})`;
+      const fin = d.hilo.finanzas || {};
+      document.getElementById("adminFinBar").style.display = "flex";
+      document.getElementById("lblAdminFinStats").textContent = `Disp: ${fin.disponible || 0} Bs. | Promo: ${fin.cashea || 0} Bs.`;
+      renderBurbujas(document.getElementById("adminMessages"), d.hilo.mensajes);
+    }
+  } catch (e) {}
+}
+
+async function enviarMensajeAdmin() {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || !window.activeAdminChatId) return;
+  const inp = document.getElementById("txtAdminMsg");
+  const texto = inp.value.trim();
+  if (!texto) return;
+  inp.value = "";
+  await fetch(API_BASE + "/chat/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({ chatId: window.activeAdminChatId, sender: "admin", texto })
+  });
+  cargarHistorialAdmin(window.activeAdminChatId, true);
+}
+
+async function accionFinanciera(accion) {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || !window.activeAdminChatId) return;
+  let monto = 0;
+  if (accion !== "enviar_estado") {
+    const val = prompt("Ingresa el monto en Bolívares (Bs.):");
+    if (!val) return;
+    monto = parseFloat(val.replace(",", "."));
+    if (isNaN(monto) || monto <= 0) return alert("Monto inválido.");
+  }
+  await fetch(API_BASE + "/chat/finance", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({ chatId: window.activeAdminChatId, accion, monto })
+  });
+  cargarHistorialAdmin(window.activeAdminChatId, true);
+}
+
+async function borrarChatActual() {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || !window.activeAdminChatId) return;
+  if (!confirm("¿Seguro que deseas eliminar este chat?")) return;
+  await fetch(API_BASE + "/chat/delete", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({ chatId: window.activeAdminChatId })
+  });
+  window.activeAdminChatId = null;
+  document.getElementById("adminMessages").innerHTML = "";
+  document.getElementById("adminFinBar").style.display = "none";
+  cargarListaChatsAdmin();
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const tmpNom = localStorage.getItem("hj_tmp_nombre");
+  const tmpTlf = localStorage.getItem("hj_tmp_tlf");
+  if (tmpNom) document.getElementById("inpNombre").value = tmpNom;
+  if (tmpTlf) document.getElementById("inpTelefono").value = tmpTlf;
+
+  cargarResultados();
+  setInterval(cargarResultados, 60000);
+  iniciarVistaSesion();
+});
+</script>
 </body>
 </html>
