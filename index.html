@@ -179,7 +179,19 @@
     white-space: nowrap;
   }
   .gaceta-chip.active { background: rgba(0,168,132,.18); border-color: var(--green); color: #25d366; }
-  .gaceta-bloque-title { font-size: 12px; font-weight: 800; color: var(--gold); margin: 12px 0 8px; text-transform: uppercase; }
+  .gaceta-bloque-title { font-size: 12px; font-weight: 800; color: var(--gold); margin: 14px 0 8px; text-transform: uppercase; }
+  .piramide-box {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: 5px;
+    color: var(--gold);
+    font-size: 14px;
+    word-break: break-word;
+  }
   .datos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 10px; }
   .dato-item {
     background: var(--panel2);
@@ -383,7 +395,7 @@
     <div id="gridLoterias" class="grid-loterias"></div>
   </section>
 
-  <!-- TAB 2: DATOS (COPIADO DE GACETA CON NOMBRE DE AGENCIA HAROLD JOSÉ) -->
+  <!-- TAB 2: DATOS (SIN CANDADO DE LA JAULA) -->
   <section id="tab-datos" class="view">
     <div class="section-pad">
       <div class="info-card">
@@ -633,9 +645,20 @@ async function cargarGacetaWinbig(loteria) {
   try {
     const r = await fetch(`${API_BASE}/gaceta?loteria=${encodeURIComponent(loteria)}`);
     const d = await r.json();
+
+    let piramideHtml = "";
+    if (d.piramideLineas && d.piramideLineas.length > 0) {
+      piramideHtml = `
+        <div class="gaceta-bloque-title">🔺 La Pirámide de la Fecha • Agencia Harold José</div>
+        <div class="piramide-box">${d.piramideLineas[0]}</div>
+      `;
+    }
+
     const htmlBloques =
+      renderBloqueGaceta("🕒 Último Sorteo • Agencia Harold José", d.ultimoSorteo) +
       renderBloqueGaceta("🎯 Radar de Atracción • Agencia Harold José", d.radar) +
-      renderBloqueGaceta("🔺 Fichas Resultantes de la Pirámide • Agencia Harold José", d.piramide) +
+      piramideHtml +
+      renderBloqueGaceta("🔺 Fichas Resultantes de la Pirámide • Agencia Harold José", d.piramideFichas) +
       renderBloqueGaceta("✝️ La Cruz de la Suerte • Agencia Harold José", d.cruz) +
       renderBloqueGaceta("👑 La Tripleta Millonaria • Agencia Harold José", d.tripleta) +
       renderBloqueGaceta("🔥 Animalitos en Racha • Agencia Harold José", d.racha) +
