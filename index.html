@@ -237,7 +237,6 @@
         .tab-btn { flex: 1; padding: 10px 6px; background: none; border: none; color: var(--text-muted); font-size: 0.72rem; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; position: relative; white-space: nowrap; }
         .tab-btn.active { color: var(--accent-green); border-bottom-color: var(--accent-green); }
         .tab-btn.datos-tab.active { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
-        .tab-btn.jaulas-tab.active { color: #38bdf8; border-bottom-color: #38bdf8; }
         .unread-badge {
             display: none;
             background: #ef4444;
@@ -376,7 +375,7 @@
         .sorteo-time { font-size: 0.65rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 2px; }
         .sorteo-animal { font-size: 0.68rem; font-weight: 800; color: #fff; text-transform: uppercase; line-height: 1.1; word-break: break-word; }
 
-        /* ESTILOS DE DATOS GRATIS, JAULAS Y EFECTIVIDAD EN VIVO */
+        /* ESTILOS DE DATOS GRATIS Y EFECTIVIDAD EN VIVO */
         .datos-loterias-bar {
             display: flex;
             gap: 7px;
@@ -459,7 +458,7 @@
             box-shadow: none;
         }
 
-        /* AVATAR OFICIAL DEL ANIMALITO (DISEÑO REAL DE CADA RULETA) */
+        /* AVATAR OFICIAL DEL ANIMALITO */
         .an-avatar {
             width: 46px;
             height: 46px;
@@ -485,80 +484,6 @@
         }
         .an-emoji-badge.sm { width: 28px; height: 28px; font-size: 0.92rem; }
         .an-emoji-badge.lg { width: 52px; height: 52px; font-size: 1.65rem; }
-
-        /* CUADRÍCULA DE MONITOR DE JAULAS */
-        .jaulas-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-            gap: 8px;
-        }
-        .jaula-cell {
-            background: var(--bg-card);
-            border: 1px solid #2a3942;
-            border-radius: 12px;
-            padding: 8px 5px;
-            text-align: center;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.15s, border-color 0.15s;
-        }
-        .jaula-cell:hover { transform: translateY(-2px); border-color: var(--accent-gold); }
-        .jaula-cell.top-jaula {
-            border: 1.5px solid var(--accent-gold);
-            background: linear-gradient(180deg, rgba(245, 158, 11, 0.14) 0%, var(--bg-card) 100%);
-        }
-        .jaula-num {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            background: #0b141a;
-            color: #fff;
-            border: 1px solid #374151;
-            font-size: 0.62rem;
-            font-weight: 900;
-            padding: 1px 5px;
-            border-radius: 6px;
-        }
-        .jaula-cell.top-jaula .jaula-num {
-            background: var(--accent-gold);
-            color: #000;
-            border-color: var(--accent-gold);
-        }
-        .jaula-animal {
-            font-size: 0.65rem;
-            font-weight: 800;
-            color: #fff;
-            margin-top: 4px;
-            text-transform: uppercase;
-            width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .jaula-dias-pill {
-            margin-top: 4px;
-            background: rgba(245, 158, 11, 0.16);
-            color: #fbbf24;
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            font-size: 0.64rem;
-            font-weight: 900;
-            padding: 2px 7px;
-            border-radius: 8px;
-            width: 90%;
-        }
-        .jaula-cell.top-jaula .jaula-dias-pill {
-            background: #ef4444;
-            color: #fff;
-            border-color: #ef4444;
-        }
-        .jaula-fecha {
-            font-size: 0.56rem;
-            color: var(--text-muted);
-            margin-top: 3px;
-        }
 
         /* ETIQUETAS Y RESALTADO DE ACIERTOS EN VIVO */
         .hit-ribbon {
@@ -716,18 +641,7 @@
         .tripleta-item span.t-nom { display: block; font-size: 0.65rem; font-weight: 900; color: #fff; margin-top: 3px; text-transform: uppercase; }
         .tripleta-item span.t-hora { display: block; font-size: 0.6rem; font-weight: 800; color: #fbbf24; margin-top: 1px; }
 
-        /* ENJAULADO, RACHA Y ELEMENTOS */
-        .enjaulado-box {
-            background: linear-gradient(90deg, #1b1712, #261f14);
-            border: 1px solid var(--accent-gold);
-            border-radius: 12px;
-            padding: 11px 13px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
+        /* RACHA Y ELEMENTOS */
         .racha-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 8px; }
         .elementos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
         .elem-card {
@@ -990,7 +904,6 @@
     <nav>
         <button class="tab-btn active" onclick="switchTab('resultados', this)">🏆 RESULTADOS</button>
         <button class="tab-btn datos-tab" onclick="switchTab('datos-gratis', this)">🍀 DATOS</button>
-        <button class="tab-btn jaulas-tab" onclick="switchTab('jaulas-sec', this)">🔒 JAULAS</button>
         <button class="tab-btn" onclick="switchTab('flyers', this)">📢 PROMOS</button>
         <button class="tab-btn" id="tab-chat-btn" onclick="switchTab('chat', this)">
             💬 JUGAR
@@ -1028,13 +941,6 @@
             <div class="datos-loterias-bar" id="datos-loterias-bar"></div>
             <div id="datos-gratis-content">
                 <p style="color: var(--text-muted); text-align: center; padding: 30px;">Calculando pronósticos del día...</p>
-            </div>
-        </section>
-
-        <section id="jaulas-sec" class="section">
-            <div class="datos-loterias-bar" id="jaulas-loterias-bar"></div>
-            <div id="jaulas-content">
-                <p style="color: var(--text-muted); text-align: center; padding: 30px;">Cargando Monitor Oficial de Jaulas...</p>
             </div>
         </section>
 
@@ -1225,9 +1131,7 @@ Harold Eliezer Galea Sanchez
 
         const DEVICE_ID = obtenerDeviceId();
         let todasLasLoterias = [];
-        let jaulasOficialesData = {};
         let loteriaDatosIdxSeleccionada = 0;
-        let loteriaJaulaKeySeleccionada = "LOTTO ACTIVO";
         let listaContactosCache = [];
         let chatsEliminadosRecientes = new Set();
         let miChatId = localStorage.getItem("harold_chat_id");
@@ -1725,7 +1629,6 @@ Harold Eliezer Galea Sanchez
                 document.querySelectorAll('#main-scroll .section').forEach(s => s.classList.remove('active'));
                 document.getElementById(tabId).classList.add('active');
                 if (tabId === 'datos-gratis') renderizarDatosGratis();
-                if (tabId === 'jaulas-sec') renderizarMonitorJaulas();
             }
         }
 
@@ -1737,7 +1640,7 @@ Harold Eliezer Galea Sanchez
             }, 150);
         }
 
-        /* ================= MONITOR DE JAULAS Y DATOS GRATIS CON IMÁGENES OFICIALES ================= */
+        /* ================= DATOS GRATIS CON IMÁGENES OFICIALES ================= */
         function limpiarTextoSinAcentos(txt) {
             return String(txt || "")
                 .normalize("NFD")
@@ -1756,16 +1659,6 @@ Harold Eliezer Galea Sanchez
             return mod === 0 ? "0" : String(mod).padStart(2, "0");
         }
 
-        function obtenerDataJaulasPorNombreLoteria(nombreLoteria) {
-            const clave = limpiarTextoSinAcentos(nombreLoteria);
-            if (jaulasOficialesData[clave]) return jaulasOficialesData[clave];
-            const encontrada = Object.values(jaulasOficialesData).find(j =>
-                clave.includes(j.key) || j.key.includes(clave)
-            );
-            return encontrada || null;
-        }
-
-        // Busca imagen oficial EXCLUSIVAMENTE de esa lotería (1° en sorteos del día, 2° en catálogo oficial /jaulas)
         function resolverAnimalSoloDeSuLoteria(numRaw, lotObj) {
             const nStr = normalizarNumeroAnimal(numRaw);
             const nSinCero = nStr === "00" ? "00" : String(parseInt(nStr, 10));
@@ -1784,13 +1677,6 @@ Harold Eliezer Galea Sanchez
                 if (matchHoy) imgOficial = matchHoy.img;
             }
 
-            if (!imgOficial && lotObj) {
-                const jData = obtenerDataJaulasPorNombreLoteria(lotObj.nombre);
-                if (jData && jData.imagenes) {
-                    imgOficial = jData.imagenes[nStr] || jData.imagenes[nSinCero] || "";
-                }
-            }
-
             return { ...base, img: imgOficial };
         }
 
@@ -1799,85 +1685,6 @@ Harold Eliezer Galea Sanchez
                 return `<img class="an-avatar ${sizeClass}" src="${an.img}" alt="${an.nombre}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';"><span class="an-emoji-badge ${sizeClass}" style="display:none;">${an.icono || '🐾'}</span>`;
             }
             return `<span class="an-emoji-badge ${sizeClass}">${an.icono || '🐾'}</span>`;
-        }
-
-        async function cargarJaulasOficiales() {
-            try {
-                const res = await fetch(`${API_URL}/jaulas`);
-                const data = await res.json();
-                if (data.ok && data.jaulas) {
-                    jaulasOficialesData = data.jaulas;
-                    if (document.getElementById('jaulas-sec').classList.contains('active')) {
-                        renderizarMonitorJaulas();
-                    }
-                    if (document.getElementById('datos-gratis').classList.contains('active')) {
-                        renderizarDatosGratis();
-                    }
-                }
-            } catch (e) {}
-        }
-
-        function seleccionarLoteriaJaula(key) {
-            loteriaJaulaKeySeleccionada = key;
-            renderizarMonitorJaulas();
-        }
-
-        function renderizarMonitorJaulas() {
-            const bar = document.getElementById('jaulas-loterias-bar');
-            const cont = document.getElementById('jaulas-content');
-            if (!bar || !cont) return;
-
-            const listaJaulasLots = Object.values(jaulasOficialesData);
-            if (listaJaulasLots.length === 0) {
-                cont.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:30px;">⏳ Sincronizando estadísticas oficiales de jaulas...</p>`;
-                return;
-            }
-
-            if (!jaulasOficialesData[loteriaJaulaKeySeleccionada]) {
-                loteriaJaulaKeySeleccionada = listaJaulasLots[0].key;
-            }
-
-            bar.innerHTML = listaJaulasLots.map(j => `
-                <button class="datos-lot-pill ${j.key === loteriaJaulaKeySeleccionada ? 'active' : ''}"
-                    onclick="seleccionarLoteriaJaula('${j.key}')">
-                    ${j.nombre}
-                </button>
-            `).join('');
-
-            const actual = jaulasOficialesData[loteriaJaulaKeySeleccionada];
-            const ahoraVE = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Caracas" }));
-            const fechaHora = ahoraVE.toLocaleString("es-VE", {
-                weekday: "long", day: "numeric", month: "long", year: "numeric",
-                hour: "2-digit", minute: "2-digit", hour12: true
-            });
-
-            cont.innerHTML = `
-                <div class="datos-hero">
-                    <span class="datos-hero-badge">🔒 ESTADÍSTICA REAL • AGENCIA HAROLD JOSÉ</span>
-                    <h2>MONITOR DE JAULAS • ${actual.nombre}</h2>
-                    <p>ANIMALITOS CON MÁS DÍAS SIN SALIR (ORDENADOS DE MAYOR A MENOR REZAGO)</p>
-                    <div class="datos-meta-row">
-                        <span class="datos-date-pill">📅 ${fechaHora}</span>
-                        <span class="efectividad-pill">🔥 #1 ENJAULADO: ${actual.enjaulados[0].numero} - ${actual.enjaulados[0].animal} (${actual.enjaulados[0].diasSinSalir} DÍAS)</span>
-                    </div>
-                </div>
-
-                <div class="jaulas-grid">
-                    ${actual.enjaulados.map((item, idx) => {
-                        const esTop = idx < 3;
-                        const msgJugar = `irAlChat('Hola, quiero jugar en ${actual.nombre}: ${item.numero} - ${item.animal}')`;
-                        return `
-                            <div class="jaula-cell ${esTop ? 'top-jaula' : ''}" onclick="${msgJugar}" title="Toca para jugar">
-                                <span class="jaula-num">${item.numero}</span>
-                                <img class="an-avatar" src="${item.img}" alt="${item.animal}" loading="lazy" onerror="this.src='logo.png'">
-                                <div class="jaula-animal">${item.animal}</div>
-                                <div class="jaula-dias-pill">${item.diasSinSalir} ${item.diasSinSalir === 1 ? 'Día' : 'Días'}</div>
-                                <div class="jaula-fecha">Últ: ${item.ultimaSalida}</div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
         }
 
         function construirPiramideFecha(fechaStr) {
@@ -2001,41 +1808,19 @@ Harold Eliezer Galea Sanchez
                 sur: resolverAnimalSoloDeSuLoteria((seed + 31) % 37, lotObj)
             };
 
-            // 4. CANDADO DE LA JAULA REAL (Desde /jaulas de loteriadehoy.com)
-            const jData = obtenerDataJaulasPorNombreLoteria(lotObj.nombre);
-            let enjaulado = null;
-            let textoRezagoEnjaulado = "";
-
-            if (jData && jData.enjaulados && jData.enjaulados.length > 0) {
-                const top1 = jData.enjaulados[0];
-                const baseTop1 = ANIMALITOS_BASE.find(a =>
-                    a.num === normalizarNumeroAnimal(top1.numero) || a.num === String(top1.numero)
-                );
-                enjaulado = {
-                    num: String(top1.numero),
-                    nombre: top1.animal,
-                    img: top1.img,
-                    icono: baseTop1 ? baseTop1.icono : "🔒"
-                };
-                textoRezagoEnjaulado = `${top1.diasSinSalir} DÍAS SIN SALIR (OFICIAL • Última vez: ${top1.ultimaSalida})`;
-            } else {
-                enjaulado = resolverAnimalSoloDeSuLoteria((seed * 7 + 17) % 37, lotObj);
-                textoRezagoEnjaulado = `Animalito rezagado en ${lotObj.nombre}`;
-            }
-
-            // 5. Tripleta Sugerida Harold José (incluye el #1 enjaulado real)
-            const tripleta = [fichasPiramide[0], cruz.norte, enjaulado];
-            if (tripleta[1].num === tripleta[0].num) tripleta[1] = cruz.este;
+            // 4. Tripleta Sugerida Harold José
+            const tripleta = [fichasPiramide[0], cruz.norte, cruz.este];
+            if (tripleta[1].num === tripleta[0].num) tripleta[1] = cruz.oeste;
             if (tripleta[2].num === tripleta[0].num || tripleta[2].num === tripleta[1].num) tripleta[2] = cruz.sur;
 
-            // 6. Animalitos en racha
+            // 5. Animalitos en racha
             const racha = [
                 { animal: resolverAnimalSoloDeSuLoteria((seed + 9) % 37, lotObj), salidas: (seed % 4) + 3 },
                 { animal: resolverAnimalSoloDeSuLoteria((seed + 19) % 37, lotObj), salidas: ((seed + 2) % 4) + 3 },
                 { animal: resolverAnimalSoloDeSuLoteria((seed + 27) % 37, lotObj), salidas: ((seed + 1) % 4) + 3 }
             ];
 
-            // 7. Los 4 Elementos del Día
+            // 6. Los 4 Elementos del Día
             const elementos = [
                 { elem: "🔥 FUEGO", animal: resolverAnimalSoloDeSuLoteria((seed + 3) % 37, lotObj) },
                 { elem: "🌿 TIERRA", animal: resolverAnimalSoloDeSuLoteria((seed + 12) % 37, lotObj) },
@@ -2047,7 +1832,6 @@ Harold Eliezer Galea Sanchez
             const pronosticosFijos = [
                 ...fichasPiramide,
                 cruz.norte, cruz.oeste, cruz.rey, cruz.este, cruz.sur,
-                enjaulado,
                 ...tripleta,
                 ...racha.map(r => r.animal),
                 ...elementos.map(e => e.animal)
@@ -2071,8 +1855,6 @@ Harold Eliezer Galea Sanchez
                     </div>
                 `;
             };
-
-            const enjauladoHora = horaAcierto(enjaulado);
 
             let estadoEfectividadHtml = `⏳ ESPERANDO PRIMEROS SORTEOS DE ${lotObj.nombre.toUpperCase()}`;
             if (totalAciertosHoy > 0) {
@@ -2172,20 +1954,6 @@ Harold Eliezer Galea Sanchez
                             <div></div>
                         </div>
                     </div>
-                </div>
-
-                <div class="enjaulado-box ${enjauladoHora ? 'is-hit' : ''}">
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        ${renderAvatarAnimal(enjaulado, "lg")}
-                        <div>
-                            ${enjauladoHora
-                                ? `<span class="hit-ribbon">🎯 ¡REVENTÓ HOY A LAS ${enjauladoHora}!</span>`
-                                : `<div style="font-size:0.65rem; color:var(--accent-gold); font-weight:900;">🔒 CANDADO DE LA JAULA (POR REVENTAR)</div>`}
-                            <div style="font-size:0.95rem; font-weight:900; color:#fff;">${enjaulado.num} - ${enjaulado.nombre}</div>
-                            <div style="font-size:0.7rem; color:#fbbf24; font-weight:700;">${textoRezagoEnjaulado}</div>
-                        </div>
-                    </div>
-                    <button class="btn-register" onclick="${jugarIndividual(enjaulado)}">Jugar Ahora</button>
                 </div>
 
                 <div class="tripleta-banner">
@@ -2930,10 +2698,8 @@ Harold Eliezer Galea Sanchez
 
         iniciarPantallaBienvenida();
         cargarResultados();
-        cargarJaulasOficiales();
         cargarFlyers();
         setInterval(() => { cargarResultados(); cargarFlyers(); }, 60000);
-        setInterval(() => { cargarJaulasOficiales(); }, 300000);
         setInterval(() => {
             if (ES_ADMIN && quiereAdminURL) {
                 cargarListaAdmin();
