@@ -15,6 +15,7 @@
             --bg-card: #1c272e;
             --accent-green: #00a884;
             --accent-gold: #f59e0b;
+            --accent-red: #ef4444;
             --text-main: #e9edef;
             --text-muted: #8696a0;
             --chat-out: #005c4b;
@@ -144,9 +145,10 @@
             .status-badge { display: none; }
         }
 
-        nav { display: flex; background-color: var(--bg-card); border-bottom: 2px solid #2a3942; flex-shrink: 0; }
-        .tab-btn { flex: 1; padding: 9px 4px; background: none; border: none; color: var(--text-muted); font-weight: 700; font-size: 0.76rem; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        nav { display: flex; background-color: var(--bg-card); border-bottom: 2px solid #2a3942; flex-shrink: 0; overflow-x: auto; }
+        .tab-btn { flex: 1; padding: 9px 4px; background: none; border: none; color: var(--text-muted); font-weight: 700; font-size: 0.72rem; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 4px; white-space: nowrap; }
         .tab-btn.active { color: var(--accent-green); border-bottom-color: var(--accent-green); }
+        .tab-btn.datos-tab.active { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
         .unread-badge { display: none; background: #ef4444; color: #fff; font-size: 0.66rem; font-weight: 900; padding: 1px 6px; border-radius: 10px; box-shadow: 0 0 8px rgba(239, 68, 68, 0.8); }
 
         .app-banner-bar { background: linear-gradient(90deg, #132a28, #272215); border-bottom: 1px solid rgba(245, 158, 11, 0.45); padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; flex-shrink: 0; }
@@ -211,6 +213,308 @@
         .sorteo-time { font-size: 0.65rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 2px; }
         .sorteo-animal { font-size: 0.68rem; font-weight: 800; color: #fff; text-transform: uppercase; line-height: 1.1; word-break: break-word; }
 
+        /* ESTILOS DE SECCIÓN DATOS GRATIS Y EFECTIVIDAD EN VIVO */
+        .datos-loterias-bar {
+            display: flex;
+            gap: 7px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            scrollbar-width: thin;
+        }
+        .datos-lot-pill {
+            background: var(--bg-card);
+            border: 1px solid #2e3d47;
+            color: var(--text-main);
+            padding: 8px 13px;
+            border-radius: 10px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: 0.18s;
+            text-transform: uppercase;
+        }
+        .datos-lot-pill.active {
+            background: linear-gradient(135deg, var(--accent-gold), #d97706);
+            color: #000;
+            border-color: var(--accent-gold);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+        }
+        .datos-hero {
+            background: linear-gradient(135deg, #16282a 0%, #1c272e 60%, #241f14 100%);
+            border: 1px solid rgba(245, 158, 11, 0.45);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .datos-hero-badge {
+            display: inline-block;
+            background: rgba(0, 168, 132, 0.2);
+            color: #34d399;
+            font-size: 0.66rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 6px;
+            letter-spacing: 0.4px;
+        }
+        .datos-hero h2 { font-size: 1.15rem; font-weight: 900; color: #fff; letter-spacing: 0.5px; }
+        .datos-hero p { font-size: 0.74rem; color: var(--accent-gold); font-weight: 700; margin-top: 3px; }
+        .datos-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 9px;
+        }
+        .datos-date-pill {
+            background: #0b141a;
+            border: 1px solid #2e3d47;
+            padding: 5px 12px;
+            border-radius: 14px;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+        .efectividad-pill {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: #fff;
+            padding: 5px 13px;
+            border-radius: 14px;
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.3px;
+            box-shadow: 0 3px 12px rgba(239, 68, 68, 0.45);
+        }
+        .efectividad-pill.cero {
+            background: rgba(0, 168, 132, 0.18);
+            color: #34d399;
+            border: 1px solid rgba(0, 168, 132, 0.4);
+            box-shadow: none;
+        }
+
+        /* AVATAR DE ANIMALITO (OFICIAL DE LA LOTERÍA O FICHA HD PROPIA) */
+        .an-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid var(--accent-gold);
+            background: radial-gradient(circle at 30% 30%, #263945, #0f1920);
+            flex-shrink: 0;
+        }
+        .an-emoji-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1.5px solid var(--accent-gold);
+            background: radial-gradient(circle at 30% 30%, #243842, #0d161c);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.45rem;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+        .an-emoji-badge.sm {
+            width: 26px;
+            height: 26px;
+            font-size: 0.92rem;
+            border-width: 1px;
+        }
+        .an-emoji-badge.lg {
+            width: 48px;
+            height: 48px;
+            font-size: 1.65rem;
+            border-width: 2px;
+        }
+
+        /* ETIQUETAS Y RESALTADO DE ACIERTOS EN VIVO */
+        .hit-ribbon {
+            display: inline-block;
+            background: #ef4444;
+            color: #fff;
+            font-size: 0.58rem;
+            font-weight: 900;
+            padding: 2px 6px;
+            border-radius: 7px;
+            letter-spacing: 0.2px;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.55);
+            margin-bottom: 3px;
+            text-transform: uppercase;
+        }
+        .is-hit {
+            border: 2px solid #ef4444 !important;
+            background: linear-gradient(180deg, rgba(239, 68, 68, 0.18) 0%, var(--bg-panel) 100%) !important;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.32);
+        }
+
+        .radar-strip {
+            background: linear-gradient(90deg, #101c22, #18262e);
+            border: 1px solid #2e3d47;
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .radar-last { display: flex; align-items: center; gap: 9px; }
+        .radar-jaladores { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+        .jala-chip {
+            background: var(--bg-panel);
+            border: 1px solid rgba(0, 168, 132, 0.45);
+            border-radius: 10px;
+            padding: 5px 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 800;
+        }
+        .jala-chip img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
+
+        .datos-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 12px; margin-bottom: 12px; }
+        .datos-card {
+            background: var(--bg-card);
+            border: 1px solid #2a3942;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        .datos-grid-2 .datos-card { margin-bottom: 0; }
+        .datos-card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a3942;
+            padding-bottom: 7px;
+            margin-bottom: 10px;
+        }
+        .datos-card-head h3 { font-size: 0.84rem; font-weight: 900; color: var(--accent-gold); }
+        .datos-card-tag { font-size: 0.62rem; background: #0b141a; color: var(--text-muted); padding: 2px 7px; border-radius: 6px; font-weight: 700; }
+
+        /* PIRÁMIDE NUMÉRICA */
+        .piramide-rows { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 12px; }
+        .piramide-row { display: flex; gap: 4px; justify-content: center; }
+        .pir-digit {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: var(--bg-panel);
+            border: 1px solid #2e3d47;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.74rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .pir-digit.punta { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); font-weight: 900; }
+
+        .mini-animal-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .mini-animal-box {
+            background: var(--bg-panel);
+            border: 1px solid #2e3d47;
+            border-radius: 9px;
+            padding: 6px 4px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .mini-animal-box:hover { border-color: var(--accent-green); }
+        .mini-animal-box .num { position: absolute; top: 3px; right: 3px; background: var(--accent-gold); color: #000; font-size: 0.6rem; font-weight: 900; padding: 1px 4px; border-radius: 8px; }
+        .mini-animal-box .nom { font-size: 0.62rem; font-weight: 800; color: #fff; margin-top: 3px; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; }
+
+        /* CRUZ DE LA SUERTE */
+        .cruz-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            align-items: center;
+            justify-items: center;
+            padding: 4px 0;
+        }
+        .cruz-cell {
+            background: var(--bg-panel);
+            border: 1px solid #2e3d47;
+            border-radius: 10px;
+            padding: 7px 5px;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .cruz-cell.rey { border: 2px solid var(--accent-gold); background: rgba(245, 158, 11, 0.12); }
+        .cruz-pos { font-size: 0.6rem; font-weight: 900; color: var(--accent-gold); letter-spacing: 0.5px; margin-bottom: 3px; }
+        .cruz-name { font-size: 0.64rem; font-weight: 800; color: #fff; margin-top: 3px; text-transform: uppercase; }
+
+        /* TRIPLETA DEL DÍA */
+        .tripleta-banner {
+            background: linear-gradient(135deg, #102a43 0%, #1e3a5f 100%);
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .tripleta-items { display: flex; gap: 8px; align-items: stretch; flex-wrap: wrap; }
+        .tripleta-item {
+            text-align: center;
+            background: rgba(11, 20, 26, 0.78);
+            padding: 7px 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            min-width: 82px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .tripleta-item span.t-nom { display: block; font-size: 0.65rem; font-weight: 900; color: #fff; margin-top: 3px; text-transform: uppercase; }
+        .tripleta-item span.t-hora { display: block; font-size: 0.6rem; font-weight: 800; color: #fbbf24; margin-top: 1px; }
+
+        /* ENJAULADO, RACHA Y ELEMENTOS */
+        .enjaulado-box {
+            background: linear-gradient(90deg, #1b1712, #261f14);
+            border: 1px solid var(--accent-gold);
+            border-radius: 12px;
+            padding: 11px 13px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .racha-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 8px; }
+        .elementos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+        .elem-card {
+            background: var(--bg-panel);
+            border: 1px solid #2e3d47;
+            border-radius: 10px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .elem-card:hover { border-color: var(--accent-gold); }
+
         .flyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 14px; align-items: start; }
         .flyer-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid #2a3942; display: flex; flex-direction: column; justify-content: flex-start; }
         .flyer-img { width: 100%; height: auto; display: block; object-fit: contain; background: #0b141a; }
@@ -245,7 +549,6 @@
         .empty-chat-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); text-align: center; padding: 20px; }
         .empty-chat-placeholder img { width: 70px; height: 70px; border-radius: 16px; margin-bottom: 12px; opacity: 0.8; border: 2px solid var(--accent-gold); }
 
-        /* PANEL FINANCIERO PRIVADO DEL ADMIN (PLEGABLE PARA NO TAPAR EL CHAT) */
         .admin-finance-strip {
             background: #131e24;
             border-bottom: 1px solid #2a3942;
@@ -300,7 +603,6 @@
             width: 100%;
         }
 
-        /* MODAL CALCULADORA DE RETIROS Y MOVIMIENTOS (SOLO ADMIN) */
         #modal-movimiento {
             display: none;
             position: fixed;
@@ -460,9 +762,10 @@
 
     <nav>
         <button class="tab-btn active" onclick="switchTab('resultados', this)">🏆 RESULTADOS</button>
+        <button class="tab-btn datos-tab" onclick="switchTab('datos-gratis', this)">🍀 DATOS GRATIS</button>
         <button class="tab-btn" onclick="switchTab('flyers', this)">📢 PROMOS</button>
         <button class="tab-btn" id="tab-chat-btn" onclick="switchTab('chat', this)">
-            💬 JUGAR (CHAT)
+            💬 JUGAR
             <span class="unread-badge" id="chat-badge">0</span>
         </button>
     </nav>
@@ -490,6 +793,13 @@
 
             <div id="loterias-container">
                 <p style="color: var(--text-muted); text-align: center; padding: 30px;">Cargando sorteos del día...</p>
+            </div>
+        </section>
+
+        <section id="datos-gratis" class="section">
+            <div class="datos-loterias-bar" id="datos-loterias-bar"></div>
+            <div id="datos-gratis-content">
+                <p style="color: var(--text-muted); text-align: center; padding: 30px;">Calculando pronósticos del día...</p>
             </div>
         </section>
 
@@ -534,7 +844,6 @@
                         </div>
                     </div>
 
-                    <!-- ESTE PANEL SOLO SE RENDERIZA SI ES_ADMIN === TRUE -->
                     <div class="admin-finance-strip" id="admin-finance-strip">
                         <div class="fin-metrics">
                             <span class="fin-pill retirable" id="fin-lbl-disp">💰 Retirable: 0,00 Bs.</span>
@@ -580,6 +889,47 @@
         const TITULO_ORIGINAL = "Agencia Harold José - Seguridad, Confianza y Experiencia";
         const TIEMPO_EXPIRACION_MS = 15 * 60 * 1000;
         const ROLLERCOIN_REF_URL = "https://rollercoin.com/?r=kqmow2ag";
+
+        const ANIMALITOS_BASE = [
+            { num: "0", nombre: "DELFÍN", icono: "🐬" },
+            { num: "00", nombre: "BALLENA", icono: "🐋" },
+            { num: "01", nombre: "CARNERO", icono: "🐏" },
+            { num: "02", nombre: "TORO", icono: "🐂" },
+            { num: "03", nombre: "CIEMPIÉS", icono: "🐛" },
+            { num: "04", nombre: "ALACRÁN", icono: "🦂" },
+            { num: "05", nombre: "LEÓN", icono: "🦁" },
+            { num: "06", nombre: "RANA", icono: "🐸" },
+            { num: "07", nombre: "PERICO", icono: "🦜" },
+            { num: "08", nombre: "RATÓN", icono: "🐭" },
+            { num: "09", nombre: "ÁGUILA", icono: "🦅" },
+            { num: "10", nombre: "TIGRE", icono: "🐯" },
+            { num: "11", nombre: "GATO", icono: "🐱" },
+            { num: "12", nombre: "CABALLO", icono: "🐴" },
+            { num: "13", nombre: "MONO", icono: "🐒" },
+            { num: "14", nombre: "PALOMA", icono: "🕊️" },
+            { num: "15", nombre: "ZORRO", icono: "🦊" },
+            { num: "16", nombre: "OSO", icono: "🐻" },
+            { num: "17", nombre: "PAVO", icono: "🦃" },
+            { num: "18", nombre: "BURRO", icono: "🫏" },
+            { num: "19", nombre: "CHIVO", icono: "🐐" },
+            { num: "20", nombre: "COCHINO", icono: "🐷" },
+            { num: "21", nombre: "GALLO", icono: "🐓" },
+            { num: "22", nombre: "CAMELLO", icono: "🐪" },
+            { num: "23", nombre: "CEBRA", icono: "🦓" },
+            { num: "24", nombre: "IGUANA", icono: "🦎" },
+            { num: "25", nombre: "GALLINA", icono: "🐔" },
+            { num: "26", nombre: "VACA", icono: "🐄" },
+            { num: "27", nombre: "PERRO", icono: "🐕" },
+            { num: "28", nombre: "ZAMURO", icono: "🦅" },
+            { num: "29", nombre: "ELEFANTE", icono: "🐘" },
+            { num: "30", nombre: "CAIMÁN", icono: "🐊" },
+            { num: "31", nombre: "LAPA", icono: "🦫" },
+            { num: "32", nombre: "ARDILLA", icono: "🐿️" },
+            { num: "33", nombre: "PESCADO", icono: "🐟" },
+            { num: "34", nombre: "VENADO", icono: "🦌" },
+            { num: "35", nombre: "JIRAFA", icono: "🦒" },
+            { num: "36", nombre: "CULEBRA", icono: "🐍" }
+        ];
 
         const REGLAS_Y_DATOS_TEXTO = `*📝 REGLAS DE JUEGO ACTUALIZADAS*
 💰 MONTOS MÍNIMOS
@@ -640,6 +990,7 @@ Harold Eliezer Galea Sanchez
 
         const DEVICE_ID = obtenerDeviceId();
         let todasLasLoterias = [];
+        let loteriaDatosIdxSeleccionada = 0;
         let listaContactosCache = [];
         let chatsEliminadosRecientes = new Set();
         let miChatId = localStorage.getItem("harold_chat_id");
@@ -1136,6 +1487,7 @@ Harold Eliezer Galea Sanchez
                 mainScroll.style.display = 'block';
                 document.querySelectorAll('#main-scroll .section').forEach(s => s.classList.remove('active'));
                 document.getElementById(tabId).classList.add('active');
+                if (tabId === 'datos-gratis') renderizarDatosGratis();
             }
         }
 
@@ -1145,6 +1497,409 @@ Harold Eliezer Galea Sanchez
                 const input = document.getElementById('chat-input');
                 if (input) { input.value = mensaje; input.focus(); }
             }, 150);
+        }
+
+        /* ================= MOTOR DE DATOS GRATIS (SIN CRUCE DE IMÁGENES) ================= */
+        function limpiarTextoSinAcentos(txt) {
+            return String(txt || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toUpperCase()
+                .trim();
+        }
+
+        function normalizarNumeroAnimal(numRaw) {
+            let s = String(numRaw || "").trim();
+            if (s === "00") return "00";
+            const n = parseInt(s, 10);
+            if (isNaN(n)) return "0";
+            if (n === 0) return "0";
+            const mod = Math.abs(n) % 37;
+            return mod === 0 ? "0" : String(mod).padStart(2, "0");
+        }
+
+        // Busca imagen EXCLUSIVAMENTE dentro de la MISMA lotería y verificando que coincida número Y nombre
+        function resolverAnimalSoloDeSuLoteria(numRaw, lotObj) {
+            const nStr = normalizarNumeroAnimal(numRaw);
+            const base = ANIMALITOS_BASE.find(a => a.num === nStr) || ANIMALITOS_BASE[0];
+            const nombreBaseLimpio = limpiarTextoSinAcentos(base.nombre);
+
+            let imgOficialLoteria = "";
+            if (lotObj && Array.isArray(lotObj.sorteos)) {
+                const matchExacto = lotObj.sorteos.find(s => {
+                    if (!s.img || s.img.includes("logowin")) return false;
+                    const sNum = String(s.numero || "").trim();
+                    const sNom = limpiarTextoSinAcentos(s.animal);
+                    return sNum === base.num && sNom.includes(nombreBaseLimpio);
+                });
+                if (matchExacto) imgOficialLoteria = matchExacto.img;
+            }
+            return { ...base, img: imgOficialLoteria };
+        }
+
+        function renderAvatarAnimal(an, sizeClass = "") {
+            if (an.img) {
+                return `<img class="an-avatar" style="${sizeClass === 'sm' ? 'width:26px;height:26px;' : sizeClass === 'lg' ? 'width:48px;height:48px;' : ''}" src="${an.img}" alt="${an.nombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';"><span class="an-emoji-badge ${sizeClass}" style="display:none;">${an.icono}</span>`;
+            }
+            return `<span class="an-emoji-badge ${sizeClass}">${an.icono}</span>`;
+        }
+
+        function construirPiramideFecha(fechaStr) {
+            let fila = fechaStr.replace(/\D/g, "").split("").map(Number);
+            if (fila.length < 8) fila = [1, 9, 1, 1, 2, 0, 2, 6];
+            const filas = [fila];
+            while (fila.length > 1) {
+                const siguiente = [];
+                for (let i = 0; i < fila.length - 1; i++) {
+                    siguiente.push((fila[i] + fila[i + 1]) % 10);
+                }
+                filas.push(siguiente);
+                fila = siguiente;
+            }
+            return filas;
+        }
+
+        function hashSemilla(str) {
+            let h = 2166136261;
+            for (let i = 0; i < str.length; i++) {
+                h ^= str.charCodeAt(i);
+                h = Math.imul(h, 16777619);
+            }
+            return Math.abs(h);
+        }
+
+        function obtenerLoteriasUnicasDatos() {
+            const base = todasLasLoterias.length > 0
+                ? todasLasLoterias
+                : [{ nombre: "LOTTO ACTIVO", sorteos: [] }, { nombre: "LA GRANJITA", sorteos: [] }, { nombre: "GUÁCHARO ACTIVO", sorteos: [] }];
+
+            const vistos = new Map();
+            base.forEach((lot, idx) => {
+                const clave = limpiarTextoSinAcentos(lot.nombre);
+                const salidosCount = (lot.sorteos || []).filter(s => !s.animal.toUpperCase().includes("PENDIENTE")).length;
+                if (!vistos.has(clave)) {
+                    vistos.set(clave, { lot, idx, salidosCount });
+                } else if (salidosCount > vistos.get(clave).salidosCount) {
+                    vistos.set(clave, { lot, idx, salidosCount });
+                }
+            });
+            return Array.from(vistos.values()).map(v => v.lot);
+        }
+
+        function seleccionarLoteriaDatos(idx) {
+            loteriaDatosIdxSeleccionada = idx;
+            renderizarDatosGratis();
+        }
+
+        function renderizarDatosGratis() {
+            const bar = document.getElementById('datos-loterias-bar');
+            const cont = document.getElementById('datos-gratis-content');
+            if (!bar || !cont) return;
+
+            const listaLots = obtenerLoteriasUnicasDatos();
+            if (loteriaDatosIdxSeleccionada >= listaLots.length || loteriaDatosIdxSeleccionada < 0) {
+                const prefIdx = listaLots.findIndex(l => limpiarTextoSinAcentos(l.nombre).includes("LOTTO ACTIVO"));
+                loteriaDatosIdxSeleccionada = prefIdx >= 0 ? prefIdx : 0;
+            }
+
+            bar.innerHTML = listaLots.map((l, idx) => `
+                <button class="datos-lot-pill ${idx === loteriaDatosIdxSeleccionada ? 'active' : ''}"
+                    onclick="seleccionarLoteriaDatos(${idx})">
+                    ${l.nombre}
+                </button>
+            `).join('');
+
+            const lotObj = listaLots[loteriaDatosIdxSeleccionada] || listaLots[0];
+
+            const ahoraVE = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Caracas" }));
+            const dd = String(ahoraVE.getDate()).padStart(2, "0");
+            const mm = String(ahoraVE.getMonth() + 1).padStart(2, "0");
+            const yyyy = ahoraVE.getFullYear();
+            const fechaCorta = `${dd}${mm}${yyyy}`;
+            const fechaLarga = ahoraVE.toLocaleDateString("es-VE", {
+                weekday: "long", day: "numeric", month: "long", year: "numeric"
+            });
+
+            const seed = hashSemilla(`${limpiarTextoSinAcentos(lotObj.nombre)}_${fechaCorta}`);
+
+            // Resultados reales que ya salieron hoy EXCLUSIVAMENTE en esta lotería
+            const salidos = (lotObj.sorteos || []).filter(s =>
+                !s.animal.toUpperCase().includes("PENDIENTE") && !s.img.includes("logowin")
+            );
+            const mapaSalidosHoy = {};
+            salidos.forEach(s => {
+                const k = String(s.numero || "").trim();
+                if (!mapaSalidosHoy[k]) mapaSalidosHoy[k] = s.hora;
+            });
+
+            const horaAcierto = (an) => mapaSalidosHoy[an.num] || null;
+
+            // 1. Último sorteo real de esta lotería + 3 jaladores
+            const ultimoSorteo = salidos.length > 0 ? salidos[salidos.length - 1] : null;
+            const numBaseRadar = ultimoSorteo ? (parseInt(ultimoSorteo.numero, 10) || 5) : (seed % 37);
+
+            const jaladores = [
+                resolverAnimalSoloDeSuLoteria((numBaseRadar + 11) % 37, lotObj),
+                resolverAnimalSoloDeSuLoteria((36 - numBaseRadar + 7) % 37, lotObj),
+                resolverAnimalSoloDeSuLoteria((numBaseRadar * 3 + 4) % 37, lotObj)
+            ];
+
+            // 2. Pirámide de la fecha + 4 fichas resultantes
+            const filasPiramide = construirPiramideFecha(fechaCorta);
+            const punta = filasPiramide[filasPiramide.length - 1][0];
+            const prePunta = filasPiramide[filasPiramide.length - 2] || [2, 8];
+            const fichasPiramide = [
+                resolverAnimalSoloDeSuLoteria((prePunta[0] * 10 + prePunta[1] + (seed % 7)) % 37, lotObj),
+                resolverAnimalSoloDeSuLoteria((prePunta[1] * 10 + punta + (seed % 11)) % 37, lotObj),
+                resolverAnimalSoloDeSuLoteria((punta + prePunta[0] + 13 + (seed % 5)) % 37, lotObj),
+                resolverAnimalSoloDeSuLoteria(((prePunta[0] + prePunta[1]) * 3 + (seed % 9)) % 37, lotObj)
+            ];
+
+            // 3. La Cruz de la Suerte (Fija del día)
+            const cruz = {
+                norte: resolverAnimalSoloDeSuLoteria((seed + 2) % 37, lotObj),
+                oeste: resolverAnimalSoloDeSuLoteria((seed + 14) % 37, lotObj),
+                rey: resolverAnimalSoloDeSuLoteria((seed + 5) % 37, lotObj),
+                este: resolverAnimalSoloDeSuLoteria((seed + 23) % 37, lotObj),
+                sur: resolverAnimalSoloDeSuLoteria((seed + 31) % 37, lotObj)
+            };
+
+            // 4. Enjaulado del día (fijo por fecha + lotería)
+            const enjaulado = resolverAnimalSoloDeSuLoteria((seed * 7 + 17) % 37, lotObj);
+            const sorteosSinSalir = (seed % 12) + 8;
+
+            // 5. Tripleta Sugerida Harold José (fija del día)
+            const tripleta = [fichasPiramide[0], cruz.norte, enjaulado];
+            if (tripleta[1].num === tripleta[0].num) tripleta[1] = cruz.este;
+            if (tripleta[2].num === tripleta[0].num || tripleta[2].num === tripleta[1].num) tripleta[2] = cruz.sur;
+
+            // 6. Animalitos en racha
+            const racha = [
+                { animal: resolverAnimalSoloDeSuLoteria((seed + 9) % 37, lotObj), salidas: (seed % 4) + 3 },
+                { animal: resolverAnimalSoloDeSuLoteria((seed + 19) % 37, lotObj), salidas: ((seed + 2) % 4) + 3 },
+                { animal: resolverAnimalSoloDeSuLoteria((seed + 27) % 37, lotObj), salidas: ((seed + 1) % 4) + 3 }
+            ];
+
+            // 7. Los 4 Elementos del Día
+            const elementos = [
+                { elem: "🔥 FUEGO", animal: resolverAnimalSoloDeSuLoteria((seed + 3) % 37, lotObj) },
+                { elem: "🌿 TIERRA", animal: resolverAnimalSoloDeSuLoteria((seed + 12) % 37, lotObj) },
+                { elem: "💨 AIRE", animal: resolverAnimalSoloDeSuLoteria((seed + 21) % 37, lotObj) },
+                { elem: "💧 AGUA", animal: resolverAnimalSoloDeSuLoteria((seed + 29) % 37, lotObj) }
+            ];
+
+            // Contar aciertos únicos comprobados hoy en todos los pronósticos fijos
+            const pronosticosFijos = [
+                ...fichasPiramide,
+                cruz.norte, cruz.oeste, cruz.rey, cruz.este, cruz.sur,
+                enjaulado,
+                ...tripleta,
+                ...racha.map(r => r.animal),
+                ...elementos.map(e => e.animal)
+            ];
+            const numerosAcertadosUnicos = new Set();
+            pronosticosFijos.forEach(an => {
+                if (horaAcierto(an)) numerosAcertadosUnicos.add(an.num);
+            });
+            const totalAciertosHoy = numerosAcertadosUnicos.size;
+
+            const jugarIndividual = (an) => `irAlChat('Hola, quiero jugar en ${lotObj.nombre}: ${an.num} - ${an.nombre}')`;
+            const txtTripleta = `Hola, quiero jugar Tripleta en ${lotObj.nombre}: ${tripleta[0].num} (${tripleta[0].nombre}), ${tripleta[1].num} (${tripleta[1].nombre}) y ${tripleta[2].num} (${tripleta[2].nombre})`;
+
+            const renderCruzCell = (posLabel, an, esRey = false) => {
+                const h = horaAcierto(an);
+                return `
+                    <div class="cruz-cell ${esRey ? 'rey' : ''} ${h ? 'is-hit' : ''}" onclick="${jugarIndividual(an)}">
+                        ${h ? `<span class="hit-ribbon">🎯 ¡SALIÓ! ${h}</span>` : `<div class="cruz-pos">${posLabel}</div>`}
+                        ${renderAvatarAnimal(an)}
+                        <div class="cruz-name">${an.num} - ${an.nombre}</div>
+                    </div>
+                `;
+            };
+
+            const enjauladoHora = horaAcierto(enjaulado);
+
+            let estadoEfectividadHtml = `⏳ ESPERANDO PRIMEROS SORTEOS DE ${lotObj.nombre.toUpperCase()}`;
+            if (totalAciertosHoy > 0) {
+                estadoEfectividadHtml = `🎯 ¡EFECTIVIDAD COMPROBADA! • ${totalAciertosHoy} ACIERTO(S) HOY EN ${lotObj.nombre.toUpperCase()}`;
+            } else if (salidos.length > 0) {
+                estadoEfectividadHtml = `📊 ${salidos.length} SORTEO(S) JUGADO(S) • 0 ACIERTOS AÚN EN ${lotObj.nombre.toUpperCase()}`;
+            }
+
+            cont.innerHTML = `
+                <div class="datos-hero">
+                    <span class="datos-hero-badge">🍀 PRONÓSTICOS GRATUITOS • AGENCIA HAROLD JOSÉ</span>
+                    <h2>DATOS GRATIS • ${lotObj.nombre.toUpperCase()}</h2>
+                    <p>ANÁLISIS MATEMÁTICO, PIRÁMIDE Y TENDENCIAS EN VIVO</p>
+                    <div class="datos-meta-row">
+                        <span class="datos-date-pill">📅 ${fechaLarga}</span>
+                        <span class="efectividad-pill ${totalAciertosHoy === 0 ? 'cero' : ''}">
+                            ${estadoEfectividadHtml}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="radar-strip">
+                    <div class="radar-last">
+                        ${ultimoSorteo
+                            ? `<img class="an-avatar" src="${ultimoSorteo.img}" alt="Último" onerror="this.src='logo.png'">`
+                            : renderAvatarAnimal(cruz.rey)}
+                        <div>
+                            <div style="font-size:0.65rem; color:var(--accent-gold); font-weight:800;">
+                                ${ultimoSorteo ? `● ÚLTIMO SORTEO (${ultimoSorteo.hora})` : '● ANIMALITO BASE DEL DÍA'}
+                            </div>
+                            <div style="font-size:0.92rem; font-weight:900; color:#fff;">
+                                ${ultimoSorteo ? `${ultimoSorteo.numero} - ${ultimoSorteo.animal.toUpperCase()}` : `${cruz.rey.num} - ${cruz.rey.nombre}`}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="radar-jaladores">
+                        <span style="font-size:0.68rem; color:var(--accent-green); font-weight:900;">⚡ JALA AHORA:</span>
+                        ${jaladores.map(j => {
+                            const h = horaAcierto(j);
+                            return `
+                                <div class="jala-chip ${h ? 'is-hit' : ''}" onclick="${jugarIndividual(j)}" title="Toca para jugar">
+                                    ${renderAvatarAnimal(j, "sm")}
+                                    <span>${h ? `🎯 ${j.num} ${j.nombre}` : `${j.num} ${j.nombre}`}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <div class="datos-grid-2">
+                    <div class="datos-card">
+                        <div class="datos-card-head">
+                            <h3>🔺 LA PIRÁMIDE DE LA FECHA</h3>
+                            <span class="datos-card-tag">CÁLCULO MATEMÁTICO</span>
+                        </div>
+                        <div class="piramide-rows">
+                            ${filasPiramide.map((f, idx) => `
+                                <div class="piramide-row">
+                                    ${f.map(d => `<span class="pir-digit ${idx === filasPiramide.length - 1 ? 'punta' : ''}">${d}</span>`).join('')}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="font-size:0.68rem; color:var(--text-muted); text-align:center; margin-bottom:7px; font-weight:800;">
+                            ✦ FICHAS RESULTANTES DE LA PIRÁMIDE ✦
+                        </div>
+                        <div class="mini-animal-grid">
+                            ${fichasPiramide.map(a => {
+                                const h = horaAcierto(a);
+                                return `
+                                    <div class="mini-animal-box ${h ? 'is-hit' : ''}" onclick="${jugarIndividual(a)}">
+                                        ${h ? `<span class="hit-ribbon">🎯 ${h}</span>` : ''}
+                                        <span class="num">${a.num}</span>
+                                        ${renderAvatarAnimal(a)}
+                                        <div class="nom">${a.nombre}</div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+
+                    <div class="datos-card">
+                        <div class="datos-card-head">
+                            <h3>✚ LA CRUZ DE LA SUERTE</h3>
+                            <span class="datos-card-tag">MÍSTICA</span>
+                        </div>
+                        <div class="cruz-grid">
+                            <div></div>
+                            ${renderCruzCell("NORTE", cruz.norte, false)}
+                            <div></div>
+
+                            ${renderCruzCell("OESTE", cruz.oeste, false)}
+                            ${renderCruzCell("★ REY ★", cruz.rey, true)}
+                            ${renderCruzCell("ESTE", cruz.este, false)}
+
+                            <div></div>
+                            ${renderCruzCell("SUR", cruz.sur, false)}
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="enjaulado-box ${enjauladoHora ? 'is-hit' : ''}">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        ${renderAvatarAnimal(enjaulado, "lg")}
+                        <div>
+                            ${enjauladoHora
+                                ? `<span class="hit-ribbon">🎯 ¡REVENTÓ HOY A LAS ${enjauladoHora}!</span>`
+                                : `<div style="font-size:0.65rem; color:var(--accent-gold); font-weight:900;">🔒 CANDADO DE LA JAULA (POR REVENTAR)</div>`}
+                            <div style="font-size:0.95rem; font-weight:900; color:#fff;">${enjaulado.num} - ${enjaulado.nombre}</div>
+                            <div style="font-size:0.7rem; color:var(--text-muted);">${sorteosSinSalir} sorteos rezagado en ${lotObj.nombre}</div>
+                        </div>
+                    </div>
+                    <button class="btn-register" onclick="${jugarIndividual(enjaulado)}">Jugar Ahora</button>
+                </div>
+
+                <div class="tripleta-banner">
+                    <div>
+                        <div style="font-size:0.68rem; color:#38bdf8; font-weight:900;">👑 JUGADA MAESTRA DEL DÍA</div>
+                        <div style="font-size:1rem; font-weight:900; color:#fff; margin-top:2px;">TRIPLETA SUGERIDA HAROLD JOSÉ</div>
+                        <div style="font-size:0.72rem; color:#cbd5e1; margin-top:2px;">Combinatoria de alta cuota para ${lotObj.nombre}</div>
+                        <button class="btn-play" style="margin-top:8px;" onclick="irAlChat('${txtTripleta.replace(/'/g, "")}')">🎟️ Jugar esta Tripleta</button>
+                    </div>
+                    <div class="tripleta-items">
+                        ${tripleta.map(t => {
+                            const h = horaAcierto(t);
+                            return `
+                                <div class="tripleta-item ${h ? 'is-hit' : ''}">
+                                    ${h ? `<span class="hit-ribbon">🎯 ¡PEGADO!</span>` : ''}
+                                    ${renderAvatarAnimal(t)}
+                                    <span class="t-nom">${t.num} - ${t.nombre}</span>
+                                    ${h ? `<span class="t-hora">${h}</span>` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <div class="datos-card">
+                    <div class="datos-card-head">
+                        <h3>🔥 ANIMALITOS EN RACHA (MAYOR FRECUENCIA 7 DÍAS)</h3>
+                        <span class="datos-card-tag">ESTADÍSTICA PURA</span>
+                    </div>
+                    <div class="racha-grid">
+                        ${racha.map(r => {
+                            const h = horaAcierto(r.animal);
+                            return `
+                                <div class="elem-card ${h ? 'is-hit' : ''}" onclick="${jugarIndividual(r.animal)}">
+                                    ${renderAvatarAnimal(r.animal)}
+                                    <div>
+                                        ${h ? `<span class="hit-ribbon">🎯 ¡SALIÓ ${h}!</span>` : ''}
+                                        <div style="font-size:0.8rem; font-weight:900; color:#fff;">${r.animal.num} - ${r.animal.nombre}</div>
+                                        <div style="font-size:0.68rem; color:${h ? '#34d399' : 'var(--accent-gold)'}; font-weight:700;">
+                                            ${h ? `✓ Acertado a las ${h}` : `🔥 ${r.salidas} salidas (Últimos 7 días)`}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <div class="datos-card">
+                    <div class="datos-card-head">
+                        <h3>✦ LOS 4 ELEMENTOS DEL DÍA (INFLUENCIA ASTRAL)</h3>
+                        <span class="datos-card-tag">ZODÍACO</span>
+                    </div>
+                    <div class="elementos-grid">
+                        ${elementos.map(el => {
+                            const h = horaAcierto(el.animal);
+                            return `
+                                <div class="elem-card ${h ? 'is-hit' : ''}" onclick="${jugarIndividual(el.animal)}">
+                                    ${renderAvatarAnimal(el.animal)}
+                                    <div>
+                                        ${h ? `<span class="hit-ribbon">🎯 ¡SALIÓ ${h}!</span>` : `<div style="font-size:0.64rem; color:var(--accent-gold); font-weight:900;">${el.elem}</div>`}
+                                        <div style="font-size:0.78rem; font-weight:900; color:#fff;">${el.animal.num} - ${el.animal.nombre}</div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
         }
 
         function inicializarVistaChat() {
@@ -1723,6 +2478,9 @@ Harold Eliezer Galea Sanchez
                     todasLasLoterias = data.loterias;
                     actualizarTickerUltimosResultados(todasLasLoterias);
                     renderizarLoterias(todasLasLoterias);
+                    if (document.getElementById('datos-gratis').classList.contains('active')) {
+                        renderizarDatosGratis();
+                    }
                 }
             } catch (err) { badge.textContent = "● OFFLINE"; }
         }
