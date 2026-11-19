@@ -166,7 +166,7 @@
   .section-pad { padding: 14px; display: grid; gap: 14px; }
   .info-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
   .info-card h2 { font-size: 16px; color: var(--gold); margin-bottom: 10px; }
-  .gaceta-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 10px; }
+  .gaceta-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; }
   .gaceta-chip {
     background: var(--panel2);
     border: 1px solid var(--border);
@@ -179,20 +179,91 @@
     white-space: nowrap;
   }
   .gaceta-chip.active { background: rgba(0,168,132,.18); border-color: var(--green); color: #25d366; }
-  .gaceta-bloque-title { font-size: 12px; font-weight: 800; color: var(--gold); margin: 14px 0 8px; text-transform: uppercase; }
-  .piramide-box {
+
+  .gaceta-top-row { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin-bottom: 14px; }
+  @media (max-width: 720px) { .gaceta-top-row { grid-template-columns: 1fr; } }
+
+  .gaceta-box {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+  }
+  .gaceta-box-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .piramide-rows { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 8px 0 12px; }
+  .piramide-row { display: flex; gap: 5px; justify-content: center; }
+  .piramide-cell {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .piramide-cell.punta { background: var(--gold); color: #000; font-weight: 900; }
+
+  .cruz-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    align-items: center;
+    justify-items: center;
+    margin-top: 8px;
+  }
+  .cruz-nodo {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px;
+    text-align: center;
+    width: 100%;
+    max-width: 120px;
+  }
+  .cruz-nodo.centro { border-color: var(--gold); background: rgba(245,158,11,.08); }
+  .cruz-nodo img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; margin: 0 auto 4px; display: block; }
+  .cruz-lbl { font-size: 9.5px; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+  .cruz-val { font-size: 11px; font-weight: 800; color: var(--gold); }
+
+  .tripleta-banner {
+    background: linear-gradient(90deg, #16222a, #1f2e3a);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .tripleta-cards { display: flex; gap: 10px; flex-wrap: wrap; }
+  .mini-ficha {
     background: var(--panel2);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 12px;
-    text-align: center;
-    font-weight: 800;
-    letter-spacing: 5px;
-    color: var(--gold);
-    font-size: 14px;
-    word-break: break-word;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  .datos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 10px; }
+  .mini-ficha img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+
+  .datos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 10px; margin-bottom: 14px; }
   .dato-item {
     background: var(--panel2);
     border: 1px solid var(--border);
@@ -205,6 +276,8 @@
   .dato-item img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
   .dato-num { font-size: 14px; font-weight: 900; color: var(--gold); }
   .dato-ani { font-size: 11.5px; font-weight: 800; color: var(--text); }
+  .dato-sub { font-size: 10px; color: #25d366; font-weight: 700; }
+
   .flyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
   .flyer-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
   .flyer-card img { width: 100%; max-height: 360px; object-fit: cover; background: #0f172a; }
@@ -395,7 +468,7 @@
     <div id="gridLoterias" class="grid-loterias"></div>
   </section>
 
-  <!-- TAB 2: DATOS (SIN CANDADO DE LA JAULA) -->
+  <!-- TAB 2: DATOS (ESTRUCTURA DE GACETA SIN CANDADO DE LA JAULA) -->
   <section id="tab-datos" class="view">
     <div class="section-pad">
       <div class="info-card">
@@ -621,20 +694,15 @@ function seleccionarGaceta(loteria, btn) {
   cargarGacetaWinbig(loteria);
 }
 
-function renderBloqueGaceta(titulo, items) {
-  if (!items || items.length === 0) return "";
+function renderCruzNodo(etiqueta, item, esCentro = false) {
+  if (!item) {
+    return `<div class="cruz-nodo ${esCentro ? "centro" : ""}"><div class="cruz-lbl">${etiqueta}</div><div class="cruz-val">--</div></div>`;
+  }
   return `
-    <div class="gaceta-bloque-title">${titulo}</div>
-    <div class="datos-grid">
-      ${items.map(it => `
-        <div class="dato-item">
-          <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
-          <div>
-            <div class="dato-num">${it.numero}</div>
-            <div class="dato-ani">${it.animal}</div>
-          </div>
-        </div>
-      `).join("")}
+    <div class="cruz-nodo ${esCentro ? "centro" : ""}">
+      <div class="cruz-lbl">${etiqueta}</div>
+      <img src="${item.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${item.animal}" />
+      <div class="cruz-val">${item.numero} - ${item.animal}</div>
     </div>
   `;
 }
@@ -646,25 +714,133 @@ async function cargarGacetaWinbig(loteria) {
     const r = await fetch(`${API_BASE}/gaceta?loteria=${encodeURIComponent(loteria)}`);
     const d = await r.json();
 
-    let piramideHtml = "";
-    if (d.piramideLineas && d.piramideLineas.length > 0) {
-      piramideHtml = `
-        <div class="gaceta-bloque-title">🔺 La Pirámide de la Fecha • Agencia Harold José</div>
-        <div class="piramide-box">${d.piramideLineas[0]}</div>
-      `;
-    }
+    const ultimoHtml = d.ultimoSorteo
+      ? `<div class="mini-ficha">
+          <img src="${d.ultimoSorteo.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${d.ultimoSorteo.animal}" />
+          <div>
+            <div class="dato-num">${d.ultimoSorteo.numero} - ${d.ultimoSorteo.animal}</div>
+            <div class="dato-sub">${d.ultimoSorteo.hora || "Sorteo reciente"} • Agencia Harold José</div>
+          </div>
+        </div>`
+      : `<div style="font-size:12px;color:var(--muted);">Esperando sorteo</div>`;
 
-    const htmlBloques =
-      renderBloqueGaceta("🕒 Último Sorteo • Agencia Harold José", d.ultimoSorteo) +
-      renderBloqueGaceta("🎯 Radar de Atracción • Agencia Harold José", d.radar) +
-      piramideHtml +
-      renderBloqueGaceta("🔺 Fichas Resultantes de la Pirámide • Agencia Harold José", d.piramideFichas) +
-      renderBloqueGaceta("✝️ La Cruz de la Suerte • Agencia Harold José", d.cruz) +
-      renderBloqueGaceta("👑 La Tripleta Millonaria • Agencia Harold José", d.tripleta) +
-      renderBloqueGaceta("🔥 Animalitos en Racha • Agencia Harold José", d.racha) +
-      renderBloqueGaceta("⚡ Los 4 Elementos del Día • Agencia Harold José", d.elementos);
+    const radarHtml = (d.radar || []).map(it => `
+      <div class="mini-ficha">
+        <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <div>
+          <div class="dato-num">${it.numero}</div>
+          <div class="dato-ani">${it.animal}</div>
+        </div>
+      </div>
+    `).join("");
 
-    cont.innerHTML = htmlBloques || `<div class="dato-item"><div>Datos del día (${loteria}) • Agencia Harold José</div></div>`;
+    const filasPir = (d.piramideFilas || []).map((fila, idx) => {
+      const esPunta = fila.length === 1;
+      return `<div class="piramide-row">${fila.map(dig => `<div class="piramide-cell ${esPunta ? "punta" : ""}">${dig}</div>`).join("")}</div>`;
+    }).join("");
+
+    const fichasPirHtml = (d.piramideFichas || []).map(it => `
+      <div class="dato-item">
+        <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <div>
+          <div class="dato-num">${it.numero}</div>
+          <div class="dato-ani">${it.animal}</div>
+          <div class="dato-sub">Agencia Harold José</div>
+        </div>
+      </div>
+    `).join("");
+
+    const cruzObj = d.cruz || {};
+    const cruzHtml = `
+      <div class="cruz-grid">
+        <div></div>
+        ${renderCruzNodo("Norte", cruzObj.norte)}
+        <div></div>
+        ${renderCruzNodo("Oeste", cruzObj.oeste)}
+        ${renderCruzNodo("Centro", cruzObj.centro, true)}
+        ${renderCruzNodo("Este", cruzObj.este)}
+        <div></div>
+        ${renderCruzNodo("Sur", cruzObj.sur)}
+        <div></div>
+      </div>
+    `;
+
+    const tripletaHtml = (d.tripleta || []).map(it => `
+      <div class="mini-ficha">
+        <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <div>
+          <div class="dato-num">${it.numero}</div>
+          <div class="dato-ani">${it.animal}</div>
+        </div>
+      </div>
+    `).join("");
+
+    const rachaHtml = (d.racha || []).map(it => `
+      <div class="dato-item">
+        <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <div>
+          <div class="dato-num">${it.numero} - ${it.animal}</div>
+          <div class="dato-sub">Mayor frecuencia • Agencia Harold José</div>
+        </div>
+      </div>
+    `).join("");
+
+    const elemHtml = (d.elementos || []).map(it => `
+      <div class="dato-item">
+        <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <div>
+          <div class="dato-sub">${it.elemento || "ELEMENTO"}</div>
+          <div class="dato-num">${it.numero} - ${it.animal}</div>
+        </div>
+      </div>
+    `).join("");
+
+    cont.innerHTML = `
+      <div class="gaceta-top-row">
+        <div class="gaceta-box">
+          <div class="gaceta-box-title"><span>🕒 Último Sorteo</span><span>Agencia Harold José</span></div>
+          ${ultimoHtml}
+        </div>
+        <div class="gaceta-box">
+          <div class="gaceta-box-title"><span>🎯 Radar de Atracción</span><span>Agencia Harold José</span></div>
+          <div class="tripleta-cards">${radarHtml || `<span style="font-size:12px;color:var(--muted);">Sin datos</span>`}</div>
+        </div>
+      </div>
+
+      <div class="gaceta-top-row">
+        <div class="gaceta-box">
+          <div class="gaceta-box-title"><span>🔺 La Pirámide de la Fecha</span><span>Agencia Harold José</span></div>
+          <div class="piramide-rows">${filasPir || `<span style="font-size:12px;color:var(--muted);">Sin datos</span>`}</div>
+          <div class="gaceta-box-title"><span>Fichas Resultantes</span></div>
+          <div class="datos-grid" style="margin-bottom:0;">${fichasPirHtml}</div>
+        </div>
+
+        <div class="gaceta-box">
+          <div class="gaceta-box-title"><span>✝️ La Cruz de la Suerte</span><span>Agencia Harold José</span></div>
+          ${cruzHtml}
+        </div>
+      </div>
+
+      ${tripletaHtml ? `
+        <div class="tripleta-banner">
+          <div>
+            <div style="font-size:11px;color:var(--gold);font-weight:800;">👑 JUGADA MAESTRA • AGENCIA HAROLD JOSÉ</div>
+            <div style="font-size:14px;font-weight:900;color:#fff;">La Tripleta Millonaria</div>
+          </div>
+          <div class="tripleta-cards">${tripletaHtml}</div>
+        </div>
+      ` : ""}
+
+      ${rachaHtml ? `
+        <div class="gaceta-box-title">🔥 Animalitos en Racha • Agencia Harold José</div>
+        <div class="datos-grid">${rachaHtml}</div>
+      ` : ""}
+
+      ${elemHtml ? `
+        <div class="gaceta-box-title">⚡ Los 4 Elementos del Día • Agencia Harold José</div>
+        <div class="datos-grid">${elemHtml}</div>
+      ` : ""}
+    `;
   } catch (e) {
     cont.innerHTML = `<div class="dato-item"><div>No se pudieron cargar los datos en este momento.</div></div>`;
   }
