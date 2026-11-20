@@ -19,7 +19,8 @@
     --red: #ef4444;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
-  body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+  html, body { background: var(--bg); color: var(--text); min-height: 100vh; width: 100%; overflow-x: hidden; }
+  body { display: flex; flex-direction: column; }
 
   header {
     background: var(--panel);
@@ -71,8 +72,8 @@
   }
   nav.tabs button.active { color: var(--green); border-bottom-color: var(--green); background: rgba(0,168,132,.06); }
 
-  main { flex: 1; display: flex; flex-direction: column; max-width: 1200px; width: 100%; margin: 0 auto; }
-  .view { display: none; flex: 1; flex-direction: column; }
+  main { flex: 1; display: flex; flex-direction: column; max-width: 1200px; width: 100%; margin: 0 auto; overflow-x: hidden; }
+  .view { display: none; flex: 1; flex-direction: column; width: 100%; }
   .view.active { display: flex; }
 
   .ticker-wrap {
@@ -189,31 +190,63 @@
   .sorteo-ani { font-size: 10px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
   .sorteo-ani.pendiente { color: var(--muted); font-weight: 600; }
 
-  .section-pad { padding: 14px; display: grid; gap: 14px; }
-  .info-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
-  .info-card h2 { font-size: 16px; color: var(--gold); margin-bottom: 10px; }
-  .gaceta-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; }
+  .section-pad { padding: 12px; display: grid; gap: 12px; width: 100%; max-width: 100%; overflow-x: hidden; }
+  .info-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .info-card h2 { font-size: 15px; color: var(--gold); margin-bottom: 10px; }
+
+  .gaceta-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
   .gaceta-chip {
     background: var(--panel2);
     border: 1px solid var(--border);
     color: var(--text);
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 999px;
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 700;
     cursor: pointer;
     white-space: nowrap;
   }
   .gaceta-chip.active { background: rgba(0,168,132,.18); border-color: var(--green); color: #25d366; }
 
-  .gaceta-top-row { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin-bottom: 14px; }
-  @media (max-width: 720px) { .gaceta-top-row { grid-template-columns: 1fr; } }
+  .gaceta-sheet {
+    max-width: 960px;
+    margin: 0 auto;
+    display: grid;
+    gap: 12px;
+  }
+  .gaceta-top-row {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 12px;
+  }
+  .gaceta-mid-row {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 760px) {
+    .gaceta-top-row, .gaceta-mid-row { grid-template-columns: 1fr; }
+  }
 
   .gaceta-box {
     background: var(--panel2);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 12px;
+    min-width: 0;
   }
   .gaceta-box-title {
     font-size: 11px;
@@ -224,14 +257,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 6px;
   }
 
-  .piramide-rows { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 8px 0 12px; }
-  .piramide-row { display: flex; gap: 5px; justify-content: center; }
+  .piramide-rows { display: flex; flex-direction: column; align-items: center; gap: 3px; margin: 4px 0 12px; }
+  .piramide-row { display: flex; gap: 4px; justify-content: center; }
   .piramide-cell {
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
     background: var(--panel);
     border: 1px solid var(--border);
     display: flex;
@@ -243,66 +277,75 @@
   }
   .piramide-cell.punta { background: var(--gold); color: #000; font-weight: 900; }
 
+  .fichas-piramide-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
   .cruz-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 108px));
     gap: 8px;
+    justify-content: center;
     align-items: center;
-    justify-items: center;
-    margin-top: 8px;
+    margin-top: 6px;
   }
   .cruz-nodo {
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 8px;
+    padding: 7px 5px;
     text-align: center;
     width: 100%;
-    max-width: 120px;
   }
-  .cruz-nodo.centro { border-color: var(--gold); background: rgba(245,158,11,.08); }
-  .cruz-nodo img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; margin: 0 auto 4px; display: block; }
-  .cruz-lbl { font-size: 9.5px; color: var(--muted); font-weight: 700; text-transform: uppercase; }
-  .cruz-val { font-size: 11px; font-weight: 800; color: var(--gold); }
+  .cruz-nodo.centro { border-color: var(--gold); background: rgba(245,158,11,.1); }
+  .cruz-nodo img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; margin: 0 auto 4px; display: block; }
+  .cruz-lbl { font-size: 9px; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+  .cruz-val { font-size: 10.5px; font-weight: 800; color: var(--gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   .tripleta-banner {
     background: linear-gradient(90deg, #16222a, #1f2e3a);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 12px;
-    margin-bottom: 14px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
-  .tripleta-cards { display: flex; gap: 10px; flex-wrap: wrap; }
+  .tripleta-cards { display: flex; gap: 8px; flex-wrap: wrap; }
   .mini-ficha {
-    background: var(--panel2);
+    background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 8px 12px;
+    padding: 7px 10px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  .mini-ficha img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+  .mini-ficha img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
 
-  .datos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .datos-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .datos-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  @media (max-width: 720px) {
+    .datos-grid-3, .datos-grid-4 { grid-template-columns: repeat(2, 1fr); }
+  }
   .dato-item {
-    background: var(--panel2);
+    background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 10px;
+    padding: 8px 10px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    min-width: 0;
   }
-  .dato-item img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-  .dato-num { font-size: 14px; font-weight: 900; color: var(--gold); }
-  .dato-ani { font-size: 11.5px; font-weight: 800; color: var(--text); }
-  .dato-sub { font-size: 10px; color: #25d366; font-weight: 700; }
+  .dato-item img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+  .dato-num { font-size: 13px; font-weight: 900; color: var(--gold); }
+  .dato-ani { font-size: 11px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dato-sub { font-size: 9.5px; color: #25d366; font-weight: 700; }
 
   .flyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
   .flyer-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
@@ -638,7 +681,6 @@
 
 <script>
 const API_BASE = "https://api-resultados-harold.agharoldjose.workers.dev";
-// COLOCA AQUÍ EL @USERNAME DE TU BOT DE VERIFICACIÓN (SIN @)
 const BOT_USERNAME = "VerificacionAgenciaHaroldBot";
 
 let loteriasData = [];
@@ -785,6 +827,7 @@ function seleccionarGaceta(loteria, btn) {
 }
 
 function renderCruzNodo(etiqueta, item, esCentro = false) {
+  if (!item) return `<div></div>`;
   return `
     <div class="cruz-nodo ${esCentro ? "centro" : ""}">
       <div class="cruz-lbl">${etiqueta}</div>
@@ -831,8 +874,7 @@ async function cargarGacetaWinbig(loteria) {
       <div class="dato-item">
         <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
         <div>
-          <div class="dato-num">${it.numero}</div>
-          <div class="dato-ani">${it.animal}</div>
+          <div class="dato-num">${it.numero} - ${it.animal}</div>
           <div class="dato-sub">Agencia Harold José</div>
         </div>
       </div>
@@ -853,7 +895,8 @@ async function cargarGacetaWinbig(loteria) {
       </div>
     `;
 
-    const tripletaHtml = (d.tripleta || []).map(it => `
+    const listaTripleta = (d.tripleta && d.tripleta.length > 0) ? d.tripleta : (d.radar || []).slice(0, 3);
+    const tripletaHtml = listaTripleta.map(it => `
       <div class="mini-ficha">
         <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
         <div>
@@ -868,7 +911,7 @@ async function cargarGacetaWinbig(loteria) {
         <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
         <div>
           <div class="dato-num">${it.numero} - ${it.animal}</div>
-          <div class="dato-sub">${it.extra || "Mayor frecuencia"} • Agencia Harold José</div>
+          <div class="dato-sub">${it.extra || "Mayor frecuencia"}</div>
         </div>
       </div>
     `).join("");
@@ -884,44 +927,50 @@ async function cargarGacetaWinbig(loteria) {
     `).join("");
 
     cont.innerHTML = `
-      <div class="gaceta-top-row">
-        <div class="gaceta-box">
-          <div class="gaceta-box-title"><span>🕒 Último Sorteo</span><span>Agencia Harold José</span></div>
-          ${ultimoHtml}
+      <div class="gaceta-sheet">
+        <div class="gaceta-top-row">
+          <div class="gaceta-box">
+            <div class="gaceta-box-title"><span>🕒 Último Sorteo</span><span>Agencia Harold José</span></div>
+            ${ultimoHtml}
+          </div>
+          <div class="gaceta-box">
+            <div class="gaceta-box-title"><span>🎯 Radar de Atracción</span><span>Agencia Harold José</span></div>
+            <div class="tripleta-cards">${radarHtml}</div>
+          </div>
         </div>
+
+        <div class="gaceta-mid-row">
+          <div class="gaceta-box">
+            <div class="gaceta-box-title"><span>🔺 La Pirámide de la Fecha</span><span>Agencia Harold José</span></div>
+            <div class="piramide-rows">${filasPir}</div>
+            <div class="gaceta-box-title"><span>Fichas Resultantes</span></div>
+            <div class="fichas-piramide-grid">${fichasPirHtml}</div>
+          </div>
+
+          <div class="gaceta-box">
+            <div class="gaceta-box-title"><span>✝️ La Cruz de la Suerte</span><span>Agencia Harold José</span></div>
+            ${cruzHtml}
+          </div>
+        </div>
+
+        <div class="tripleta-banner">
+          <div>
+            <div style="font-size:10.5px;color:var(--gold);font-weight:800;">👑 JUGADA MAESTRA • AGENCIA HAROLD JOSÉ</div>
+            <div style="font-size:14px;font-weight:900;color:#fff;">La Tripleta Millonaria</div>
+          </div>
+          <div class="tripleta-cards">${tripletaHtml}</div>
+        </div>
+
         <div class="gaceta-box">
-          <div class="gaceta-box-title"><span>🎯 Radar de Atracción</span><span>Agencia Harold José</span></div>
-          <div class="tripleta-cards">${radarHtml}</div>
+          <div class="gaceta-box-title"><span>🔥 Animalitos en Racha</span><span>Agencia Harold José</span></div>
+          <div class="datos-grid-3">${rachaHtml}</div>
+        </div>
+
+        <div class="gaceta-box">
+          <div class="gaceta-box-title"><span>⚡ Los 4 Elementos del Día</span><span>Agencia Harold José</span></div>
+          <div class="datos-grid-4">${elemHtml}</div>
         </div>
       </div>
-
-      <div class="gaceta-top-row">
-        <div class="gaceta-box">
-          <div class="gaceta-box-title"><span>🔺 La Pirámide de la Fecha</span><span>Agencia Harold José</span></div>
-          <div class="piramide-rows">${filasPir}</div>
-          <div class="gaceta-box-title"><span>Fichas Resultantes</span></div>
-          <div class="datos-grid" style="margin-bottom:0;">${fichasPirHtml}</div>
-        </div>
-
-        <div class="gaceta-box">
-          <div class="gaceta-box-title"><span>✝️ La Cruz de la Suerte</span><span>Agencia Harold José</span></div>
-          ${cruzHtml}
-        </div>
-      </div>
-
-      <div class="tripleta-banner">
-        <div>
-          <div style="font-size:11px;color:var(--gold);font-weight:800;">👑 JUGADA MAESTRA • AGENCIA HAROLD JOSÉ</div>
-          <div style="font-size:14px;font-weight:900;color:#fff;">La Tripleta Millonaria</div>
-        </div>
-        <div class="tripleta-cards">${tripletaHtml}</div>
-      </div>
-
-      <div class="gaceta-box-title">🔥 Animalitos en Racha • Agencia Harold José</div>
-      <div class="datos-grid">${rachaHtml}</div>
-
-      <div class="gaceta-box-title">⚡ Los 4 Elementos del Día • Agencia Harold José</div>
-      <div class="datos-grid">${elemHtml}</div>
     `;
   } catch (e) {
     cont.innerHTML = `<div class="dato-item"><div>No se pudieron cargar los datos en este momento.</div></div>`;
