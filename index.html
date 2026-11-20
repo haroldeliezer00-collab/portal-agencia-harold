@@ -227,7 +227,6 @@
     overflow: hidden;
   }
 
-  /* Barra horizontal deslizable en una sola fila (estilo gaceta limpia) */
   .gaceta-nav-strip {
     display: flex;
     align-items: center;
@@ -294,7 +293,6 @@
     gap: 12px;
   }
 
-  /* Barra Superior Unificada: Resultado Reciente + Los que Jala Ahora */
   .hero-gaceta-bar {
     background: linear-gradient(135deg, #0d1922 0%, #152634 55%, #0f1e29 100%);
     border: 1.5px solid rgba(245,158,11,.55);
@@ -362,13 +360,12 @@
     flex-wrap: wrap;
   }
   .hero-jala-label {
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 900;
     color: var(--gold);
     text-transform: uppercase;
     line-height: 1.25;
   }
-  .hero-jala-label span { display: block; font-size: 9.5px; color: #25d366; font-weight: 700; }
   .hero-jala-cards {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -418,7 +415,6 @@
     font-weight: 800;
   }
 
-  /* Pirámide Numérica del Día */
   .piramide-rows { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 6px 0 14px; }
   .piramide-row { display: flex; gap: 4px; justify-content: center; }
   .piramide-cell {
@@ -448,7 +444,6 @@
     gap: 8px;
   }
 
-  /* Cruz Astral Ganadora (sin Norte/Sur/Este/Oeste) */
   .cruz-modern-wrap {
     position: relative;
     padding: 10px 4px;
@@ -498,11 +493,10 @@
   .cruz-nodo.centro img { width: 48px; height: 48px; border-color: var(--gold); }
   .cruz-val { font-size: 10.5px; font-weight: 900; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  /* Sello automático de acierto */
   .ficha-acertada {
     border-color: #ef4444 !important;
-    background: linear-gradient(145deg, rgba(239,68,68,.24), rgba(245,158,11,.14)) !important;
-    box-shadow: 0 0 14px rgba(239,68,68,.32);
+    background: linear-gradient(145deg, rgba(239,68,68,.26), rgba(245,158,11,.15)) !important;
+    box-shadow: 0 0 14px rgba(239,68,68,.35);
     position: relative;
   }
   .sello-salio {
@@ -518,7 +512,6 @@
     text-transform: uppercase;
   }
 
-  /* Combinación Estrella • Trío Ganador */
   .tripleta-banner {
     background: linear-gradient(135deg, #102338 0%, #1a3352 50%, #102338 100%);
     border: 1.5px solid rgba(56,189,248,.4);
@@ -846,7 +839,6 @@
       </div>
       <button class="btn btn-green" onclick="verificarOtpCliente()">✅ 2. Entrar y Jugar</button>
 
-      <!-- Acceso privado exclusivo para el administrador (oculto para clientes) -->
       <div id="secretAdminBox" style="display:none;margin-top:18px;border-top:1px solid var(--border);padding-top:14px;">
         <div style="font-size:12px;color:var(--gold);font-weight:800;text-align:center;margin-bottom:8px;">🔐 Acceso Exclusivo Taquilla</div>
         <input type="password" id="inpAdminPass" placeholder="Clave maestra de taquilla" style="width:100%;padding:10px;border-radius:8px;background:var(--panel2);border:1px solid var(--border);color:#fff;margin-bottom:8px;" onkeydown="if(event.key==='Enter') entrarAdmin()" />
@@ -1113,10 +1105,7 @@ async function cargarGacetaWinbig(loteria) {
         <div class="hero-divider"></div>
 
         <div class="hero-jala-wrap">
-          <div class="hero-jala-label">
-            🧲 LOS QUE JALA
-            <span>→ JALA AHORA →</span>
-          </div>
+          <div class="hero-jala-label">🧲 LOS QUE JALA</div>
           <div class="hero-jala-cards">
             ${(d.radar || []).map(it => `
               <div class="mini-ficha ${it.salio ? "ficha-acertada" : ""}" style="flex-direction:column;text-align:center;padding:7px 4px;gap:4px;">
@@ -1169,7 +1158,7 @@ async function cargarGacetaWinbig(loteria) {
       <div class="mini-ficha ${it.salio ? "ficha-acertada" : ""}">
         <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
         <div>
-          ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡PEGADO!"}</span>` : ""}
+          ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
           <div class="dato-num">${it.numero}</div>
           <div class="dato-ani">${it.animal}</div>
         </div>
@@ -1177,9 +1166,10 @@ async function cargarGacetaWinbig(loteria) {
     `).join("");
 
     const rachaHtml = (d.racha || []).map(it => `
-      <div class="dato-item">
+      <div class="dato-item ${it.salio ? "ficha-acertada" : ""}">
         <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
         <div style="min-width:0;">
+          ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
           <div class="dato-num">${it.numero} - ${it.animal}</div>
           <div class="dato-sub">${it.extra || "Alta frecuencia"}</div>
         </div>
@@ -1187,9 +1177,10 @@ async function cargarGacetaWinbig(loteria) {
     `).join("");
 
     const elemHtml = (d.elementos || []).map(it => `
-      <div class="dato-item">
+      <div class="dato-item ${it.salio ? "ficha-acertada" : ""}">
         <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
         <div style="min-width:0;">
+          ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
           <div class="dato-sub">${it.elemento || "ELEMENTO"}</div>
           <div class="dato-num">${it.numero} - ${it.animal}</div>
         </div>
