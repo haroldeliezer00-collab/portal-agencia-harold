@@ -75,7 +75,6 @@
   .view { display: none; flex: 1; flex-direction: column; }
   .view.active { display: flex; }
 
-  /* BARRA EN MOVIMIENTO */
   .ticker-wrap {
     background: linear-gradient(90deg, #102028, #182b36, #102028);
     border-bottom: 1px solid var(--border);
@@ -113,7 +112,6 @@
   .ticker-res { color: var(--gold); font-weight: 800; }
   .ticker-hr { color: #25d366; font-size: 10px; font-weight: 700; }
 
-  /* RESULTADOS */
   .toolbar { padding: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .toolbar input[type="search"] {
     flex: 1;
@@ -191,7 +189,6 @@
   .sorteo-ani { font-size: 10px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
   .sorteo-ani.pendiente { color: var(--muted); font-weight: 600; }
 
-  /* DATOS */
   .section-pad { padding: 14px; display: grid; gap: 14px; }
   .info-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
   .info-card h2 { font-size: 16px; color: var(--gold); margin-bottom: 10px; }
@@ -314,7 +311,6 @@
   .flyer-body h4 { font-size: 12px; color: var(--gold); margin-bottom: 4px; }
   .flyer-body p { font-size: 11px; color: var(--muted); }
 
-  /* AUTH & CHAT */
   .auth-box {
     max-width: 420px;
     width: 92%;
@@ -501,7 +497,7 @@
     <div id="gridLoterias" class="grid-loterias"></div>
   </section>
 
-  <!-- TAB 2: DATOS (ESTRUCTURA DE GACETA SIN CANDADO DE LA JAULA) -->
+  <!-- TAB 2: DATOS -->
   <section id="tab-datos" class="view">
     <div class="section-pad">
       <div class="info-card">
@@ -509,10 +505,41 @@
         <div class="gaceta-chips" id="gacetaChips">
           <button class="gaceta-chip active" onclick="seleccionarGaceta('LOTTO ACTIVO', this)">LOTTO ACTIVO</button>
           <button class="gaceta-chip" onclick="seleccionarGaceta('LA GRANJITA', this)">LA GRANJITA</button>
-          <button class="gaceta-chip" onclick="seleccionarGaceta('GUACA ACTIVA', this)">GUACA ACTIVA</button>
-          <button class="gaceta-chip" onclick="seleccionarGaceta('MEGA GUACA', this)">MEGA GUACA</button>
-          <button class="gaceta-chip" onclick="seleccionarGaceta('GUACHARO ACTIVO', this)">GUACHARO ACTIVO</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('RULETA ROYAL', this)">RULETA ROYAL</button>
           <button class="gaceta-chip" onclick="seleccionarGaceta('EL GUACHARITO MILLONARIO', this)">EL GUACHARITO MILLONARIO</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('GUACHARO ACTIVO', this)">GUACHARO ACTIVO</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('SELVA PLUS', this)">SELVA PLUS</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('GRANJA MILLONARIA', this)">GRANJA MILLONARIA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('CONDOR GANA', this)">CONDOR GANA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('CENTENA ANIMAL', this)">CENTENA ANIMAL</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('CENTENA PLUS', this)">CENTENA PLUS</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('RULETA ACTIVA', this)">RULETA ACTIVA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('LOTTO CHAIMA', this)">LOTTO CHAIMA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('CAZALOTON', this)">CAZALOTON</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('CHANCE ANIMAL', this)">CHANCE ANIMAL</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('LA RICACHONA', this)">LA RICACHONA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('TROPIGANA', this)">TROPIGANA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('FRUITAGANA', this)">FRUITAGANA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('GRANJITA PLUS', this)">GRANJITA PLUS</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('GRANJAZO', this)">GRANJAZO</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('PANDA PLUS', this)">PANDA PLUS</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('MEGA ANIMAL', this)">MEGA ANIMAL</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('MONJE MILLONARIO', this)">MONJE MILLONARIO</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('LOTTO GATO', this)">LOTTO GATO</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('GATAZO', this)">GATAZO</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('ZOOLOGICO ACTIVO', this)">ZOOLOGICO ACTIVO</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('GUACA ACTIVA', this)">GUACA ACTIVA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('LOTOANIMALITO', this)">LOTOANIMALITO</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('LOTTO PANTERA', this)">LOTTO PANTERA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('LOTTO REAL', this)">LOTTO REAL</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('LOTTO LA QUINTA', this)">LOTTO LA QUINTA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('RULETON PERU', this)">RULETON PERU</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('LOTTOMAX', this)">LOTTOMAX</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('RULETON COLOMBIA', this)">RULETON COLOMBIA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('RULETON VENEZUELA', this)">RULETON VENEZUELA</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('CALAMAR A', this)">CALAMAR A</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('CALAMAR B', this)">CALAMAR B</button>
+          <button class="gaceta-chip" onclick="seleccionarGaceta('MEGA GUACA', this)">MEGA GUACA</button>
         </div>
         <div id="gacetaContenido">
           <p style="font-size:12px;color:var(--muted);">Cargando datos...</p>
@@ -661,6 +688,9 @@ function irAFecha() {
   if (!inp || !inp.value) return;
   fechaSeleccionadaISO = inp.value;
   cargarResultados();
+  if (document.getElementById("tab-datos")?.classList.contains("active")) {
+    cargarGacetaWinbig(gacetaActualLoteria);
+  }
 }
 
 async function cargarResultados() {
@@ -767,7 +797,7 @@ function renderCruzNodo(etiqueta, item, esCentro = false) {
 async function cargarGacetaWinbig(loteria) {
   const cont = document.getElementById("gacetaContenido");
   const fechaUse = fechaSeleccionadaISO || getHoyVenezuelaISO();
-  cont.innerHTML = `<p style="font-size:12px;color:var(--muted);">Cargando datos de ${loteria} • Agencia Harold José...</p>`;
+  cont.innerHTML = `<p style="font-size:12px;color:var(--muted);">Cargando datos de ${loteria} (${fechaUse}) • Agencia Harold José...</p>`;
   try {
     const r = await fetch(`${API_BASE}/gaceta?loteria=${encodeURIComponent(loteria)}&fecha=${encodeURIComponent(fechaUse)}`);
     const d = await r.json();
