@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Agencia Harold José - Seguridad, Confianza y Experiencia</title>
 <link rel="icon" type="image/png" href="logo.png" />
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
   :root {
     --bg: #0b141a;
@@ -706,6 +705,8 @@ let pollTimer = null;
 let toquesLogoAdmin = 0;
 let timerToquesAdmin = null;
 let historialPagosCache = [];
+let ultimoConteoCliente = -1;
+let ultimoConteoAdmin = -1;
 
 function registrarToqueAdmin() {
   toquesLogoAdmin++;
@@ -745,6 +746,15 @@ function getDeviceId() {
   return id;
 }
 
+function bajarAlFinalChat(container) {
+  if (!container) return;
+  const mover = () => { container.scrollTop = container.scrollHeight; };
+  mover();
+  requestAnimationFrame(mover);
+  setTimeout(mover, 120);
+  setTimeout(mover, 400);
+}
+
 function toggleSound() {
   soundOn = !soundOn;
   document.getElementById("btnSound").textContent = soundOn ? "🔔 Sonido ON" : "🔕 Sonido OFF";
@@ -757,6 +767,10 @@ function switchTab(tab, btn) {
   document.getElementById("tab-" + tab).classList.add("active");
   if (tab === "promos") cargarFlyers();
   if (tab === "datos") cargarGacetaWinbig(gacetaActualLoteria);
+  if (tab === "jugar") {
+    bajarAlFinalChat(document.getElementById("clientMessages"));
+    bajarAlFinalChat(document.getElementById("adminMessages"));
+  }
 }
 
 function irAFecha() {
@@ -1099,6 +1113,7 @@ async function verificarOtpCliente() {
       nombre: d.nombre,
       telefono: d.telefono
     }));
+    ultimoConteoCliente = -1;
     iniciarVistaSesion();
   } catch (e) {
     alert("Error de conexión con el servidor. Verifica tu internet.");
@@ -1115,6 +1130,7 @@ async function entrarAdmin() {
     const d = await r.json();
     if (!d.ok) return alert(d.error || "Clave incorrecta.");
     localStorage.setItem("hj_session", JSON.stringify({ role: "admin", adminKey: pass }));
+    ultimoConteoAdmin = -1;
     iniciarVistaSesion();
   } catch (e) {
     alert("Error de conexión.");
@@ -1144,8 +1160,8 @@ function iniciarVistaSesion() {
     document.getElementById("clientChatBox").style.display = "flex";
     document.getElementById("adminPanelBox").style.display = "none";
     document.getElementById("lblClientHeader").textContent = `Taquilla Harold José (${ses.nombre})`;
-    cargarHistorialCliente();
-    pollTimer = setInterval(cargarHistorialCliente, 4500);
+    cargarHistorialCliente(true);
+    pollTimer = setInterval(() => cargarHistorialCliente(false), 4000);
   } else if (ses.role === "admin") {
     document.getElementById("clientChatBox").style.display = "none";
     document.getElementById("adminPanelBox").style.display = "grid";
@@ -1153,7 +1169,7 @@ function iniciarVistaSesion() {
     pollTimer = setInterval(() => {
       cargarListaChatsAdmin();
       if (window.activeAdminChatId) cargarHistorialAdmin(window.activeAdminChatId, false);
-    }, 4500);
+    }, 4000);
   }
 }
 
@@ -1206,20 +1222,21 @@ function renderTarjetaAuditoria(ap, msgId, esAdmin) {
   `;
 }
 
-function renderBurbujas(container, mensajes, esAdmin = false) {
-  const wasAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 80;
-  container.innerHTML = (mensajes || []).map(m => `
+function renderBurbujas(container, mensajes, esAdmin = false, forzarFinal = false) {
+  const lista = mensajes || [];
+  const wasAtBottom = forzarFinal || (container.scrollHeight - container.scrollTop <= container.clientHeight + 110);
+  container.innerHTML = lista.map(m => `
     <div class="msg ${m.sender}">
-      ${m.imagen ? `<img src="${m.imagen}" onclick="window.open(this.src, '_blank')" alt="Comprobante" />` : ""}
+      ${m.imagen ? `<img src="${m.imagen}" onload="if(${wasAtBottom}) this.closest('.messages-area').scrollTop = this.closest('.messages-area').scrollHeight;" onclick="window.open(this.src, '_blank')" alt="Comprobante" />` : ""}
       <div>${(m.texto || "").replace(/\*(.*?)\*/g, "<strong>$1</strong>")}</div>
       ${m.analisisPago ? renderTarjetaAuditoria(m.analisisPago, m.id, esAdmin) : ""}
       <div class="msg-meta">${m.hora || ""} ${m.pendiente ? "⏳" : "✓✓"}</div>
     </div>
   `).join("");
-  if (wasAtBottom) container.scrollTop = container.scrollHeight;
+  if (wasAtBottom) bajarAlFinalChat(container);
 }
 
-async function cargarHistorialCliente() {
+async function cargarHistorialCliente(forzarFinal = false) {
   const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
   if (!ses || ses.role !== "client") return;
   try {
@@ -1232,7 +1249,11 @@ async function cargarHistorialCliente() {
       const disp = Number(fin.disponible) || 0;
       const promo = (Number(fin.cashea) || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
       document.getElementById("lblSaldoCliente").innerHTML = `${formatearEtiquetaSaldo(disp)} | 🎁 Promo: ${promo} Bs.`;
-      renderBurbujas(document.getElementById("clientMessages"), d.hilo.mensajes, false);
+
+      const msgs = d.hilo.mensajes || [];
+      const esPrimerCargaONuevo = forzarFinal || ultimoConteoCliente === -1 || msgs.length !== ultimoConteoCliente;
+      ultimoConteoCliente = msgs.length;
+      renderBurbujas(document.getElementById("clientMessages"), msgs, false, esPrimerCargaONuevo);
     }
   } catch (e) {}
 }
@@ -1243,7 +1264,7 @@ function insertarTexto(txt) {
   inp.focus();
 }
 
-async function enviarMensajeCliente(textoForzado = null, imagenBase64 = null, ocrTexto = "") {
+async function enviarMensajeCliente(textoForzado = null, imagenBase64 = null) {
   const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
   if (!ses) return;
 
@@ -1266,7 +1287,6 @@ async function enviarMensajeCliente(textoForzado = null, imagenBase64 = null, oc
         sender: "client",
         texto,
         imagen: imagenBase64,
-        ocrTexto,
         deviceId: getDeviceId()
       })
     });
@@ -1275,27 +1295,25 @@ async function enviarMensajeCliente(textoForzado = null, imagenBase64 = null, oc
       alert("No se pudo enviar: " + (d.error || "Error del servidor"));
       return;
     }
-    await cargarHistorialCliente();
+    await cargarHistorialCliente(true);
   } catch (e) {
     alert("Sin conexión con la taquilla. Revisa tus datos móviles o Wi-Fi.");
   }
 }
 
-function prepararImagenParaOcr(file, maxWidth = 1200) {
+function comprimirImagenRapida(file, maxWidth = 750) {
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = () => {
       const img = new Image();
       img.onload = () => {
-        const scale = Math.min(1.5, maxWidth / img.width);
+        const scale = Math.min(1, maxWidth / img.width);
         const canvas = document.createElement("canvas");
         canvas.width = Math.round(img.width * scale);
         canvas.height = Math.round(img.height * scale);
         const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL("image/jpeg", 0.85));
+        resolve(canvas.toDataURL("image/jpeg", 0.78));
       };
       img.onerror = () => resolve(reader.result);
       img.src = reader.result;
@@ -1311,15 +1329,8 @@ async function subirCapture(ev) {
   if (btn) btn.textContent = "⏳";
 
   try {
-    const dataUrl = await prepararImagenParaOcr(file, 1200);
-    let ocrTexto = "";
-    if (window.Tesseract) {
-      try {
-        const res = await Tesseract.recognize(dataUrl, "eng");
-        ocrTexto = res?.data?.text || "";
-      } catch (e) {}
-    }
-    await enviarMensajeCliente("📷 Comprobante adjunto", dataUrl, ocrTexto);
+    const dataUrl = await comprimirImagenRapida(file, 750);
+    await enviarMensajeCliente("📷 Comprobante adjunto", dataUrl);
   } finally {
     if (btn) btn.textContent = "📎";
     ev.target.value = "";
@@ -1347,9 +1358,10 @@ async function cargarListaChatsAdmin() {
   } catch (e) {}
 }
 
-async function cargarHistorialAdmin(chatId, scroll) {
+async function cargarHistorialAdmin(chatId, forzarFinal = false) {
   const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
   if (!ses || ses.role !== "admin") return;
+  const cambioChat = window.activeAdminChatId !== chatId;
   window.activeAdminChatId = chatId;
   try {
     const r = await fetch(`${API_BASE}/chat/history?chatId=${encodeURIComponent(chatId)}&viewer=admin`, {
@@ -1363,7 +1375,11 @@ async function cargarHistorialAdmin(chatId, scroll) {
       const promo = (Number(fin.cashea) || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
       document.getElementById("adminFinBar").style.display = "flex";
       document.getElementById("lblAdminFinStats").innerHTML = `${formatearEtiquetaSaldo(disp)} | 🎁 Promo: ${promo} Bs.`;
-      renderBurbujas(document.getElementById("adminMessages"), d.hilo.mensajes, true);
+
+      const msgs = d.hilo.mensajes || [];
+      const irAbajo = forzarFinal || cambioChat || ultimoConteoAdmin === -1 || msgs.length !== ultimoConteoAdmin;
+      ultimoConteoAdmin = msgs.length;
+      renderBurbujas(document.getElementById("adminMessages"), msgs, true, irAbajo);
     }
   } catch (e) {}
 }
@@ -1487,6 +1503,14 @@ async function borrarChatActual() {
   document.getElementById("adminFinBar").style.display = "none";
   cargarListaChatsAdmin();
 }
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+    if (ses?.role === "client") cargarHistorialCliente(true);
+    if (ses?.role === "admin" && window.activeAdminChatId) cargarHistorialAdmin(window.activeAdminChatId, true);
+  }
+});
 
 window.addEventListener("DOMContentLoaded", () => {
   const hoyISO = getHoyVenezuelaISO();
