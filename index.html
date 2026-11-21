@@ -929,7 +929,7 @@ function getHoyVenezuelaISO() {
   }).formatToParts(new Date());
   const y = parts.find(p => p.type === "year")?.value || "2026";
   const m = parts.find(p => p.type === "month")?.value || "11";
-  const d = parts.find(p => p.type === "day")?.value || "20";
+  const d = parts.find(p => p.type === "day")?.value || "21";
   return `${y}-${m}-${d}`;
 }
 
