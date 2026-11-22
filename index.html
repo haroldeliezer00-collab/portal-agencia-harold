@@ -969,7 +969,7 @@
         <div style="width:36px;height:36px;border-radius:50%;background:rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;font-size:18px;">💎</div>
         <div>
           <div style="font-size:13px;font-weight:900;color:#fff;">Asistente Agencia Harold <span style="background:rgba(37,99,235,.3);color:#93c5fd;font-size:9px;padding:2px 6px;border-radius:999px;">OFICIAL</span></div>
-          <div style="font-size:10.5px;color:#60a5fa;font-weight:700;">Verificación Real vía Telegram</div>
+          <div style="font-size:10.5px;color:#60a5fa;font-weight:700;">Verificación Segura vía Telegram</div>
         </div>
       </div>
       <button class="pill" onclick="cerrarAsistenteRegistro()">✕</button>
@@ -1408,7 +1408,7 @@ function jugarDesdePromo(titulo) {
 }
 
 // =========================================================================
-// ASISTENTE DE REGISTRO CON VERIFICACIÓN REAL POR TELEGRAM
+// ASISTENTE DE REGISTRO CON VERIFICACIÓN DIRECTA POR TELEGRAM
 // =========================================================================
 let wizData = { telefono: "", nombre: "", cedula: "" };
 
@@ -1454,8 +1454,7 @@ function wizConfirmarEdad(esMayor) {
 
   agregarBurbujaWiz("user", "Sí, soy mayor de edad 🔞");
   agregarBurbujaWiz("bot",
-    `📱 Indícame tu <strong>Número de Teléfono</strong> real en Venezuela (Ej: 0412, 0414, 0424, 0416, 0426 o 0422).<br/><br/>` +
-    `<span style="font-size:11.5px;color:var(--muted);">Este número debe coincidir con tu cuenta de Telegram para enviarte el código real.</span>`
+    `📱 Indícame tu <strong>Número de Teléfono</strong> real en Venezuela (Ej: 0412, 0414, 0424, 0416, 0426 o 0422).`
   );
 
   document.getElementById("wizFooter").innerHTML = `
@@ -1528,7 +1527,7 @@ async function wizPasoCedula() {
 
     agregarBurbujaWiz("bot",
       `📲 <strong>Paso final de seguridad:</strong><br/>` +
-      `Toca el botón azul de abajo para abrir nuestro bot oficial en Telegram, pulsa <strong>Iniciar</strong> y toca <strong>"Compartir mi número"</strong> para verificar que el teléfono <strong>${wizData.telefono}</strong> es real.<br/>` +
+      `Toca el botón azul de abajo para abrir nuestro bot oficial en Telegram y pulsa <strong>Iniciar</strong> para recibir tu código de 6 dígitos al instante:<br/>` +
       `<a class="btn-tg-verify" href="${d.telegramUrl}" target="_blank">📲 Recibir Código en Telegram</a>`
     );
 
@@ -1882,7 +1881,6 @@ async function cargarHistorialAdmin(chatId, forzarFinal = false) {
       document.getElementById("adminFinBar").style.display = "flex";
       document.getElementById("lblAdminFinStats").innerHTML = `${formatearEtiquetaSaldo(disp)} | 🎁 Promo: ${promo} Bs.`;
 
-      // Mostrar botón "Bono 1.000 Bs." SOLO si el cliente aún no lo ha reclamado
       const btnBono = document.getElementById("btnAdminBono1000");
       if (btnBono) {
         btnBono.style.display = d.elegibleBono ? "inline-block" : "none";
