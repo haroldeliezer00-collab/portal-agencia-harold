@@ -345,7 +345,7 @@
   .flyer-body h4 { font-size: 12px; color: var(--gold); margin-bottom: 4px; }
   .flyer-body p { font-size: 11px; color: var(--muted); }
 
-  /* NUEVA PANTALLA DE ACCESO ESTILO TARJETA MODERNA */
+  /* PORTAL DE ACCESO MODERNO */
   .login-portal-card {
     max-width: 430px;
     width: 94%;
@@ -356,10 +356,7 @@
     padding: 22px 18px 18px;
     box-shadow: 0 18px 40px rgba(0,0,0,.45);
   }
-  .portal-logo-wrap {
-    text-align: center;
-    margin-bottom: 16px;
-  }
+  .portal-logo-wrap { text-align: center; margin-bottom: 16px; }
   .portal-logo-wrap img {
     width: 82px;
     height: 82px;
@@ -368,12 +365,7 @@
     object-fit: cover;
     box-shadow: 0 6px 20px rgba(245,158,11,.25);
   }
-  .portal-logo-wrap h2 {
-    font-size: 16px;
-    font-weight: 900;
-    color: var(--gold);
-    margin-top: 8px;
-  }
+  .portal-logo-wrap h2 { font-size: 16px; font-weight: 900; color: var(--gold); margin-top: 8px; }
   .register-cta-banner {
     background: linear-gradient(135deg, rgba(37,99,235,.18), rgba(0,168,132,.14));
     border: 1.5px solid rgba(96,165,250,.55);
@@ -412,23 +404,9 @@
     font-weight: 900;
     flex-shrink: 0;
   }
-  .field-label-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px;
-  }
-  .field-label-row label {
-    font-size: 11px;
-    font-weight: 800;
-    color: var(--muted);
-    letter-spacing: .4px;
-    text-transform: uppercase;
-  }
-  .field-label-row span {
-    font-size: 10.5px;
-    color: var(--muted);
-  }
+  .field-label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .field-label-row label { font-size: 11px; font-weight: 800; color: var(--muted); letter-spacing: .4px; text-transform: uppercase; }
+  .field-label-row span { font-size: 10.5px; color: var(--muted); }
   .input-icon-box {
     display: flex;
     align-items: center;
@@ -566,20 +544,9 @@
     font-size: 13px;
     font-weight: 700;
   }
-  .wiz-footer {
-    padding: 11px 12px;
-    background: var(--panel);
-    border-top: 1px solid var(--border);
-  }
-  .wiz-btn-pair {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .wiz-input-row {
-    display: flex;
-    gap: 8px;
-  }
+  .wiz-footer { padding: 11px 12px; background: var(--panel); border-top: 1px solid var(--border); }
+  .wiz-btn-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .wiz-input-row { display: flex; gap: 8px; }
   .wiz-input-row input {
     flex: 1;
     background: var(--panel2);
@@ -600,13 +567,18 @@
     font-size: 13px;
     cursor: pointer;
   }
-  .code-highlight-box {
-    margin-top: 8px;
-    background: rgba(0,168,132,.15);
-    border: 1.5px dashed #25d366;
-    border-radius: 10px;
-    padding: 10px;
+  .btn-tg-verify {
+    display: block;
+    width: 100%;
     text-align: center;
+    background: #0088cc;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 13px;
+    padding: 11px;
+    border-radius: 10px;
+    margin-top: 8px;
   }
 
   /* CHAT TAQUILLA Y ADMIN */
@@ -730,6 +702,12 @@
   .badge-unread { background: var(--green); color: #000; font-weight: 800; font-size: 11px; padding: 2px 7px; border-radius: 999px; }
   .fin-bar { background: #16222a; padding: 8px 12px; border-bottom: 1px solid var(--border); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 11px; }
   .fin-bar button { background: var(--panel2); border: 1px solid var(--border); color: var(--gold); padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+  .fin-bar button.btn-bono-admin {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+    color: #0b141a;
+    border-color: #fbbf24;
+    font-weight: 900;
+  }
   .saldo-negativo-txt { color: #ef4444 !important; font-weight: 900; }
 
   .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.78); display: none; align-items: center; justify-content: center; z-index: 200; padding: 14px; }
@@ -965,6 +943,7 @@
         </div>
         <div class="fin-bar" id="adminFinBar" style="display:none;">
           <span id="lblAdminFinStats" style="color:#fff;font-weight:700;"></span>
+          <button id="btnAdminBono1000" class="btn-bono-admin" style="display:none;" onclick="accionFinanciera('bono_bienvenida')">🎁 Bono 1.000 Bs.</button>
           <button onclick="accionFinanciera('aprobar_deposito')">+ Depósito</button>
           <button onclick="accionFinanciera('jugada')">- Jugada</button>
           <button onclick="accionFinanciera('premio')">+ Premio</button>
@@ -990,7 +969,7 @@
         <div style="width:36px;height:36px;border-radius:50%;background:rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;font-size:18px;">💎</div>
         <div>
           <div style="font-size:13px;font-weight:900;color:#fff;">Asistente Agencia Harold <span style="background:rgba(37,99,235,.3);color:#93c5fd;font-size:9px;padding:2px 6px;border-radius:999px;">OFICIAL</span></div>
-          <div style="font-size:10.5px;color:#60a5fa;font-weight:700;">Registro Directo en 1 Minuto</div>
+          <div style="font-size:10.5px;color:#60a5fa;font-weight:700;">Verificación Real vía Telegram</div>
         </div>
       </div>
       <button class="pill" onclick="cerrarAsistenteRegistro()">✕</button>
@@ -1429,9 +1408,9 @@ function jugarDesdePromo(titulo) {
 }
 
 // =========================================================================
-// ASISTENTE DE REGISTRO TIPO CHAT (SIN DATOS BANCARIOS, CON CÓDIGO DIRECTO)
+// ASISTENTE DE REGISTRO CON VERIFICACIÓN REAL POR TELEGRAM
 // =========================================================================
-let wizData = { telefono: "", nombre: "", cedula: "", codigoGenerado: "" };
+let wizData = { telefono: "", nombre: "", cedula: "" };
 
 function agregarBurbujaWiz(tipo, html) {
   const box = document.getElementById("wizMessages");
@@ -1443,7 +1422,7 @@ function agregarBurbujaWiz(tipo, html) {
 }
 
 function abrirAsistenteRegistro() {
-  wizData = { telefono: "", nombre: "", cedula: "", codigoGenerado: "" };
+  wizData = { telefono: "", nombre: "", cedula: "" };
   document.getElementById("wizMessages").innerHTML = "";
   document.getElementById("modalAsistente").style.display = "flex";
 
@@ -1476,7 +1455,7 @@ function wizConfirmarEdad(esMayor) {
   agregarBurbujaWiz("user", "Sí, soy mayor de edad 🔞");
   agregarBurbujaWiz("bot",
     `📱 Indícame tu <strong>Número de Teléfono</strong> real en Venezuela (Ej: 0412, 0414, 0424, 0416, 0426 o 0422).<br/><br/>` +
-    `<span style="font-size:11.5px;color:var(--muted);">Este número será tu usuario para entrar siempre a tu cuenta.</span>`
+    `<span style="font-size:11.5px;color:var(--muted);">Este número debe coincidir con tu cuenta de Telegram para enviarte el código real.</span>`
   );
 
   document.getElementById("wizFooter").innerHTML = `
@@ -1516,7 +1495,7 @@ function wizPasoNombre() {
   document.getElementById("wizFooter").innerHTML = `
     <div class="wiz-input-row">
       <input type="tel" id="wizInpCedula" placeholder="Ej: 18274410" maxlength="10" onkeydown="if(event.key==='Enter') wizPasoCedula()" />
-      <button onclick="wizPasoCedula()">Generar Código</button>
+      <button onclick="wizPasoCedula()">Continuar</button>
     </div>
   `;
   document.getElementById("wizInpCedula")?.focus();
@@ -1528,10 +1507,10 @@ async function wizPasoCedula() {
   wizData.cedula = ced;
   agregarBurbujaWiz("user", `V-${ced}`);
 
-  document.getElementById("wizFooter").innerHTML = `<div style="text-align:center;font-size:12px;color:var(--muted);">Generando tu código oficial...</div>`;
+  document.getElementById("wizFooter").innerHTML = `<div style="text-align:center;font-size:12px;color:var(--muted);">Preparando enlace oficial de Telegram...</div>`;
 
   try {
-    const r = await fetch(API_BASE + "/auth/request-direct-code", {
+    const r = await fetch(API_BASE + "/auth/prepare-tg", {
       method: "POST",
       headers: { "Content-Type": "application/json", "X-Device-Id": getDeviceId() },
       body: JSON.stringify({
@@ -1543,24 +1522,20 @@ async function wizPasoCedula() {
     });
     const d = await r.json();
     if (!d.ok) {
-      agregarBurbujaWiz("bot", `⚠️ ${d.error || "No se pudo generar el código."}`);
+      agregarBurbujaWiz("bot", `⚠️ ${d.error || "No se pudo preparar la verificación."}`);
       return;
     }
 
-    wizData.codigoGenerado = d.codigo;
     agregarBurbujaWiz("bot",
-      `✅ ¡Listo <strong>${wizData.nombre}</strong>! Tu cuenta oficial está lista.<br/>` +
-      `<div class="code-highlight-box">` +
-      `<div style="font-size:11px;color:var(--muted);">TU CÓDIGO DE VERIFICACIÓN ES:</div>` +
-      `<div style="font-size:24px;font-weight:900;color:#25d366;letter-spacing:4px;margin:4px 0;">${d.codigo}</div>` +
-      `<div style="font-size:10.5px;color:var(--text);">Guarda tu teléfono y cédula para entrar siempre sin código.</div>` +
-      `</div>`
+      `📲 <strong>Paso final de seguridad:</strong><br/>` +
+      `Toca el botón azul de abajo para abrir nuestro bot oficial en Telegram, pulsa <strong>Iniciar</strong> y toca <strong>"Compartir mi número"</strong> para verificar que el teléfono <strong>${wizData.telefono}</strong> es real.<br/>` +
+      `<a class="btn-tg-verify" href="${d.telegramUrl}" target="_blank">📲 Recibir Código en Telegram</a>`
     );
 
     document.getElementById("wizFooter").innerHTML = `
       <div class="wiz-input-row">
-        <input type="text" id="wizInpCodigo" value="${d.codigo}" maxlength="6" inputmode="numeric" />
-        <button style="background:#00a884;color:#041b15;" onclick="wizFinalizarRegistro()">✅ Entrar Ahora</button>
+        <input type="text" id="wizInpCodigo" placeholder="Código de 6 dígitos" maxlength="6" inputmode="numeric" onkeydown="if(event.key==='Enter') wizFinalizarRegistro()" />
+        <button style="background:#00a884;color:#041b15;" onclick="wizFinalizarRegistro()">✅ Verificar</button>
       </div>
     `;
   } catch (e) {
@@ -1570,7 +1545,7 @@ async function wizPasoCedula() {
 
 async function wizFinalizarRegistro() {
   const codigo = (document.getElementById("wizInpCodigo")?.value || "").trim();
-  if (!codigo) return alert("Ingresa el código de 6 dígitos.");
+  if (!codigo) return alert("Ingresa el código de 6 dígitos que te envió el bot de Telegram.");
 
   try {
     const r = await fetch(API_BASE + "/auth/verify-otp", {
@@ -1879,7 +1854,7 @@ async function cargarListaChatsAdmin() {
       list.innerHTML = d.chats.map(c => `
         <div class="chat-row ${window.activeAdminChatId === c.chatId ? "active" : ""}" onclick="cargarHistorialAdmin('${c.chatId}', true)">
           <div>
-            <div style="font-weight:700;font-size:13px;">${c.nombre}</div>
+            <div style="font-weight:700;font-size:13px;">${c.nombre} ${c.elegibleBono ? "🆕" : ""}</div>
             <div style="font-size:11px;color:var(--muted);">${c.ultimoMsg}</div>
           </div>
           ${c.sinLeer ? `<span class="badge-unread">${c.sinLeerCount}</span>` : `<span style="font-size:10px;color:var(--muted);">${c.hora}</span>`}
@@ -1906,6 +1881,12 @@ async function cargarHistorialAdmin(chatId, forzarFinal = false) {
       const promo = (Number(fin.cashea) || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
       document.getElementById("adminFinBar").style.display = "flex";
       document.getElementById("lblAdminFinStats").innerHTML = `${formatearEtiquetaSaldo(disp)} | 🎁 Promo: ${promo} Bs.`;
+
+      // Mostrar botón "Bono 1.000 Bs." SOLO si el cliente aún no lo ha reclamado
+      const btnBono = document.getElementById("btnAdminBono1000");
+      if (btnBono) {
+        btnBono.style.display = d.elegibleBono ? "inline-block" : "none";
+      }
 
       const msgs = d.hilo.mensajes || [];
       const irAbajo = forzarFinal || cambioChat || ultimoConteoAdmin === -1 || msgs.length !== ultimoConteoAdmin;
@@ -1961,18 +1942,26 @@ async function accionFinanciera(accion) {
   const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
   if (!ses || !window.activeAdminChatId) return;
   let monto = 0;
-  if (accion !== "enviar_estado") {
+
+  if (accion === "bono_bienvenida") {
+    if (!confirm("¿Acreditar el Bono de Bienvenida de 1.000,00 Bs. (saldo promocional para jugar) a este cliente?")) return;
+    monto = 1000;
+  } else if (accion !== "enviar_estado") {
     const val = prompt("Ingresa el monto en Bolívares (Bs.):");
     if (!val) return;
     monto = parseFloat(val.replace(",", "."));
     if (isNaN(monto) || monto <= 0) return alert("Monto inválido.");
   }
-  await fetch(API_BASE + "/chat/finance", {
+
+  const r = await fetch(API_BASE + "/chat/finance", {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
     body: JSON.stringify({ chatId: window.activeAdminChatId, accion, monto })
   });
+  const d = await r.json();
+  if (!d.ok && d.error) alert(d.error);
   cargarHistorialAdmin(window.activeAdminChatId, true);
+  cargarListaChatsAdmin();
 }
 
 async function abrirHistorialPagos() {
@@ -2023,7 +2012,7 @@ function filtrarHistorialPagos() {
 async function borrarChatActual() {
   const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
   if (!ses || !window.activeAdminChatId) return;
-  if (!confirm("¿Limpiar los mensajes de este chat de tu lista?\n\n(El saldo positivo/negativo y la cuenta del cliente NO se borrarán).")) return;
+  if (!confirm("¿Limpiar los mensajes de este chat de tu lista?\n\n(El saldo y la cuenta del cliente NO se borrarán).")) return;
   await fetch(API_BASE + "/chat/delete", {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
