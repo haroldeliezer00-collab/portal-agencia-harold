@@ -17,6 +17,7 @@
     --green-dark: #005c4b;
     --gold: #f59e0b;
     --red: #ef4444;
+    --blue: #2563eb;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
   html, body { background: var(--bg); color: var(--text); min-height: 100vh; width: 100%; overflow-x: hidden; }
@@ -76,6 +77,7 @@
   .view { display: none; flex: 1; flex-direction: column; width: 100%; }
   .view.active { display: flex; }
 
+  /* TICKER */
   .ticker-wrap {
     background: linear-gradient(90deg, #102028, #182b36, #102028);
     border-bottom: 1px solid var(--border);
@@ -111,6 +113,7 @@
   .ticker-res { color: var(--gold); font-weight: 800; }
   .ticker-hr { color: #25d366; font-size: 10px; font-weight: 700; }
 
+  /* RESULTADOS */
   .toolbar { padding: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .toolbar input[type="search"] {
     flex: 1;
@@ -150,7 +153,6 @@
     font-weight: 900;
     cursor: pointer;
   }
-
   .grid-loterias { padding: 0 10px 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; }
   .card-loteria { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; min-width: 0; }
   .card-loteria-head {
@@ -207,6 +209,7 @@
   }
   .sorteo-ani.pendiente { color: var(--muted); font-weight: 600; }
 
+  /* GACETA OFICIAL */
   .section-pad { padding: 10px; display: grid; gap: 12px; width: 100%; max-width: 100%; overflow-x: hidden; }
   .info-card {
     background: var(--panel);
@@ -217,7 +220,6 @@
     max-width: 100%;
     overflow: hidden;
   }
-
   .gaceta-nav-strip {
     display: flex;
     align-items: center;
@@ -335,6 +337,7 @@
   .dato-ani { font-size: 10.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .dato-sub { font-size: 9.5px; color: #25d366; font-weight: 700; }
 
+  /* PROMOS */
   .flyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
   .flyer-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
   .flyer-card img { width: 100%; max-height: 360px; object-fit: cover; background: #0f172a; }
@@ -342,16 +345,271 @@
   .flyer-body h4 { font-size: 12px; color: var(--gold); margin-bottom: 4px; }
   .flyer-body p { font-size: 11px; color: var(--muted); }
 
-  .auth-box { max-width: 420px; width: 92%; margin: 24px auto; background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
-  .auth-box h2 { color: var(--gold); font-size: 18px; margin-bottom: 6px; text-align: center; }
-  .auth-box p.sub { color: var(--muted); font-size: 12px; text-align: center; margin-bottom: 16px; }
-  .field { margin-bottom: 12px; }
-  .field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
-  .field input { width: 100%; background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 11px 12px; border-radius: 10px; font-size: 14px; }
-  .btn { width: 100%; border: none; border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 800; cursor: pointer; margin-top: 6px; }
-  .btn-green { background: var(--green); color: #041b15; }
-  .btn-tg { background: #24a1de; color: #fff; }
+  /* NUEVA PANTALLA DE ACCESO ESTILO TARJETA MODERNA */
+  .login-portal-card {
+    max-width: 430px;
+    width: 94%;
+    margin: 18px auto 26px;
+    background: linear-gradient(180deg, #131f27 0%, #0e171d 100%);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 22px 18px 18px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.45);
+  }
+  .portal-logo-wrap {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .portal-logo-wrap img {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    object-fit: cover;
+    box-shadow: 0 6px 20px rgba(245,158,11,.25);
+  }
+  .portal-logo-wrap h2 {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--gold);
+    margin-top: 8px;
+  }
+  .register-cta-banner {
+    background: linear-gradient(135deg, rgba(37,99,235,.18), rgba(0,168,132,.14));
+    border: 1.5px solid rgba(96,165,250,.55);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    margin-bottom: 18px;
+    transition: .2s;
+  }
+  .register-cta-banner:active { transform: scale(.98); }
+  .register-cta-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: #0b141a;
+    border: 1px solid rgba(96,165,250,.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    flex-shrink: 0;
+  }
+  .register-cta-arrow {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #3b82f6;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .field-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  .field-label-row label {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--muted);
+    letter-spacing: .4px;
+    text-transform: uppercase;
+  }
+  .field-label-row span {
+    font-size: 10.5px;
+    color: var(--muted);
+  }
+  .input-icon-box {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0 12px;
+    margin-bottom: 13px;
+  }
+  .input-icon-box:focus-within { border-color: var(--gold); }
+  .input-icon-box input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    padding: 12px 0;
+    font-size: 14px;
+    outline: none;
+  }
+  .btn-direct-chat {
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 13px;
+    background: linear-gradient(90deg, #1d4ed8, #2563eb);
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 900;
+    letter-spacing: .4px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(37,99,235,.35);
+    margin-top: 2px;
+  }
+  .portal-help-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .btn-soporte-pill {
+    background: var(--panel2);
+    border: 1px solid rgba(96,165,250,.45);
+    color: #93c5fd;
+    padding: 7px 12px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .apk-promo-bar {
+    margin-top: 14px;
+    background: #091015;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .apk-promo-bar img {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1.5px solid var(--gold);
+    object-fit: cover;
+  }
+  .btn-apk-dl {
+    background: linear-gradient(90deg, #d97706, #7c3aed);
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 900;
+    cursor: pointer;
+    white-space: nowrap;
+  }
 
+  /* MODAL ASISTENTE DE REGISTRO TIPO CHAT */
+  .wizard-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    max-width: 430px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 88vh;
+  }
+  .wizard-head {
+    background: var(--panel2);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .wizard-body {
+    padding: 14px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #0b141a;
+    min-height: 290px;
+  }
+  .wiz-bubble-bot {
+    align-self: flex-start;
+    max-width: 88%;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 11px 13px;
+    border-radius: 14px;
+    border-bottom-left-radius: 4px;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .wiz-bubble-user {
+    align-self: flex-end;
+    max-width: 82%;
+    background: #1d4ed8;
+    color: #fff;
+    padding: 10px 13px;
+    border-radius: 14px;
+    border-bottom-right-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .wiz-footer {
+    padding: 11px 12px;
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+  }
+  .wiz-btn-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .wiz-input-row {
+    display: flex;
+    gap: 8px;
+  }
+  .wiz-input-row input {
+    flex: 1;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: #fff;
+    padding: 11px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+  }
+  .wiz-input-row button {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0 16px;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .code-highlight-box {
+    margin-top: 8px;
+    background: rgba(0,168,132,.15);
+    border: 1.5px dashed #25d366;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  /* CHAT TAQUILLA Y ADMIN */
   .chat-wrap { flex: 1; display: flex; flex-direction: column; height: calc(100vh - 105px); }
   .chat-topbar {
     background: var(--panel2);
@@ -506,6 +764,7 @@
 </nav>
 
 <main>
+  <!-- RESULTADOS -->
   <section id="tab-resultados" class="view active">
     <div class="ticker-wrap" id="tickerBar">
       <div class="ticker-track" id="tickerTrack">
@@ -536,6 +795,7 @@
     <div id="gridLoterias" class="grid-loterias"></div>
   </section>
 
+  <!-- DATOS / GACETA OFICIAL -->
   <section id="tab-datos" class="view">
     <div class="section-pad">
       <div class="info-card">
@@ -592,6 +852,7 @@
     </div>
   </section>
 
+  <!-- PROMOS -->
   <section id="tab-promos" class="view">
     <div class="section-pad">
       <div class="info-card">
@@ -601,35 +862,75 @@
     </div>
   </section>
 
+  <!-- JUGAR / PORTAL DE ACCESO + CHAT -->
   <section id="tab-jugar" class="view">
-    <div id="loginBox" class="auth-box">
-      <h2>🎟️ Entrar a Taquilla Digital</h2>
-      <p class="sub">Verifica tu número una sola vez por Telegram y recibe tu bono de bienvenida de <strong>1.000,00 Bs.</strong></p>
-
-      <div class="field">
-        <label>Tu Nombre y Apellido</label>
-        <input type="text" id="inpNombre" placeholder="Ej: Carlos Pérez" autocomplete="off" />
-      </div>
-      <div class="field">
-        <label>Tu Teléfono (Venezuela)</label>
-        <input type="tel" id="inpTelefono" placeholder="Ej: 04121234567" maxlength="11" autocomplete="off" />
+    <!-- PORTAL DE ACCESO MODERNO -->
+    <div id="loginBox" class="login-portal-card">
+      <div class="portal-logo-wrap">
+        <img src="logo.png" alt="Agencia Harold José" />
+        <h2>Agencia Harold José</h2>
       </div>
 
-      <button class="btn btn-tg" onclick="abrirTelegramBot()">📲 1. Obtener Código en Telegram</button>
-
-      <div class="field" style="margin-top:14px;">
-        <label>Código de 6 dígitos recibido en Telegram</label>
-        <input type="text" id="inpCodigo" placeholder="Ej: 482910" maxlength="6" inputmode="numeric" autocomplete="one-time-code" />
+      <!-- BANNER REGISTRO RÁPIDO CON ASISTENTE -->
+      <div class="register-cta-banner" onclick="abrirAsistenteRegistro()">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+          <div class="register-cta-icon">💎</div>
+          <div style="min-width:0;">
+            <div style="font-size:10px;font-weight:800;color:#60a5fa;text-transform:uppercase;">¿No tienes cuenta?</div>
+            <div style="font-size:12.5px;font-weight:900;color:#fff;line-height:1.2;">REGÍSTRATE EN AGENCIA HAROLD</div>
+          </div>
+        </div>
+        <div class="register-cta-arrow">➔</div>
       </div>
-      <button class="btn btn-green" onclick="verificarOtpCliente()">✅ 2. Entrar y Jugar</button>
 
-      <div id="secretAdminBox" style="display:none;margin-top:18px;border-top:1px solid var(--border);padding-top:14px;">
+      <!-- ACCESO DIRECTO CLIENTE YA REGISTRADO -->
+      <div class="field-label-row">
+        <label>Número de teléfono</label>
+      </div>
+      <div class="input-icon-box">
+        <span>📱</span>
+        <input type="tel" id="inpLoginTelefono" placeholder="Ej: 04120000000" maxlength="11" autocomplete="off" />
+      </div>
+
+      <div class="field-label-row">
+        <label>Cédula de identidad</label>
+        <span>Solo números o con V-</span>
+      </div>
+      <div class="input-icon-box">
+        <span>🪪</span>
+        <input type="text" id="inpLoginCedula" placeholder="Ej: 12345678 o V-12345678" maxlength="12" autocomplete="off" onkeydown="if(event.key==='Enter') entrarDirectoChat()" />
+      </div>
+
+      <button class="btn-direct-chat" onclick="entrarDirectoChat()">🚀 ENTRAR DIRECTO AL CHAT</button>
+
+      <div class="portal-help-row">
+        <div>
+          <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;">¿Necesitas ayuda?</div>
+          <div style="font-size:12px;font-weight:700;color:var(--text);">Atención técnica y soporte</div>
+        </div>
+        <button class="btn-soporte-pill" onclick="window.open('https://t.me/' + BOT_USERNAME, '_blank')">💬 SOPORTE</button>
+      </div>
+
+      <div class="apk-promo-bar">
+        <div style="display:flex;align-items:center;gap:9px;min-width:0;">
+          <img src="logo.png" alt="App" />
+          <div style="min-width:0;">
+            <div style="font-size:12px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Agencia Harold App</div>
+            <div style="font-size:10.5px;color:#38bdf8;font-weight:700;">Acceso directo para Android</div>
+          </div>
+        </div>
+        <button class="btn-apk-dl" onclick="instalarAccesoDirecto()">INSTALAR ⬇</button>
+      </div>
+
+      <!-- ACCESO SECRETO ADMIN (5 TOQUES EN LOGO SUPERIOR) -->
+      <div id="secretAdminBox" style="display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:14px;">
         <div style="font-size:12px;color:var(--gold);font-weight:800;text-align:center;margin-bottom:8px;">🔐 Acceso Exclusivo Taquilla</div>
         <input type="password" id="inpAdminPass" placeholder="Clave maestra de taquilla" style="width:100%;padding:10px;border-radius:8px;background:var(--panel2);border:1px solid var(--border);color:#fff;margin-bottom:8px;" onkeydown="if(event.key==='Enter') entrarAdmin()" />
-        <button class="btn btn-green" onclick="entrarAdmin()">Entrar como Administrador</button>
+        <button class="btn-direct-chat" style="background:var(--green);color:#041b15;" onclick="entrarAdmin()">Entrar como Administrador</button>
       </div>
     </div>
 
+    <!-- CHAT PRIVADO DEL CLIENTE -->
     <div id="clientChatBox" class="chat-wrap" style="display:none;">
       <div class="chat-topbar">
         <div><span class="status-dot"></span><span id="lblClientHeader">Taquilla Harold José</span></div>
@@ -651,6 +952,7 @@
       </div>
     </div>
 
+    <!-- PANEL ADMINISTRADOR -->
     <div id="adminPanelBox" class="admin-grid" style="display:none;">
       <div class="admin-list" id="adminChatList"></div>
       <div class="chat-wrap">
@@ -680,6 +982,25 @@
   </section>
 </main>
 
+<!-- MODAL ASISTENTE DE REGISTRO TIPO CHAT -->
+<div id="modalAsistente" class="modal-bg" onclick="if(event.target===this) cerrarAsistenteRegistro()">
+  <div class="wizard-card">
+    <div class="wizard-head">
+      <div style="display:flex;align-items:center;gap:9px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;font-size:18px;">💎</div>
+        <div>
+          <div style="font-size:13px;font-weight:900;color:#fff;">Asistente Agencia Harold <span style="background:rgba(37,99,235,.3);color:#93c5fd;font-size:9px;padding:2px 6px;border-radius:999px;">OFICIAL</span></div>
+          <div style="font-size:10.5px;color:#60a5fa;font-weight:700;">Registro Directo en 1 Minuto</div>
+        </div>
+      </div>
+      <button class="pill" onclick="cerrarAsistenteRegistro()">✕</button>
+    </div>
+    <div class="wizard-body" id="wizMessages"></div>
+    <div class="wiz-footer" id="wizFooter"></div>
+  </div>
+</div>
+
+<!-- MODAL HISTORIAL DE PAGOS -->
 <div id="modalPagos" class="modal-bg" onclick="if(event.target===this) this.style.display='none'">
   <div class="modal-card">
     <div class="modal-head">
@@ -707,6 +1028,21 @@ let timerToquesAdmin = null;
 let historialPagosCache = [];
 let ultimoConteoCliente = -1;
 let ultimoConteoAdmin = -1;
+let deferredInstallPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+});
+
+function instalarAccesoDirecto() {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt = null;
+  } else {
+    alert("Para instalar Agencia Harold José en tu teléfono:\n\n1. Toca los 3 puntos (⋮) arriba a la derecha en Chrome.\n2. Selecciona 'Agregar a la pantalla principal' o 'Instalar aplicación'.");
+  }
+}
 
 function registrarToqueAdmin() {
   toquesLogoAdmin++;
@@ -733,7 +1069,7 @@ function getHoyVenezuelaISO() {
   }).formatToParts(new Date());
   const y = parts.find(p => p.type === "year")?.value || "2026";
   const m = parts.find(p => p.type === "month")?.value || "11";
-  const d = parts.find(p => p.type === "day")?.value || "21";
+  const d = parts.find(p => p.type === "day")?.value || "22";
   return `${y}-${m}-${d}`;
 }
 
@@ -752,7 +1088,7 @@ function bajarAlFinalChat(container) {
   mover();
   requestAnimationFrame(mover);
   setTimeout(mover, 120);
-  setTimeout(mover, 400);
+  setTimeout(mover, 380);
 }
 
 function toggleSound() {
@@ -976,7 +1312,7 @@ async function cargarGacetaWinbig(loteria) {
       </div>
     ` : "";
 
-    const listaTripleta = (d.tripleta && d.tripleta.length > 0) ? d.tripleta : [];
+    const listaTripleta = Array.isArray(d.tripleta) ? d.tripleta : [];
     const tripletaHtml = listaTripleta.map(it => `
       <div class="mini-ficha ${it.salio ? "ficha-acertada" : ""}">
         <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
@@ -994,7 +1330,7 @@ async function cargarGacetaWinbig(loteria) {
         <div style="min-width:0;">
           ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
           <div class="dato-num">${it.numero} - ${it.animal}</div>
-          <div class="dato-sub">${it.extra || "Alta frecuencia"}</div>
+          <div class="dato-sub">${it.extra || "Gaceta Oficial Winbig"}</div>
         </div>
       </div>
     `).join("");
@@ -1092,32 +1428,161 @@ function jugarDesdePromo(titulo) {
   if (inp) inp.value = `Quiero jugar: ${titulo} - `;
 }
 
-function abrirTelegramBot() {
-  const nombre = document.getElementById("inpNombre").value.trim();
-  const tlf = document.getElementById("inpTelefono").value.replace(/\D/g, "");
-  if (!nombre) return alert("Escribe tu nombre y apellido primero.");
+// =========================================================================
+// ASISTENTE DE REGISTRO TIPO CHAT (SIN DATOS BANCARIOS, CON CÓDIGO DIRECTO)
+// =========================================================================
+let wizData = { telefono: "", nombre: "", cedula: "", codigoGenerado: "" };
+
+function agregarBurbujaWiz(tipo, html) {
+  const box = document.getElementById("wizMessages");
+  const div = document.createElement("div");
+  div.className = tipo === "bot" ? "wiz-bubble-bot" : "wiz-bubble-user";
+  div.innerHTML = html;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+function abrirAsistenteRegistro() {
+  wizData = { telefono: "", nombre: "", cedula: "", codigoGenerado: "" };
+  document.getElementById("wizMessages").innerHTML = "";
+  document.getElementById("modalAsistente").style.display = "flex";
+
+  agregarBurbujaWiz("bot",
+    `¡Hola! 👋 Soy tu asistente de bienvenida en <strong>Agencia Harold José</strong>.<br/><br/>` +
+    `Abriremos tu cuenta oficial en 1 minuto para ingresar a tu chat privado, recargar saldo y jugar con nosotros.<br/><br/>` +
+    `<strong>¿Eres mayor de edad?</strong>`
+  );
+
+  document.getElementById("wizFooter").innerHTML = `
+    <div class="wiz-btn-pair">
+      <button class="btn-direct-chat" style="margin:0;padding:11px;" onclick="wizConfirmarEdad(true)">🔞 Sí, tengo +18</button>
+      <button class="btn-soporte-pill" style="padding:11px;color:#fca5a5;border-color:rgba(239,68,68,.4);" onclick="wizConfirmarEdad(false)">✖️ Soy menor</button>
+    </div>
+  `;
+}
+
+function cerrarAsistenteRegistro() {
+  document.getElementById("modalAsistente").style.display = "none";
+}
+
+function wizConfirmarEdad(esMayor) {
+  if (!esMayor) {
+    agregarBurbujaWiz("user", "Soy menor de edad");
+    agregarBurbujaWiz("bot", "Lo sentimos, el acceso a la taquilla es exclusivo para mayores de 18 años.");
+    document.getElementById("wizFooter").innerHTML = `<button class="btn-soporte-pill" style="width:100%;padding:11px;" onclick="cerrarAsistenteRegistro()">Cerrar</button>`;
+    return;
+  }
+
+  agregarBurbujaWiz("user", "Sí, soy mayor de edad 🔞");
+  agregarBurbujaWiz("bot",
+    `📱 Indícame tu <strong>Número de Teléfono</strong> real en Venezuela (Ej: 0412, 0414, 0424, 0416, 0426 o 0422).<br/><br/>` +
+    `<span style="font-size:11.5px;color:var(--muted);">Este número será tu usuario para entrar siempre a tu cuenta.</span>`
+  );
+
+  document.getElementById("wizFooter").innerHTML = `
+    <div class="wiz-input-row">
+      <input type="tel" id="wizInpTlf" placeholder="Ej: 04121234567" maxlength="11" onkeydown="if(event.key==='Enter') wizPasoTelefono()" />
+      <button onclick="wizPasoTelefono()">Continuar</button>
+    </div>
+  `;
+  document.getElementById("wizInpTlf")?.focus();
+}
+
+function wizPasoTelefono() {
+  const tlf = (document.getElementById("wizInpTlf")?.value || "").replace(/\D/g, "");
   if (!/^0(412|422|414|424|416|426)\d{7}$/.test(tlf)) {
     return alert("Ingresa un número venezolano válido de 11 dígitos (ej: 04121234567).");
   }
-  localStorage.setItem("hj_tmp_nombre", nombre);
-  localStorage.setItem("hj_tmp_tlf", tlf);
-  window.open(`https://t.me/${BOT_USERNAME}?start=${tlf}`, "_blank");
+  wizData.telefono = tlf;
+  agregarBurbujaWiz("user", tlf);
+  agregarBurbujaWiz("bot", `👤 Ahora escribe tu <strong>Nombre y Apellido</strong> completo:`);
+
+  document.getElementById("wizFooter").innerHTML = `
+    <div class="wiz-input-row">
+      <input type="text" id="wizInpNombre" placeholder="Ej: Carlos Pérez" onkeydown="if(event.key==='Enter') wizPasoNombre()" />
+      <button onclick="wizPasoNombre()">Continuar</button>
+    </div>
+  `;
+  document.getElementById("wizInpNombre")?.focus();
 }
 
-async function verificarOtpCliente() {
-  const nombre = document.getElementById("inpNombre").value.trim();
-  const telefono = document.getElementById("inpTelefono").value.replace(/\D/g, "");
-  const codigo = document.getElementById("inpCodigo").value.trim();
+function wizPasoNombre() {
+  const nom = (document.getElementById("wizInpNombre")?.value || "").trim();
+  if (nom.length < 3) return alert("Escribe tu nombre y apellido.");
+  wizData.nombre = nom;
+  agregarBurbujaWiz("user", nom);
+  agregarBurbujaWiz("bot", `🪪 Por último, ingresa tu <strong>Cédula de Identidad</strong> (solo números):`);
 
-  if (!nombre || !telefono || !codigo) {
-    return alert("Completa tu nombre, teléfono y el código de 6 dígitos de Telegram.");
+  document.getElementById("wizFooter").innerHTML = `
+    <div class="wiz-input-row">
+      <input type="tel" id="wizInpCedula" placeholder="Ej: 18274410" maxlength="10" onkeydown="if(event.key==='Enter') wizPasoCedula()" />
+      <button onclick="wizPasoCedula()">Generar Código</button>
+    </div>
+  `;
+  document.getElementById("wizInpCedula")?.focus();
+}
+
+async function wizPasoCedula() {
+  const ced = (document.getElementById("wizInpCedula")?.value || "").replace(/\D/g, "");
+  if (ced.length < 6 || ced.length > 9) return alert("Ingresa una cédula válida (entre 6 y 9 dígitos).");
+  wizData.cedula = ced;
+  agregarBurbujaWiz("user", `V-${ced}`);
+
+  document.getElementById("wizFooter").innerHTML = `<div style="text-align:center;font-size:12px;color:var(--muted);">Generando tu código oficial...</div>`;
+
+  try {
+    const r = await fetch(API_BASE + "/auth/request-direct-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Device-Id": getDeviceId() },
+      body: JSON.stringify({
+        nombre: wizData.nombre,
+        telefono: wizData.telefono,
+        cedula: wizData.cedula,
+        deviceId: getDeviceId()
+      })
+    });
+    const d = await r.json();
+    if (!d.ok) {
+      agregarBurbujaWiz("bot", `⚠️ ${d.error || "No se pudo generar el código."}`);
+      return;
+    }
+
+    wizData.codigoGenerado = d.codigo;
+    agregarBurbujaWiz("bot",
+      `✅ ¡Listo <strong>${wizData.nombre}</strong>! Tu cuenta oficial está lista.<br/>` +
+      `<div class="code-highlight-box">` +
+      `<div style="font-size:11px;color:var(--muted);">TU CÓDIGO DE VERIFICACIÓN ES:</div>` +
+      `<div style="font-size:24px;font-weight:900;color:#25d366;letter-spacing:4px;margin:4px 0;">${d.codigo}</div>` +
+      `<div style="font-size:10.5px;color:var(--text);">Guarda tu teléfono y cédula para entrar siempre sin código.</div>` +
+      `</div>`
+    );
+
+    document.getElementById("wizFooter").innerHTML = `
+      <div class="wiz-input-row">
+        <input type="text" id="wizInpCodigo" value="${d.codigo}" maxlength="6" inputmode="numeric" />
+        <button style="background:#00a884;color:#041b15;" onclick="wizFinalizarRegistro()">✅ Entrar Ahora</button>
+      </div>
+    `;
+  } catch (e) {
+    agregarBurbujaWiz("bot", "⚠️ Error de conexión con la taquilla. Revisa tu internet.");
   }
+}
+
+async function wizFinalizarRegistro() {
+  const codigo = (document.getElementById("wizInpCodigo")?.value || "").trim();
+  if (!codigo) return alert("Ingresa el código de 6 dígitos.");
 
   try {
     const r = await fetch(API_BASE + "/auth/verify-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json", "X-Device-Id": getDeviceId() },
-      body: JSON.stringify({ nombre, telefono, codigo, deviceId: getDeviceId() })
+      body: JSON.stringify({
+        nombre: wizData.nombre,
+        telefono: wizData.telefono,
+        cedula: wizData.cedula,
+        codigo,
+        deviceId: getDeviceId()
+      })
     });
     const d = await r.json();
     if (!d.ok) return alert(d.error || "Código inválido.");
@@ -1127,12 +1592,60 @@ async function verificarOtpCliente() {
       chatId: d.chatId,
       clientToken: d.clientToken,
       nombre: d.nombre,
-      telefono: d.telefono
+      telefono: d.telefono,
+      cedula: d.cedula
+    }));
+    cerrarAsistenteRegistro();
+    ultimoConteoCliente = -1;
+    iniciarVistaSesion();
+  } catch (e) {
+    alert("Error de conexión al activar tu cuenta.");
+  }
+}
+
+// =========================================================================
+// ACCESO DIRECTO PARA CLIENTES YA REGISTRADOS (TELÉFONO + CÉDULA)
+// =========================================================================
+async function entrarDirectoChat() {
+  const telefono = (document.getElementById("inpLoginTelefono")?.value || "").replace(/\D/g, "");
+  const cedula = (document.getElementById("inpLoginCedula")?.value || "").replace(/\D/g, "");
+
+  if (!/^0(412|422|414|424|416|426)\d{7}$/.test(telefono)) {
+    return alert("Ingresa tu número de teléfono venezolano de 11 dígitos (ej: 04121234567).");
+  }
+  if (cedula.length < 6) {
+    return alert("Ingresa tu número de cédula.");
+  }
+
+  try {
+    const r = await fetch(API_BASE + "/auth/login-direct", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Device-Id": getDeviceId() },
+      body: JSON.stringify({ telefono, cedula, deviceId: getDeviceId() })
+    });
+    const d = await r.json();
+    if (!d.ok) {
+      if (d.noRegistrado) {
+        if (confirm("Este número aún no está registrado en la taquilla.\n\n¿Deseas crear tu cuenta en 1 minuto ahora?")) {
+          abrirAsistenteRegistro();
+        }
+        return;
+      }
+      return alert(d.error || "Datos incorrectos.");
+    }
+
+    localStorage.setItem("hj_session", JSON.stringify({
+      role: "client",
+      chatId: d.chatId,
+      clientToken: d.clientToken,
+      nombre: d.nombre,
+      telefono: d.telefono,
+      cedula: d.cedula
     }));
     ultimoConteoCliente = -1;
     iniciarVistaSesion();
   } catch (e) {
-    alert("Error de conexión con el servidor. Verifica tu internet.");
+    alert("Error de conexión con el servidor.");
   }
 }
 
@@ -1301,6 +1814,7 @@ async function enviarMensajeCliente(textoForzado = null, imagenBase64 = null) {
         chatId: ses.chatId,
         nombre: ses.nombre,
         telefono: ses.telefono,
+        cedula: ses.cedula,
         sender: "client",
         texto,
         imagen: imagenBase64,
@@ -1509,7 +2023,7 @@ function filtrarHistorialPagos() {
 async function borrarChatActual() {
   const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
   if (!ses || !window.activeAdminChatId) return;
-  if (!confirm("¿Limpiar los mensajes de este chat de tu lista?\n\n(El saldo y la cuenta del cliente NO se borrarán).")) return;
+  if (!confirm("¿Limpiar los mensajes de este chat de tu lista?\n\n(El saldo positivo/negativo y la cuenta del cliente NO se borrarán).")) return;
   await fetch(API_BASE + "/chat/delete", {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
@@ -1543,11 +2057,6 @@ window.addEventListener("DOMContentLoaded", () => {
     buscador.value = "";
     setTimeout(() => { buscador.value = ""; }, 150);
   }
-
-  const tmpNom = localStorage.getItem("hj_tmp_nombre");
-  const tmpTlf = localStorage.getItem("hj_tmp_tlf");
-  if (tmpNom) document.getElementById("inpNombre").value = tmpNom;
-  if (tmpTlf) document.getElementById("inpTelefono").value = tmpTlf;
 
   if (new URLSearchParams(window.location.search).get("admin") === "1") {
     const btnJugar = document.querySelectorAll("nav.tabs button")[3];
