@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Centro de Apuestas Harold José - Seguridad, Confianza y Experiencia</title>
 <link rel="icon" type="image/png" href="logo.png" />
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
   :root {
     --bg: #0b141a;
@@ -302,17 +301,6 @@
   }
 
   .gaceta-sheet { max-width: 960px; margin: 0 auto; display: grid; gap: 12px; position: relative; }
-  .gaceta-poster-banner {
-    background: linear-gradient(135deg, #0b141a 0%, #152532 50%, #0b141a 100%);
-    border: 1.5px solid var(--gold);
-    border-radius: 16px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
   .hero-gaceta-bar {
     background: linear-gradient(135deg, #0d1922 0%, #152634 55%, #0f1e29 100%);
     border: 1.5px solid rgba(245,158,11,.55);
@@ -1041,6 +1029,7 @@ const ROLLERCOIN_REF = "https://rollercoin.com/?r=kqmow2ag";
 
 let loteriasData = [];
 let gacetaActualLoteria = "LOTTO ACTIVO";
+let gacetaActualData = null;
 let fechaSeleccionadaISO = "";
 let soundOn = true;
 let pollTimer = null;
@@ -1272,6 +1261,7 @@ async function cargarGacetaWinbig(loteria) {
   try {
     const r = await fetch(`${API_BASE}/gaceta?loteria=${encodeURIComponent(loteria)}&fecha=${encodeURIComponent(fechaUse)}`);
     const d = await r.json();
+    gacetaActualData = d;
 
     const u = d.ultimoSorteo || {};
     const heroHtml = `
@@ -1385,21 +1375,6 @@ async function cargarGacetaWinbig(loteria) {
 
     cont.innerHTML = `
       <div class="gaceta-sheet" id="hojaGacetaExport">
-        <div class="gaceta-poster-banner" id="posterHeaderBanner" style="display:none;">
-          <div style="display:flex;align-items:center;gap:12px;">
-            <img src="logo.png" style="width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;" />
-            <div>
-              <div style="font-size:10px;color:#25d366;font-weight:800;letter-spacing:.6px;">BOLETÍN DIARIO DE PROBABILIDADES Y TENDENCIAS</div>
-              <div style="font-size:17px;font-weight:900;color:var(--gold);">GACETA OFICIAL • CENTRO DE APUESTAS HAROLD JOSÉ</div>
-              <div style="font-size:11px;color:var(--text);font-weight:700;">${loteria} • ${formatearFechaLargaES(fechaUse)}</div>
-            </div>
-          </div>
-          <div style="text-align:right;font-size:10.5px;color:var(--muted);">
-            <div style="color:var(--gold);font-weight:900;">JUEGA SEGURO AQUÍ</div>
-            <div>WhatsApp: 0412-4489363</div>
-            <div>Telegram: @ag_haroldjose</div>
-          </div>
-        </div>
         ${heroHtml}
         <div class="gaceta-mid-row">
           <div class="gaceta-box">
@@ -1451,79 +1426,309 @@ async function cargarGacetaWinbig(loteria) {
   }
 }
 
-async function convertirImgABase64(imgEl) {
-  const srcOrig = imgEl.getAttribute("src") || "";
-  if (!srcOrig || srcOrig.startsWith("data:")) return srcOrig;
-  try {
-    const res = await fetch(imgEl.src, { mode: "cors" });
-    if (!res.ok) return srcOrig;
-    const blob = await res.blob();
-    return await new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result || srcOrig);
-      reader.onerror = () => resolve(srcOrig);
-      reader.readAsDataURL(blob);
-    });
-  } catch (e) {
-    return srcOrig;
+// =========================================================================
+// GENERADOR DE PÓSTER PNG NATIVO EN CANVAS (SIN html2canvas, CERO FALLOS CORS)
+// =========================================================================
+function cargarImagenSegura(url) {
+  return new Promise((resolve) => {
+    if (!url) return resolve(null);
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    const t = setTimeout(() => resolve(null), 3500);
+    img.onload = () => { clearTimeout(t); resolve(img); };
+    img.onerror = () => { clearTimeout(t); resolve(null); };
+    img.src = url;
+  });
+}
+
+function roundRectCanvas(ctx, x, y, w, h, r, fill, stroke, lineWidth = 2) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.lineWidth = lineWidth; ctx.strokeStyle = stroke; ctx.stroke(); }
+}
+
+function dibujarAvatarFicha(ctx, img, cx, cy, radio, bordeColor = "#f59e0b") {
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, radio, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.fillStyle = "#0b141a";
+  ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = bordeColor;
+  ctx.stroke();
+  ctx.clip();
+  if (img && img.naturalWidth > 0) {
+    ctx.drawImage(img, cx - radio, cy - radio, radio * 2, radio * 2);
   }
+  ctx.restore();
 }
 
 async function descargarImagenGaceta() {
-  const hoja = document.getElementById("hojaGacetaExport");
-  const banner = document.getElementById("posterHeaderBanner");
+  const d = gacetaActualData;
   const btn = document.getElementById("btnDescargarGaceta");
-  if (!hoja || typeof html2canvas === "undefined") {
-    return alert("Espera un momento a que cargue la Gaceta Oficial.");
-  }
+  if (!d) return alert("Espera un momento a que cargue la Gaceta Oficial.");
 
   const txtOrig = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = "⏳ Preparando...";
-
-  const imgs = Array.from(hoja.querySelectorAll("img"));
-  const respaldos = imgs.map(img => ({ el: img, src: img.getAttribute("src") }));
+  btn.innerHTML = "⏳ Generando PNG...";
 
   try {
-    if (banner) banner.style.display = "flex";
+    const fechaUse = fechaSeleccionadaISO || getHoyVenezuelaISO();
+    const fechaLarga = formatearFechaLargaES(fechaUse);
 
-    await Promise.all(imgs.map(async (img) => {
-      const b64 = await convertirImgABase64(img);
-      if (b64 && b64.startsWith("data:")) {
-        img.src = b64;
-      }
+    // Recopilar URLs únicas de imágenes a cargar
+    const urls = new Set(["logo.png"]);
+    if (d.ultimoSorteo?.img) urls.add(d.ultimoSorteo.img);
+    (d.radar || []).forEach(it => it?.img && urls.add(it.img));
+    (d.piramideFichas || []).forEach(it => it?.img && urls.add(it.img));
+    if (d.cruz) {
+      [d.cruz.norte, d.cruz.sur, d.cruz.este, d.cruz.oeste, d.cruz.centro].forEach(it => it?.img && urls.add(it.img));
+    }
+    if (d.candado?.img) urls.add(d.candado.img);
+    (d.tripleta || []).forEach(it => it?.img && urls.add(it.img));
+    (d.racha || []).forEach(it => it?.img && urls.add(it.img));
+    (d.elementos || []).forEach(it => it?.img && urls.add(it.img));
+
+    const mapaImgs = {};
+    await Promise.all(Array.from(urls).map(async (u) => {
+      mapaImgs[u] = await cargarImagenSegura(u);
     }));
 
-    await new Promise(r => setTimeout(r, 120));
+    const W = 1080;
+    const H = 1520;
+    const canvas = document.createElement("canvas");
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext("2d");
 
-    const canvas = await html2canvas(hoja, {
-      backgroundColor: "#0b141a",
-      scale: 2,
-      useCORS: true,
-      allowTaint: false,
-      logging: false
+    // Fondo general oscuro elegante
+    ctx.fillStyle = "#0b141a";
+    ctx.fillRect(0, 0, W, H);
+
+    // 1. ENCABEZADO OFICIAL CENTRO DE APUESTAS HAROLD JOSÉ
+    roundRectCanvas(ctx, 30, 26, W - 60, 126, 20, "#111b21", "#f59e0b", 3);
+    dibujarAvatarFicha(ctx, mapaImgs["logo.png"], 98, 89, 44, "#f59e0b");
+
+    ctx.fillStyle = "#25d366";
+    ctx.font = "800 15px system-ui, sans-serif";
+    ctx.fillText("BOLETÍN DIARIO DE PROBABILIDADES Y TENDENCIAS", 160, 58);
+
+    ctx.fillStyle = "#f59e0b";
+    ctx.font = "900 26px system-ui, sans-serif";
+    ctx.fillText("GACETA OFICIAL • CENTRO DE APUESTAS HAROLD JOSÉ", 160, 92);
+
+    ctx.fillStyle = "#e9edef";
+    ctx.font = "700 18px system-ui, sans-serif";
+    ctx.fillText(`${gacetaActualLoteria}  •  ${fechaLarga.toUpperCase()}`, 160, 124);
+
+    // 2. BARRA HERO: ÚLTIMO SORTEO + RADAR JALA AHORA
+    roundRectCanvas(ctx, 30, 170, W - 60, 154, 18, "#13222e", "#f59e0b", 2);
+    const u = d.ultimoSorteo || {};
+    dibujarAvatarFicha(ctx, mapaImgs[u.img] || mapaImgs["logo.png"], 104, 247, 46, "#f59e0b");
+
+    ctx.fillStyle = "#f59e0b";
+    ctx.font = "800 14px system-ui, sans-serif";
+    ctx.fillText(`🕒 ÚLTIMO SORTEO (${u.hora || "HOY"})`, 166, 214);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "900 28px system-ui, sans-serif";
+    ctx.fillText(`${u.numero || "--"} - ${u.animal || "POR ABRIR"}`, 166, 250);
+
+    ctx.fillStyle = "#25d366";
+    ctx.font = "700 15px system-ui, sans-serif";
+    ctx.fillText(`En vivo • ${gacetaActualLoteria}`, 166, 280);
+
+    // Divisor vertical
+    ctx.fillStyle = "rgba(245,158,11,0.4)";
+    ctx.fillRect(465, 192, 2, 110);
+
+    ctx.fillStyle = "#f59e0b";
+    ctx.font = "900 15px system-ui, sans-serif";
+    ctx.fillText("🧲 RADAR DE ATRACCIÓN • JALA AHORA", 490, 204);
+
+    (d.radar || []).slice(0, 3).forEach((it, idx) => {
+      const bx = 490 + idx * 178;
+      roundRectCanvas(ctx, bx, 218, 166, 92, 12, "#0b141a", it.salio ? "#ef4444" : "#2a3942", 2);
+      dibujarAvatarFicha(ctx, mapaImgs[it.img], bx + 42, 264, 28, it.salio ? "#ef4444" : "#f59e0b");
+      ctx.fillStyle = "#f59e0b";
+      ctx.font = "900 20px system-ui, sans-serif";
+      ctx.fillText(String(it.numero || ""), bx + 80, 258);
+      ctx.fillStyle = "#e9edef";
+      ctx.font = "800 12px system-ui, sans-serif";
+      ctx.fillText(String(it.animal || "").slice(0, 11), bx + 80, 280);
     });
 
-    const ctx = canvas.getContext("2d");
-    ctx.save();
-    ctx.globalAlpha = 0.08;
+    // 3. BLOQUE IZQUIERDO: PIRÁMIDE DE LA FECHA + FICHAS
+    roundRectCanvas(ctx, 30, 342, 500, 500, 18, "#131e26", "#2a3942", 2);
     ctx.fillStyle = "#f59e0b";
-    ctx.font = "900 34px system-ui, sans-serif";
-    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.font = "900 18px system-ui, sans-serif";
+    ctx.fillText("🔺 LA PIRÁMIDE DE LA FECHA", 52, 376);
+
+    const filas = d.piramideFilas || [];
+    filas.forEach((fila, rIdx) => {
+      const cellSize = 32;
+      const gap = 6;
+      const rowW = fila.length * (cellSize + gap) - gap;
+      const startX = 280 - rowW / 2;
+      const y = 398 + rIdx * 36;
+      const esPunta = fila.length === 1;
+      fila.forEach((dig, cIdx) => {
+        const cx = startX + cIdx * (cellSize + gap);
+        roundRectCanvas(ctx, cx, y, cellSize, cellSize, 7, esPunta ? "#f59e0b" : "#1b2832", esPunta ? "#fbbf24" : "#334654", 1.5);
+        ctx.fillStyle = esPunta ? "#000000" : "#e9edef";
+        ctx.font = "900 16px system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(String(dig), cx + cellSize / 2, y + 22);
+      });
+    });
+    ctx.textAlign = "left";
+
+    ctx.fillStyle = "#25d366";
+    ctx.font = "800 14px system-ui, sans-serif";
+    ctx.fillText("✦ FICHAS RESULTANTES DE LA PIRÁMIDE ✦", 52, 682);
+
+    (d.piramideFichas || []).slice(0, 4).forEach((it, idx) => {
+      const col = idx % 2;
+      const row = Math.floor(idx / 2);
+      const fx = 52 + col * 232;
+      const fy = 696 + row * 66;
+      roundRectCanvas(ctx, fx, fy, 222, 56, 12, "#18232c", it.salio ? "#ef4444" : "#2a3942", 2);
+      dibujarAvatarFicha(ctx, mapaImgs[it.img], fx + 30, fy + 28, 21, "#f59e0b");
+      ctx.fillStyle = "#f59e0b";
+      ctx.font = "900 15px system-ui, sans-serif";
+      ctx.fillText(`${it.numero} - ${String(it.animal || "").slice(0, 11)}`, fx + 58, fy + 33);
+    });
+
+    // 4. BLOQUE DERECHO: CRUZ DE LA SUERTE + CANDADO
+    roundRectCanvas(ctx, 550, 342, 500, 500, 18, "#131e26", "#2a3942", 2);
+    ctx.fillStyle = "#f59e0b";
+    ctx.font = "900 18px system-ui, sans-serif";
+    ctx.fillText("✨ LA CRUZ DE LA SUERTE", 572, 376);
+
+    const cruz = d.cruz || {};
+    const nodos = [
+      { item: cruz.norte, x: 745, y: 400, centro: false },
+      { item: cruz.oeste, x: 590, y: 515, centro: false },
+      { item: cruz.centro, x: 745, y: 515, centro: true },
+      { item: cruz.este, x: 900, y: 515, centro: false },
+      { item: cruz.sur, x: 745, y: 630, centro: false }
+    ];
+
+    nodos.forEach(n => {
+      if (!n.item) return;
+      const nw = 136;
+      const nh = 104;
+      roundRectCanvas(ctx, n.x, n.y, nw, nh, 14, n.centro ? "#24303a" : "#18242e", n.centro ? "#f59e0b" : "#334654", n.centro ? 2.5 : 1.5);
+      dibujarAvatarFicha(ctx, mapaImgs[n.item.img], n.x + nw / 2, n.y + 42, 26, n.centro ? "#f59e0b" : "#8696a0");
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 13px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(`${n.item.numero} - ${String(n.item.animal || "").slice(0, 10)}`, n.x + nw / 2, n.y + 88);
+    });
+    ctx.textAlign = "left";
+
+    if (d.candado) {
+      roundRectCanvas(ctx, 572, 750, 456, 74, 14, "#18232c", "#f59e0b", 2);
+      dibujarAvatarFicha(ctx, mapaImgs[d.candado.img], 614, 787, 26, "#f59e0b");
+      ctx.fillStyle = "#25d366";
+      ctx.font = "800 13px system-ui, sans-serif";
+      ctx.fillText("🔒 CANDADO DE LA JAULA", 654, 776);
+      ctx.fillStyle = "#f59e0b";
+      ctx.font = "900 19px system-ui, sans-serif";
+      ctx.fillText(`${d.candado.numero} - ${d.candado.animal} (${d.candado.extra || "Por reventar"})`, 654, 804);
+    }
+
+    // 5. TRIPLETA MILLONARIA DEL DÍA
+    roundRectCanvas(ctx, 30, 860, W - 60, 130, 18, "#12263c", "#38bdf8", 2);
+    ctx.fillStyle = "#38bdf8";
+    ctx.font = "800 14px system-ui, sans-serif";
+    ctx.fillText("👑 JUGADA MAESTRA DEL DÍA • GACETA OFICIAL", 54, 902);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "900 26px system-ui, sans-serif";
+    ctx.fillText("LA TRIPLETA MILLONARIA", 54, 940);
+
+    (d.tripleta || []).slice(0, 3).forEach((it, idx) => {
+      const tx = 480 + idx * 184;
+      roundRectCanvas(ctx, tx, 882, 172, 86, 14, "#0b141a", "#2a3942", 2);
+      dibujarAvatarFicha(ctx, mapaImgs[it.img], tx + 42, 925, 27, "#f59e0b");
+      ctx.fillStyle = "#f59e0b";
+      ctx.font = "900 20px system-ui, sans-serif";
+      ctx.fillText(String(it.numero || ""), tx + 80, 920);
+      ctx.fillStyle = "#e9edef";
+      ctx.font = "800 13px system-ui, sans-serif";
+      ctx.fillText(String(it.animal || "").slice(0, 10), tx + 80, 944);
+    });
+
+    // 6. LOS MÁS CALIENTES DE LA SEMANA
+    roundRectCanvas(ctx, 30, 1008, W - 60, 152, 18, "#131e26", "#2a3942", 2);
+    ctx.fillStyle = "#f59e0b";
+    ctx.font = "900 17px system-ui, sans-serif";
+    ctx.fillText("🔥 LOS MÁS CALIENTES DE LA SEMANA (ESTADÍSTICA 7 DÍAS)", 54, 1042);
+
+    (d.racha || []).slice(0, 3).forEach((it, idx) => {
+      const rx = 54 + idx * 328;
+      roundRectCanvas(ctx, rx, 1060, 314, 80, 14, "#18232c", "#2a3942", 2);
+      dibujarAvatarFicha(ctx, mapaImgs[it.img], rx + 42, 1100, 26, "#f59e0b");
+      ctx.fillStyle = "#f59e0b";
+      ctx.font = "900 17px system-ui, sans-serif";
+      ctx.fillText(`${it.numero} - ${String(it.animal || "").slice(0, 12)}`, rx + 80, 1096);
+      ctx.fillStyle = "#25d366";
+      ctx.font = "700 13px system-ui, sans-serif";
+      ctx.fillText(String(it.extra || "Alta frecuencia"), rx + 80, 1120);
+    });
+
+    // 7. ENERGÍA DE LOS 4 ELEMENTOS
+    roundRectCanvas(ctx, 30, 1178, W - 60, 154, 18, "#131e26", "#2a3942", 2);
+    ctx.fillStyle = "#f59e0b";
+    ctx.font = "900 17px system-ui, sans-serif";
+    ctx.fillText("⚡ ENERGÍA DE LOS 4 ELEMENTOS (INFLUENCIA DE HOY)", 54, 1212);
+
+    (d.elementos || []).slice(0, 4).forEach((it, idx) => {
+      const ex = 54 + idx * 246;
+      roundRectCanvas(ctx, ex, 1230, 234, 82, 14, "#18232c", "#2a3942", 2);
+      dibujarAvatarFicha(ctx, mapaImgs[it.img], ex + 38, 1271, 24, "#f59e0b");
+      ctx.fillStyle = "#25d366";
+      ctx.font = "800 12px system-ui, sans-serif";
+      ctx.fillText(String(it.elemento || "ELEMENTO"), ex + 72, 1262);
+      ctx.fillStyle = "#f59e0b";
+      ctx.font = "900 15px system-ui, sans-serif";
+      ctx.fillText(`${it.numero} - ${String(it.animal || "").slice(0, 10)}`, ex + 72, 1286);
+    });
+
+    // 8. PIE DE PÁGINA CON CONTACTOS DE LA TAQUILLA
+    roundRectCanvas(ctx, 30, 1350, W - 60, 136, 18, "#111b21", "#00a884", 2);
+    ctx.fillStyle = "#25d366";
+    ctx.font = "900 22px system-ui, sans-serif";
+    ctx.fillText("📲 JUEGA SEGURO Y COBRA AL INSTANTE EN NUESTRA TAQUILLA", 56, 1396);
+    ctx.fillStyle = "#e9edef";
+    ctx.font = "700 18px system-ui, sans-serif";
+    ctx.fillText("WhatsApp: 0412-4489363   •   Telegram: @ag_haroldjose   •   Resultados: @resultadosagharoldjose", 56, 1434);
+    ctx.fillStyle = "#f59e0b";
+    ctx.font = "800 15px system-ui, sans-serif";
+    ctx.fillText("CENTRO DE APUESTAS HAROLD JOSÉ • SEGURIDAD, CONFIANZA Y EXPERIENCIA", 56, 1464);
+
+    // Marca de agua diagonal sutil
+    ctx.save();
+    ctx.globalAlpha = 0.06;
+    ctx.fillStyle = "#f59e0b";
+    ctx.font = "900 38px system-ui, sans-serif";
+    ctx.translate(W / 2, H / 2);
     ctx.rotate(-26 * Math.PI / 180);
-    for (let y = -canvas.height; y < canvas.height; y += 220) {
-      ctx.fillText("CENTRO DE APUESTAS HAROLD JOSÉ • OFICIAL", -canvas.width * 0.7, y);
+    for (let y = -H; y < H; y += 260) {
+      ctx.fillText("CENTRO DE APUESTAS HAROLD JOSÉ • OFICIAL", -W * 0.65, y);
     }
     ctx.restore();
 
-    const fechaUse = fechaSeleccionadaISO || getHoyVenezuelaISO();
     const nombreArchivo = `Gaceta_HaroldJose_${gacetaActualLoteria.replace(/\s+/g, "-")}_${fechaUse}.png`;
-
     canvas.toBlob((blob) => {
-      if (!blob) {
-        alert("No se pudo exportar el archivo PNG.");
-        return;
-      }
+      if (!blob) return alert("No se pudo guardar el archivo PNG.");
       const urlBlob = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.download = nombreArchivo;
@@ -1534,12 +1739,8 @@ async function descargarImagenGaceta() {
       setTimeout(() => URL.revokeObjectURL(urlBlob), 4000);
     }, "image/png");
   } catch (err) {
-    alert("Error al generar la imagen: " + (err?.message || "intenta recargar la página."));
+    alert("Error al generar el póster: " + (err?.message || "intenta nuevamente."));
   } finally {
-    respaldos.forEach(item => {
-      if (item.src) item.el.setAttribute("src", item.src);
-    });
-    if (banner) banner.style.display = "none";
     btn.disabled = false;
     btn.innerHTML = txtOrig;
   }
