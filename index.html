@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Agencia Harold José - Seguridad, Confianza y Experiencia</title>
+<title>Centro de Apuestas Harold José - Seguridad, Confianza y Experiencia</title>
 <link rel="icon" type="image/png" href="logo.png" />
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
   :root {
     --bg: #0b141a;
@@ -37,7 +38,7 @@
   }
   .brand { display: flex; align-items: center; gap: 10px; min-width: 0; cursor: pointer; }
   .brand img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; flex-shrink: 0; }
-  .brand-txt h1 { font-size: 15px; font-weight: 800; color: var(--gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .brand-txt h1 { font-size: 14px; font-weight: 800; color: var(--gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .brand-txt p { font-size: 10px; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
   .pill {
@@ -220,6 +221,34 @@
     max-width: 100%;
     overflow: hidden;
   }
+  .gaceta-top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .gaceta-share-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-dl-gaceta {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    border: 1px solid rgba(96,165,250,.5);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+  .btn-dl-gaceta:disabled { opacity: .6; cursor: wait; }
+
   .gaceta-nav-strip {
     display: flex;
     align-items: center;
@@ -272,7 +301,18 @@
     color: var(--gold);
   }
 
-  .gaceta-sheet { max-width: 960px; margin: 0 auto; display: grid; gap: 12px; }
+  .gaceta-sheet { max-width: 960px; margin: 0 auto; display: grid; gap: 12px; position: relative; }
+  .gaceta-poster-banner {
+    background: linear-gradient(135deg, #0b141a 0%, #152532 50%, #0b141a 100%);
+    border: 1.5px solid var(--gold);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
   .hero-gaceta-bar {
     background: linear-gradient(135deg, #0d1922 0%, #152634 55%, #0f1e29 100%);
     border: 1.5px solid rgba(245,158,11,.55);
@@ -720,10 +760,10 @@
 <body>
 
 <header>
-  <div class="brand" onclick="registrarToqueAdmin()" title="Agencia Harold José">
+  <div class="brand" onclick="registrarToqueAdmin()" title="Centro de Apuestas Harold José">
     <img src="logo.png" alt="Logo" />
     <div class="brand-txt">
-      <h1>Agencia Harold José</h1>
+      <h1>Centro de Apuestas Harold José</h1>
       <p>Seguridad • Confianza • Experiencia</p>
     </div>
   </div>
@@ -777,7 +817,12 @@
   <section id="tab-datos" class="view">
     <div class="section-pad">
       <div class="info-card">
-        <div style="font-size:14px;font-weight:900;color:var(--gold);margin-bottom:10px;">🍀 Gaceta Oficial y Tendencias • Agencia Harold José</div>
+        <div class="gaceta-top-header">
+          <div style="font-size:14px;font-weight:900;color:var(--gold);">🍀 Gaceta Oficial • Centro de Apuestas Harold José</div>
+          <div class="gaceta-share-group">
+            <button class="btn-dl-gaceta" id="btnDescargarGaceta" onclick="descargarImagenGaceta()">📥 Descargar Datos</button>
+          </div>
+        </div>
 
         <div class="gaceta-nav-strip">
           <button class="gaceta-scroll-arrow" onclick="moverBarraGaceta(-240)" title="Izquierda">◀</button>
@@ -842,26 +887,23 @@
 
   <!-- JUGAR / PORTAL DE ACCESO + CHAT -->
   <section id="tab-jugar" class="view">
-    <!-- PORTAL DE ACCESO MODERNO -->
     <div id="loginBox" class="login-portal-card">
       <div class="portal-logo-wrap">
-        <img src="logo.png" alt="Agencia Harold José" />
-        <h2>Agencia Harold José</h2>
+        <img src="logo.png" alt="Centro de Apuestas Harold José" />
+        <h2>Centro de Apuestas Harold José</h2>
       </div>
 
-      <!-- BANNER REGISTRO RÁPIDO CON ASISTENTE -->
       <div class="register-cta-banner" onclick="abrirAsistenteRegistro()">
         <div style="display:flex;align-items:center;gap:10px;min-width:0;">
           <div class="register-cta-icon">💎</div>
           <div style="min-width:0;">
             <div style="font-size:10px;font-weight:800;color:#60a5fa;text-transform:uppercase;">¿No tienes cuenta?</div>
-            <div style="font-size:12.5px;font-weight:900;color:#fff;line-height:1.2;">REGÍSTRATE EN AGENCIA HAROLD</div>
+            <div style="font-size:12.5px;font-weight:900;color:#fff;line-height:1.2;">REGÍSTRATE EN HAROLD JOSÉ</div>
           </div>
         </div>
         <div class="register-cta-arrow">➔</div>
       </div>
 
-      <!-- ACCESO DIRECTO CLIENTE YA REGISTRADO -->
       <div class="field-label-row">
         <label>Número de teléfono</label>
       </div>
@@ -893,14 +935,13 @@
         <div style="display:flex;align-items:center;gap:9px;min-width:0;">
           <img src="logo.png" alt="App" />
           <div style="min-width:0;">
-            <div style="font-size:12px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Agencia Harold App</div>
+            <div style="font-size:12px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Centro de Apuestas App</div>
             <div style="font-size:10.5px;color:#38bdf8;font-weight:700;">Acceso directo para Android</div>
           </div>
         </div>
         <button class="btn-apk-dl" onclick="instalarAccesoDirecto()">INSTALAR ⬇</button>
       </div>
 
-      <!-- ACCESO SECRETO ADMIN (5 TOQUES EN LOGO SUPERIOR) -->
       <div id="secretAdminBox" style="display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:14px;">
         <div style="font-size:12px;color:var(--gold);font-weight:800;text-align:center;margin-bottom:8px;">🔐 Acceso Exclusivo Taquilla</div>
         <input type="password" id="inpAdminPass" placeholder="Clave maestra de taquilla" style="width:100%;padding:10px;border-radius:8px;background:var(--panel2);border:1px solid var(--border);color:#fff;margin-bottom:8px;" onkeydown="if(event.key==='Enter') entrarAdmin()" />
@@ -968,7 +1009,7 @@
       <div style="display:flex;align-items:center;gap:9px;">
         <div style="width:36px;height:36px;border-radius:50%;background:rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;font-size:18px;">💎</div>
         <div>
-          <div style="font-size:13px;font-weight:900;color:#fff;">Asistente Agencia Harold <span style="background:rgba(37,99,235,.3);color:#93c5fd;font-size:9px;padding:2px 6px;border-radius:999px;">OFICIAL</span></div>
+          <div style="font-size:13px;font-weight:900;color:#fff;">Asistente Harold José <span style="background:rgba(37,99,235,.3);color:#93c5fd;font-size:9px;padding:2px 6px;border-radius:999px;">OFICIAL</span></div>
           <div style="font-size:10.5px;color:#60a5fa;font-weight:700;">Verificación Segura vía Telegram</div>
         </div>
       </div>
@@ -996,6 +1037,7 @@
 <script>
 const API_BASE = "https://api-resultados-harold.agharoldjose.workers.dev";
 const BOT_USERNAME = "AgenciaHaroldRegistroBot";
+const ROLLERCOIN_REF = "https://rollercoin.com/?r=kqmow2ag";
 
 let loteriasData = [];
 let gacetaActualLoteria = "LOTTO ACTIVO";
@@ -1019,7 +1061,7 @@ function instalarAccesoDirecto() {
     deferredInstallPrompt.prompt();
     deferredInstallPrompt = null;
   } else {
-    alert("Para instalar Agencia Harold José en tu teléfono:\n\n1. Toca los 3 puntos (⋮) arriba a la derecha en Chrome.\n2. Selecciona 'Agregar a la pantalla principal' o 'Instalar aplicación'.");
+    alert("Para instalar Centro de Apuestas Harold José en tu teléfono:\n\n1. Toca los 3 puntos (⋮) arriba a la derecha en Chrome.\n2. Selecciona 'Agregar a la pantalla principal' o 'Instalar aplicación'.");
   }
 }
 
@@ -1048,8 +1090,24 @@ function getHoyVenezuelaISO() {
   }).formatToParts(new Date());
   const y = parts.find(p => p.type === "year")?.value || "2026";
   const m = parts.find(p => p.type === "month")?.value || "11";
-  const d = parts.find(p => p.type === "day")?.value || "22";
+  const d = parts.find(p => p.type === "day")?.value || "23";
   return `${y}-${m}-${d}`;
+}
+
+function formatearFechaLargaES(iso) {
+  try {
+    const [y, m, d] = (iso || getHoyVenezuelaISO()).split("-").map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+    return dt.toLocaleDateString("es-VE", {
+      timeZone: "America/Caracas",
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+  } catch (e) {
+    return iso;
+  }
 }
 
 function getDeviceId() {
@@ -1140,7 +1198,7 @@ function renderTicker() {
   }
   const itemsHtml = ultimos.slice(0, 18).map(u => `
     <div class="ticker-item">
-      <img src="${u.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${u.animal}" />
+      <img src="${u.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${u.animal}" />
       <span class="ticker-lot">${u.loteria}:</span>
       <span class="ticker-res">${u.numero} - ${u.animal}</span>
       <span class="ticker-hr">${u.hora}</span>
@@ -1167,7 +1225,7 @@ function renderLoterias() {
           return `
             <div class="sorteo-item">
               ${!pend ? `<span class="sorteo-num-badge">${s.numero}</span>` : ""}
-              <img src="${s.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${s.animal}" />
+              <img src="${s.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${s.animal}" />
               <div class="sorteo-hora">${s.hora}</div>
               <div class="sorteo-ani ${pend ? "pendiente" : ""}">${pend ? "POR SALIR" : `${s.numero} - ${s.animal}`}</div>
             </div>
@@ -1201,7 +1259,7 @@ function renderCruzNodo(item, esCentro = false) {
     <div class="cruz-nodo ${esCentro ? "centro" : ""} ${salioCls}">
       ${esCentro ? `<div class="cruz-rey-tag">★ REY ★</div>` : ""}
       ${selloHtml}
-      <img src="${item.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${item.animal}" />
+      <img src="${item.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${item.animal}" />
       <div class="cruz-val">${item.numero} - ${item.animal}</div>
     </div>
   `;
@@ -1220,7 +1278,7 @@ async function cargarGacetaWinbig(loteria) {
       <div class="hero-gaceta-bar">
         <div class="hero-ultimo">
           <div class="hero-ultimo-avatar">
-            <img src="${u.img || "logo.png"}" onerror="this.onerror=null;this.src='logo.png';" alt="${u.animal || ""}" />
+            <img src="${u.img || "logo.png"}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${u.animal || ""}" />
             <span class="hero-ultimo-num">${u.numero || "--"}</span>
           </div>
           <div>
@@ -1236,7 +1294,7 @@ async function cargarGacetaWinbig(loteria) {
             ${(d.radar || []).map(it => `
               <div class="mini-ficha ${it.salio ? "ficha-acertada" : ""}" style="flex-direction:column;text-align:center;padding:7px 4px;gap:4px;">
                 ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
-                <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+                <img src="${it.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
                 <div class="dato-num" style="font-size:12px;">${it.numero}</div>
                 <div class="dato-ani" style="font-size:9.5px;max-width:100%;">${it.animal}</div>
               </div>
@@ -1253,7 +1311,7 @@ async function cargarGacetaWinbig(loteria) {
 
     const fichasPirHtml = (d.piramideFichas || []).map(it => `
       <div class="dato-item ${it.salio ? "ficha-acertada" : ""}">
-        <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <img src="${it.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
         <div style="min-width:0;">
           ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
           <div class="dato-num">${it.numero} - ${it.animal}</div>
@@ -1281,7 +1339,7 @@ async function cargarGacetaWinbig(loteria) {
 
     const candadoHtml = d.candado ? `
       <div class="dato-item ${d.candado.salio ? "ficha-acertada" : ""}" style="margin-top:10px;border-color:rgba(245,158,11,.45);">
-        <img src="${d.candado.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${d.candado.animal}" />
+        <img src="${d.candado.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${d.candado.animal}" />
         <div style="min-width:0;">
           ${d.candado.salio ? `<span class="sello-salio">${d.candado.salioLabel || "¡SALIÓ!"}</span>` : ""}
           <div class="dato-sub">🔒 CANDADO DE LA JAULA</div>
@@ -1294,7 +1352,7 @@ async function cargarGacetaWinbig(loteria) {
     const listaTripleta = Array.isArray(d.tripleta) ? d.tripleta : [];
     const tripletaHtml = listaTripleta.map(it => `
       <div class="mini-ficha ${it.salio ? "ficha-acertada" : ""}">
-        <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <img src="${it.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
         <div>
           ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
           <div class="dato-num">${it.numero}</div>
@@ -1305,18 +1363,18 @@ async function cargarGacetaWinbig(loteria) {
 
     const rachaHtml = (d.racha || []).map(it => `
       <div class="dato-item ${it.salio ? "ficha-acertada" : ""}">
-        <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <img src="${it.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
         <div style="min-width:0;">
           ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
           <div class="dato-num">${it.numero} - ${it.animal}</div>
-          <div class="dato-sub">${it.extra || "Gaceta Oficial Winbig"}</div>
+          <div class="dato-sub">${it.extra || "Gaceta Oficial"}</div>
         </div>
       </div>
     `).join("");
 
     const elemHtml = (d.elementos || []).map(it => `
       <div class="dato-item ${it.salio ? "ficha-acertada" : ""}">
-        <img src="${it.img}" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <img src="${it.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
         <div style="min-width:0;">
           ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
           <div class="dato-sub">${it.elemento || "ELEMENTO"}</div>
@@ -1326,7 +1384,22 @@ async function cargarGacetaWinbig(loteria) {
     `).join("");
 
     cont.innerHTML = `
-      <div class="gaceta-sheet">
+      <div class="gaceta-sheet" id="hojaGacetaExport">
+        <div class="gaceta-poster-banner" id="posterHeaderBanner" style="display:none;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <img src="logo.png" style="width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;" />
+            <div>
+              <div style="font-size:10px;color:#25d366;font-weight:800;letter-spacing:.6px;">BOLETÍN DIARIO DE PROBABILIDADES Y TENDENCIAS</div>
+              <div style="font-size:17px;font-weight:900;color:var(--gold);">GACETA OFICIAL • CENTRO DE APUESTAS HAROLD JOSÉ</div>
+              <div style="font-size:11px;color:var(--text);font-weight:700;">${loteria} • ${formatearFechaLargaES(fechaUse)}</div>
+            </div>
+          </div>
+          <div style="text-align:right;font-size:10.5px;color:var(--muted);">
+            <div style="color:var(--gold);font-weight:900;">JUEGA SEGURO AQUÍ</div>
+            <div>WhatsApp: 0412-4489363</div>
+            <div>Telegram: @ag_haroldjose</div>
+          </div>
+        </div>
         ${heroHtml}
         <div class="gaceta-mid-row">
           <div class="gaceta-box">
@@ -1378,24 +1451,85 @@ async function cargarGacetaWinbig(loteria) {
   }
 }
 
+async function descargarImagenGaceta() {
+  const hoja = document.getElementById("hojaGacetaExport");
+  const banner = document.getElementById("posterHeaderBanner");
+  const btn = document.getElementById("btnDescargarGaceta");
+  if (!hoja || typeof html2canvas === "undefined") {
+    return alert("Espera un momento a que cargue la Gaceta Oficial.");
+  }
+
+  const txtOrig = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = "⏳ Generando...";
+
+  try {
+    if (banner) banner.style.display = "flex";
+    await new Promise(r => setTimeout(r, 150));
+
+    const canvas = await html2canvas(hoja, {
+      backgroundColor: "#0b141a",
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      logging: false
+    });
+
+    const ctx = canvas.getContext("2d");
+    ctx.save();
+    ctx.globalAlpha = 0.08;
+    ctx.fillStyle = "#f59e0b";
+    ctx.font = "900 34px system-ui, sans-serif";
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(-26 * Math.PI / 180);
+    for (let y = -canvas.height; y < canvas.height; y += 220) {
+      ctx.fillText("CENTRO DE APUESTAS HAROLD JOSÉ • OFICIAL", -canvas.width * 0.7, y);
+    }
+    ctx.restore();
+
+    const fechaUse = fechaSeleccionadaISO || getHoyVenezuelaISO();
+    const nombreArchivo = `Gaceta_HaroldJose_${gacetaActualLoteria.replace(/\s+/g, "-")}_${fechaUse}.png`;
+    const link = document.createElement("a");
+    link.download = nombreArchivo;
+    link.href = canvas.toDataURL("image/png");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (err) {
+    alert("No se pudo generar la imagen automáticamente en este navegador.");
+  } finally {
+    if (banner) banner.style.display = "none";
+    btn.disabled = false;
+    btn.innerHTML = txtOrig;
+  }
+}
+
 async function cargarFlyers() {
   const grid = document.getElementById("flyersGrid");
   try {
     const r = await fetch(API_BASE + "/flyers");
     const d = await r.json();
     if (d.ok && Array.isArray(d.flyers)) {
-      grid.innerHTML = d.flyers.map(f => `
-        <div class="flyer-card">
-          <img src="${f.img}" onerror="this.onerror=null;this.src='logo.png';" alt="Promo" />
-          <div class="flyer-body">
-            <div>
-              <h4>${f.titulo}</h4>
-              <p>${f.horario}</p>
+      grid.innerHTML = d.flyers.map(f => {
+        const textoCompleto = `${f.titulo || ""} ${f.horario || ""}`;
+        const esRollerCoin = /roller\s*coin|minar\s+cripto/i.test(textoCompleto);
+        const btnHtml = esRollerCoin
+          ? `<a href="${ROLLERCOIN_REF}" target="_blank" rel="noopener noreferrer" class="pill green" style="text-decoration:none;background:linear-gradient(90deg,#f59e0b,#d97706);color:#0b141a;border-color:#fbbf24;font-weight:900;">⛏️ Registrarse</a>`
+          : `<button class="pill green" onclick="jugarDesdePromo('${(f.titulo || "").replace(/'/g, "")}')">Jugar</button>`;
+
+        return `
+          <div class="flyer-card">
+            <img src="${f.img}" onerror="this.onerror=null;this.src='logo.png';" alt="Promo" />
+            <div class="flyer-body">
+              <div>
+                <h4>${f.titulo}</h4>
+                <p>${f.horario}</p>
+              </div>
+              ${btnHtml}
             </div>
-            <button class="pill green" onclick="jugarDesdePromo('${f.titulo.replace(/'/g, "")}')">Jugar</button>
           </div>
-        </div>
-      `).join("");
+        `;
+      }).join("");
     }
   } catch (e) {}
 }
@@ -1427,7 +1561,7 @@ function abrirAsistenteRegistro() {
   document.getElementById("modalAsistente").style.display = "flex";
 
   agregarBurbujaWiz("bot",
-    `¡Hola! 👋 Soy tu asistente de bienvenida en <strong>Agencia Harold José</strong>.<br/><br/>` +
+    `¡Hola! 👋 Soy tu asistente de bienvenida en <strong>Centro de Apuestas Harold José</strong>.<br/><br/>` +
     `Abriremos tu cuenta oficial en 1 minuto para ingresar a tu chat privado, recargar saldo y jugar con nosotros.<br/><br/>` +
     `<strong>¿Eres mayor de edad?</strong>`
   );
