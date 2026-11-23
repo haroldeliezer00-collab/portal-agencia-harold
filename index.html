@@ -1451,6 +1451,24 @@ async function cargarGacetaWinbig(loteria) {
   }
 }
 
+async function convertirImgABase64(imgEl) {
+  const srcOrig = imgEl.getAttribute("src") || "";
+  if (!srcOrig || srcOrig.startsWith("data:")) return srcOrig;
+  try {
+    const res = await fetch(imgEl.src, { mode: "cors" });
+    if (!res.ok) return srcOrig;
+    const blob = await res.blob();
+    return await new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result || srcOrig);
+      reader.onerror = () => resolve(srcOrig);
+      reader.readAsDataURL(blob);
+    });
+  } catch (e) {
+    return srcOrig;
+  }
+}
+
 async function descargarImagenGaceta() {
   const hoja = document.getElementById("hojaGacetaExport");
   const banner = document.getElementById("posterHeaderBanner");
@@ -1461,17 +1479,28 @@ async function descargarImagenGaceta() {
 
   const txtOrig = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = "⏳ Generando...";
+  btn.innerHTML = "⏳ Preparando...";
+
+  const imgs = Array.from(hoja.querySelectorAll("img"));
+  const respaldos = imgs.map(img => ({ el: img, src: img.getAttribute("src") }));
 
   try {
     if (banner) banner.style.display = "flex";
-    await new Promise(r => setTimeout(r, 150));
+
+    await Promise.all(imgs.map(async (img) => {
+      const b64 = await convertirImgABase64(img);
+      if (b64 && b64.startsWith("data:")) {
+        img.src = b64;
+      }
+    }));
+
+    await new Promise(r => setTimeout(r, 120));
 
     const canvas = await html2canvas(hoja, {
       backgroundColor: "#0b141a",
       scale: 2,
       useCORS: true,
-      allowTaint: true,
+      allowTaint: false,
       logging: false
     });
 
@@ -1489,15 +1518,27 @@ async function descargarImagenGaceta() {
 
     const fechaUse = fechaSeleccionadaISO || getHoyVenezuelaISO();
     const nombreArchivo = `Gaceta_HaroldJose_${gacetaActualLoteria.replace(/\s+/g, "-")}_${fechaUse}.png`;
-    const link = document.createElement("a");
-    link.download = nombreArchivo;
-    link.href = canvas.toDataURL("image/png");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        alert("No se pudo exportar el archivo PNG.");
+        return;
+      }
+      const urlBlob = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.download = nombreArchivo;
+      link.href = urlBlob;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(urlBlob), 4000);
+    }, "image/png");
   } catch (err) {
-    alert("No se pudo generar la imagen automáticamente en este navegador.");
+    alert("Error al generar la imagen: " + (err?.message || "intenta recargar la página."));
   } finally {
+    respaldos.forEach(item => {
+      if (item.src) item.el.setAttribute("src", item.src);
+    });
     if (banner) banner.style.display = "none";
     btn.disabled = false;
     btn.innerHTML = txtOrig;
