@@ -58,6 +58,7 @@
   }
   .pill.green { border-color: var(--green); color: #25d366; }
   .pill.red { border-color: var(--danger); color: #fca5a5; }
+  .pill.gold { border-color: var(--gold); color: var(--gold); }
 
   nav.tabs {
     display: flex;
@@ -67,21 +68,97 @@
   }
   nav.tabs button {
     flex: 1;
-    min-width: 90px;
+    min-width: 78px;
     background: none;
     border: none;
     color: var(--muted);
-    padding: 12px 8px;
-    font-size: 12px;
+    padding: 12px 6px;
+    font-size: 11.5px;
     font-weight: 800;
     cursor: pointer;
     border-bottom: 3px solid transparent;
     transition: .2s;
+    white-space: nowrap;
   }
   nav.tabs button.active {
     color: var(--green);
     border-bottom-color: var(--green);
     background: rgba(0, 168, 132, 0.08);
+  }
+  .tab-dot-live {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    margin-left: 4px;
+    box-shadow: 0 0 8px #22c55e;
+  }
+
+  /* BANNER FLOTANTE DE SORTEO ACTIVO */
+  .sorteo-float-banner {
+    display: none;
+    margin: 10px 14px 0;
+    background: linear-gradient(135deg, #16222c 0%, #1e293b 60%, #17202a 100%);
+    border: 1.5px solid #fbbf24;
+    border-radius: 16px;
+    padding: 11px 14px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 14px rgba(251, 191, 36, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .sorteo-float-banner::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background: linear-gradient(90deg, #f59e0b, #22c55e, #fbbf24);
+  }
+  .sorteo-float-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .sorteo-float-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(245, 158, 11, 0.16);
+    border: 1px solid rgba(251, 191, 36, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    flex-shrink: 0;
+  }
+  .sorteo-float-title {
+    font-size: 13px;
+    font-weight: 900;
+    color: #fde047;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .sorteo-float-sub {
+    font-size: 11.5px;
+    color: #e2e8f0;
+    font-weight: 700;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .btn-participar-pill {
+    background: linear-gradient(90deg, #f59e0b, #eab308);
+    color: #0b141a;
+    border: none;
+    border-radius: 999px;
+    padding: 9px 15px;
+    font-size: 11.5px;
+    font-weight: 900;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
   }
 
   main { flex: 1; display: flex; flex-direction: column; }
@@ -239,6 +316,126 @@
   .sorteo-hora { font-size: 10px; color: var(--muted); font-weight: 700; }
   .sorteo-ani { font-size: 10px; font-weight: 800; color: #fff; margin-top: 2px; line-height: 1.15; }
   .sorteo-ani.pendiente { color: var(--muted); font-weight: 500; }
+
+  /* SECCIÓN SORTEOS INTERACTIVOS */
+  .sorteo-hero-card {
+    background: linear-gradient(145deg, #111f28 0%, #162632 100%);
+    border: 1.5px solid rgba(245, 185, 66, 0.45);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+  .sorteo-hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sorteo-lot-pill {
+    font-size: 13px;
+    font-weight: 900;
+    color: #38bdf8;
+    text-transform: uppercase;
+  }
+  .sorteo-status-badge {
+    background: rgba(34, 197, 94, 0.16);
+    border: 1px solid #22c55e;
+    color: #4ade80;
+    font-size: 10.5px;
+    font-weight: 900;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .sorteo-status-badge.closed {
+    background: rgba(239, 68, 68, 0.16);
+    border-color: #ef4444;
+    color: #fca5a5;
+  }
+  .sorteo-premio-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .sorteo-premio-val {
+    font-size: 20px;
+    font-weight: 900;
+    color: #fde047;
+  }
+  .animalitos-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 9px;
+    margin-top: 12px;
+  }
+  @media (min-width: 720px) {
+    .animalitos-board { grid-template-columns: repeat(6, 1fr); }
+  }
+  .ani-tile {
+    background: #101c24;
+    border: 1.5px solid #253642;
+    border-radius: 14px;
+    padding: 9px 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform .14s, border-color .14s, box-shadow .14s;
+    position: relative;
+  }
+  .ani-tile:hover:not(.salio) {
+    border-color: #22c55e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(34, 197, 94, 0.2);
+  }
+  .ani-tile img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid rgba(239, 68, 68, 0.65);
+    object-fit: cover;
+    background: #0b141a;
+    margin-bottom: 4px;
+  }
+  .ani-tile-num { font-size: 14px; font-weight: 900; color: #fff; line-height: 1.1; }
+  .ani-tile-name { font-size: 10px; font-weight: 800; color: #cbd5e1; margin-top: 2px; }
+  .ani-tile-tag {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 9px;
+    font-weight: 900;
+    color: #22c55e;
+    letter-spacing: .3px;
+  }
+  .ani-tile.salio {
+    opacity: 0.42;
+    filter: grayscale(100%);
+    cursor: not-allowed;
+    border-color: #1e293b;
+    background: #0b1217;
+  }
+  .ani-tile.salio .ani-tile-tag {
+    background: rgba(239, 68, 68, 0.22);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: #f87171;
+    padding: 1px 6px;
+    border-radius: 6px;
+  }
+  .ani-tile-votes {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(245, 158, 11, 0.2);
+    border: 1px solid rgba(245, 158, 11, 0.55);
+    color: #fde047;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 1px 5px;
+    border-radius: 999px;
+  }
 
   /* DATOS / GACETA OFICIAL */
   .section-pad { padding: 14px; max-width: 1040px; margin: 0 auto; width: 100%; }
@@ -648,7 +845,7 @@
   }
   .input-icon-box:focus-within { border-color: #3b82f6; }
   .input-icon-box span { font-size: 15px; margin-right: 9px; opacity: .8; }
-  .input-icon-box input {
+  .input-icon-box input, .input-icon-box select {
     flex: 1;
     background: transparent;
     border: none;
@@ -657,6 +854,7 @@
     font-size: 14px;
     outline: none;
   }
+  .input-icon-box select option { background: #111b21; color: #fff; }
   .btn-direct-chat {
     width: 100%;
     border: none;
@@ -823,6 +1021,7 @@
     font-size: 13px;
     font-weight: 700;
     gap: 8px;
+    flex-wrap: wrap;
   }
   .status-dot { width: 9px; height: 9px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 6px; }
   .messages-area {
@@ -940,10 +1139,10 @@
   }
   .saldo-negativo-txt { color: #ef4444 !important; font-weight: 900; }
 
-  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.78); display: none; align-items: center; justify-content: center; z-index: 200; padding: 14px; }
-  .modal-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; max-width: 680px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; }
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.82); display: none; align-items: center; justify-content: center; z-index: 200; padding: 14px; }
+  .modal-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; max-width: 680px; width: 100%; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; }
   .modal-head { padding: 12px 14px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-weight: 800; color: var(--gold); }
-  .modal-body { padding: 12px; overflow-y: auto; display: grid; gap: 8px; }
+  .modal-body { padding: 14px; overflow-y: auto; display: grid; gap: 10px; }
   .pay-hist-row { background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; font-size: 12px; }
 </style>
 </head>
@@ -967,9 +1166,25 @@
 <nav class="tabs">
   <button class="active" onclick="switchTab('resultados', this)">🏆 RESULTADOS</button>
   <button onclick="switchTab('datos', this)">🍀 DATOS</button>
+  <button id="btnTabSorteos" onclick="switchTab('sorteos', this)">🎁 SORTEOS<span id="dotSorteoLive" class="tab-dot-live" style="display:none;"></span></button>
   <button onclick="switchTab('promos', this)">📢 PROMOS</button>
   <button onclick="switchTab('jugar', this)">💬 JUGAR</button>
 </nav>
+
+<!-- BANNER FLOTANTE SUPERIOR CUANDO HAY UN SORTEO ACTIVO -->
+<div id="sorteoFloatBanner" class="sorteo-float-banner">
+  <div class="sorteo-float-left">
+    <div class="sorteo-float-icon">🎯</div>
+    <div style="min-width:0;">
+      <div class="sorteo-float-title" id="floatSorteoTitulo">¡SORTEO ESPECIAL ACTIVO!</div>
+      <div class="sorteo-float-sub" id="floatSorteoSub">Lotto Activo (05:00 PM) • Premio Bs. 1.000,00</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+    <button class="btn-participar-pill" onclick="abrirModalParticiparSorteo()">PARTICIPAR ➔</button>
+    <button class="pill" style="padding:5px 8px;" onclick="document.getElementById('sorteoFloatBanner').style.display='none'" title="Ocultar aviso">✕</button>
+  </div>
+</div>
 
 <main>
   <!-- RESULTADOS -->
@@ -1060,6 +1275,19 @@
 
         <div id="gacetaContenido">
           <p style="font-size:12px;color:var(--muted);">Cargando Gaceta Oficial...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SORTEOS ESPECIALES DE TAQUILLA -->
+  <section id="tab-sorteos" class="view">
+    <div class="section-pad">
+      <div class="info-card" id="sorteoClienteContainer">
+        <div style="text-align:center;padding:28px 12px;">
+          <div style="font-size:38px;margin-bottom:8px;">🎁</div>
+          <h3 style="color:var(--gold);font-size:16px;">Sorteos Especiales Harold José</h3>
+          <p style="color:var(--muted);font-size:12.5px;margin-top:6px;">Cargando estado del sorteo...</p>
         </div>
       </div>
     </div>
@@ -1167,7 +1395,8 @@
       <div class="chat-wrap">
         <div class="chat-topbar">
           <span id="lblAdminActiveChat">Selecciona un cliente</span>
-          <div style="display:flex;gap:6px;">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="pill gold" onclick="abrirModalAdminSorteo()">🎁 Configurar Sorteo</button>
             <button class="pill green" onclick="abrirHistorialPagos()">📒 Historial Pagos</button>
             <button class="pill red" onclick="borrarChatActual()">🗑️ Limpiar Chat</button>
           </div>
@@ -1191,6 +1420,117 @@
     </div>
   </section>
 </main>
+
+<!-- MODAL PARTICIPAR EN EL SORTEO (CLIENTE) -->
+<div id="modalParticiparSorteo" class="modal-bg" onclick="if(event.target===this) this.style.display='none'">
+  <div class="modal-card" style="max-width:430px;">
+    <div class="modal-head">
+      <span>🎯 Participar en el Sorteo</span>
+      <button class="pill red" onclick="document.getElementById('modalParticiparSorteo').style.display='none'">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="resumenSorteoModal" style="background:var(--panel2);border:1px solid rgba(245,185,66,.4);border-radius:12px;padding:10px;font-size:12px;"></div>
+
+      <div>
+        <div class="field-label-row"><label>Teléfono registrado en la app</label><span>1 voto por teléfono</span></div>
+        <div class="input-icon-box" style="margin-bottom:0;">
+          <span>📱</span>
+          <input type="tel" id="inpSorteoTelefono" placeholder="Ej: 04121234567" maxlength="11" />
+        </div>
+      </div>
+
+      <div>
+        <div class="field-label-row"><label>Tu Nombre</label></div>
+        <div class="input-icon-box" style="margin-bottom:0;">
+          <span>👤</span>
+          <input type="text" id="inpSorteoNombre" placeholder="Ej: Carlos Pérez" />
+        </div>
+      </div>
+
+      <div>
+        <div class="field-label-row"><label>Animalito que vas a elegir</label><span>Solo disponibles</span></div>
+        <div class="input-icon-box" style="margin-bottom:0;">
+          <span>🦁</span>
+          <select id="selSorteoAnimalito"></select>
+        </div>
+      </div>
+
+      <button class="btn-direct-chat" style="background:linear-gradient(90deg,#16a34a,#22c55e);color:#041b15;margin-top:4px;" onclick="enviarVotoSorteo()">✅ CONFIRMAR MI ANIMALITO</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONFIGURAR SORTEO (ADMINISTRADOR) -->
+<div id="modalAdminSorteo" class="modal-bg" onclick="if(event.target===this) this.style.display='none'">
+  <div class="modal-card" style="max-width:620px;">
+    <div class="modal-head">
+      <span>🎁 Gestión de Sorteos Especiales • Taquilla</span>
+      <button class="pill red" onclick="document.getElementById('modalAdminSorteo').style.display='none'">Cerrar</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="grid-column:1/-1;">
+          <div class="field-label-row"><label>Título del Sorteo (Editable)</label></div>
+          <div class="input-icon-box" style="margin-bottom:0;">
+            <span>📣</span>
+            <input type="text" id="admSorteoTitulo" placeholder="Ej: ¡ADIVINA EL ANIMALITO DE LAS 5 PM!" />
+          </div>
+        </div>
+
+        <div>
+          <div class="field-label-row"><label>Lotería</label></div>
+          <div class="input-icon-box" style="margin-bottom:0;">
+            <span>🎰</span>
+            <select id="admSorteoLoteria"></select>
+          </div>
+        </div>
+
+        <div>
+          <div class="field-label-row"><label>Hora Exacta del Sorteo</label></div>
+          <div class="input-icon-box" style="margin-bottom:0;">
+            <span>🕒</span>
+            <input type="time" id="admSorteoHora" value="17:00" style="color-scheme:dark;" />
+          </div>
+        </div>
+
+        <div>
+          <div class="field-label-row"><label>Cierre de Votos</label><span>Opcional</span></div>
+          <div class="input-icon-box" style="margin-bottom:0;">
+            <span>⏳</span>
+            <input type="time" id="admSorteoCierre" value="16:55" style="color-scheme:dark;" />
+          </div>
+        </div>
+
+        <div>
+          <div class="field-label-row"><label>Premio Total a Repartir (Bs.)</label></div>
+          <div class="input-icon-box" style="margin-bottom:0;">
+            <span>💰</span>
+            <input type="number" id="admSorteoPremio" value="1000" min="1" step="1" />
+          </div>
+        </div>
+
+        <div style="grid-column:1/-1;">
+          <div class="field-label-row"><label>Tipo de Acreditación</label></div>
+          <div class="input-icon-box" style="margin-bottom:0;">
+            <span>🏦</span>
+            <select id="admSorteoTipoPremio">
+              <option value="promo">Saldo Promo / Bot (Para jugar en taquilla)</option>
+              <option value="retirable">Saldo Retirable (Bs.)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+        <button class="btn-direct-chat" style="flex:1;background:linear-gradient(90deg,#16a34a,#22c55e);color:#041b15;" onclick="guardarActivarSorteoAdmin()">🚀 ACTIVAR SORTEO AHORA</button>
+        <button class="pill gold" style="padding:10px 14px;" onclick="accionAdminSorteo('cerrar_votos')">🔒 Cerrar Votos</button>
+        <button class="pill red" style="padding:10px 14px;" onclick="accionAdminSorteo('desactivar')">🗑️ Finalizar / Ocultar</button>
+      </div>
+
+      <div id="admSorteoEstadoVivo" style="margin-top:8px;border-top:1px solid var(--border);padding-top:10px;"></div>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL ASISTENTE DE REGISTRO TIPO CHAT -->
 <div id="modalAsistente" class="modal-bg" onclick="if(event.target===this) cerrarAsistenteRegistro()">
@@ -1229,7 +1569,49 @@ const API_BASE = "https://api-resultados-harold.agharoldjose.workers.dev";
 const BOT_USERNAME = "AgenciaHaroldRegistroBot";
 const ROLLERCOIN_REF = "https://rollercoin.com/?r=kqmow2ag";
 
+const ANIMALITOS_CATALOGO = [
+  { num: "0", nombre: "DELFÍN", slug: "0-delfin" },
+  { num: "00", nombre: "BALLENA", slug: "00-ballena" },
+  { num: "01", nombre: "CARNERO", slug: "01-carnero" },
+  { num: "02", nombre: "TORO", slug: "02-toro" },
+  { num: "03", nombre: "CIEMPIÉS", slug: "03-ciempies" },
+  { num: "04", nombre: "ALACRÁN", slug: "04-alacran" },
+  { num: "05", nombre: "LEÓN", slug: "05-leon" },
+  { num: "06", nombre: "RANA", slug: "06-rana" },
+  { num: "07", nombre: "PERICO", slug: "07-perico" },
+  { num: "08", nombre: "RATÓN", slug: "08-raton" },
+  { num: "09", nombre: "ÁGUILA", slug: "09-aguila" },
+  { num: "10", nombre: "TIGRE", slug: "10-tigre" },
+  { num: "11", nombre: "GATO", slug: "11-gato" },
+  { num: "12", nombre: "CABALLO", slug: "12-caballo" },
+  { num: "13", nombre: "MONO", slug: "13-mono" },
+  { num: "14", nombre: "PALOMA", slug: "14-paloma" },
+  { num: "15", nombre: "ZORRO", slug: "15-zorro" },
+  { num: "16", nombre: "OSO", slug: "16-oso" },
+  { num: "17", nombre: "PAVO", slug: "17-pavo" },
+  { num: "18", nombre: "BURRO", slug: "18-burro" },
+  { num: "19", nombre: "CHIVO", slug: "19-chivo" },
+  { num: "20", nombre: "COCHINO", slug: "20-cochino" },
+  { num: "21", nombre: "GALLO", slug: "21-gallo" },
+  { num: "22", nombre: "CAMELLO", slug: "22-camello" },
+  { num: "23", nombre: "CEBRA", slug: "23-cebra" },
+  { num: "24", nombre: "IGUANA", slug: "24-iguana" },
+  { num: "25", nombre: "GALLINA", slug: "25-gallina" },
+  { num: "26", nombre: "VACA", slug: "26-vaca" },
+  { num: "27", nombre: "PERRO", slug: "27-perro" },
+  { num: "28", nombre: "ZAMURO", slug: "28-zamuro" },
+  { num: "29", nombre: "ELEFANTE", slug: "29-elefante" },
+  { num: "30", nombre: "CAIMÁN", slug: "30-caiman" },
+  { num: "31", nombre: "LAPA", slug: "31-lapa" },
+  { num: "32", nombre: "ARDILLA", slug: "32-ardilla" },
+  { num: "33", nombre: "PESCADO", slug: "33-pescado" },
+  { num: "34", nombre: "VENADO", slug: "34-venado" },
+  { num: "35", nombre: "JIRAFA", slug: "35-jirafa" },
+  { num: "36", nombre: "CULEBRA", slug: "36-culebra" }
+];
+
 let loteriasData = [];
+let sorteoActivoData = null;
 let gacetaActualLoteria = "LOTTO ACTIVO";
 let gacetaActualData = null;
 let fechaSeleccionadaISO = "";
@@ -1262,7 +1644,7 @@ function registrarToqueAdmin() {
   timerToquesAdmin = setTimeout(() => { toquesLogoAdmin = 0; }, 2500);
   if (toquesLogoAdmin >= 5) {
     toquesLogoAdmin = 0;
-    const btnJugar = document.querySelectorAll("nav.tabs button")[3];
+    const btnJugar = document.getElementById("btnTabJugar") || document.querySelectorAll("nav.tabs button")[4];
     switchTab("jugar", btnJugar);
     const box = document.getElementById("secretAdminBox");
     if (box) {
@@ -1281,7 +1663,7 @@ function getHoyVenezuelaISO() {
   }).formatToParts(new Date());
   const y = parts.find(p => p.type === "year")?.value || "2026";
   const m = parts.find(p => p.type === "month")?.value || "11";
-  const d = parts.find(p => p.type === "day")?.value || "23";
+  const d = parts.find(p => p.type === "day")?.value || "25";
   return `${y}-${m}-${d}`;
 }
 
@@ -1299,6 +1681,14 @@ function formatearFechaLargaES(iso) {
   } catch (e) {
     return iso;
   }
+}
+
+function formatearHora12(hora24) {
+  if (!hora24 || !hora24.includes(":")) return hora24 || "";
+  const [hh, mm] = hora24.split(":").map(Number);
+  const ampm = hh >= 12 ? "PM" : "AM";
+  const h12 = hh % 12 === 0 ? 12 : hh % 12;
+  return `${String(h12).padStart(2, "0")}:${String(mm).padStart(2, "0")} ${ampm}`;
 }
 
 function getDeviceId() {
@@ -1331,6 +1721,7 @@ function switchTab(tab, btn) {
   document.getElementById("tab-" + tab).classList.add("active");
   if (tab === "promos") cargarFlyers();
   if (tab === "datos") cargarGacetaWinbig(gacetaActualLoteria);
+  if (tab === "sorteos") cargarEstadoSorteo();
   if (tab === "jugar") {
     bajarAlFinalChat(document.getElementById("clientMessages"));
     bajarAlFinalChat(document.getElementById("adminMessages"));
@@ -1362,6 +1753,7 @@ async function cargarResultados() {
       document.getElementById("badgeCount").textContent = `• ${loteriasData.length} LOTERÍAS${tagHist}`;
       renderTicker();
       renderLoterias();
+      if (sorteoActivoData) renderVistaSorteoCliente();
     }
   } catch (e) {}
 }
@@ -1427,6 +1819,396 @@ function renderLoterias() {
   `).join("");
 }
 
+// =========================================================================
+// MÓDULO DE SORTEOS ESPECIALES DE TAQUILLA (CLIENTE + ADMINISTRADOR)
+// =========================================================================
+function obtenerImagenAnimalitoParaLoteria(loteriaNombre, numStr, slugFallback) {
+  const lot = loteriasData.find(l => l.nombre.toUpperCase() === String(loteriaNombre || "").toUpperCase());
+  if (lot && Array.isArray(lot.sorteos)) {
+    const match = lot.sorteos.find(s => String(s.numero) === String(numStr) && s.img);
+    if (match) return match.img;
+    const baseSample = lot.sorteos.find(s => s.img && s.img.includes("/"));
+    if (baseSample) {
+      const carpeta = baseSample.img.substring(0, baseSample.img.lastIndexOf("/") + 1);
+      return `${carpeta}${slugFallback}.png`;
+    }
+  }
+  return `https://lottoactivo.com/assets/images/animalitos/${slugFallback}.png`;
+}
+
+async function cargarEstadoSorteo() {
+  try {
+    const r = await fetch(`${API_BASE}/sorteo/estado`);
+    const d = await r.json();
+    const banner = document.getElementById("sorteoFloatBanner");
+    const dot = document.getElementById("dotSorteoLive");
+
+    if (!d.ok || !d.activo || !d.sorteo) {
+      sorteoActivoData = null;
+      if (banner) banner.style.display = "none";
+      if (dot) dot.style.display = "none";
+      renderVistaSorteoCliente();
+      return;
+    }
+
+    sorteoActivoData = d.sorteo;
+    if (dot) dot.style.display = "inline-block";
+
+    const premioFmt = Number(sorteoActivoData.premioTotal || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
+    if (banner && !sorteoActivoData.votosCerrados) {
+      document.getElementById("floatSorteoTitulo").textContent = `¡${sorteoActivoData.titulo}!`;
+      document.getElementById("floatSorteoSub").textContent = `${sorteoActivoData.loteria} (${sorteoActivoData.horaSorteoLabel}) • Bolsa Bs. ${premioFmt}`;
+      banner.style.display = "flex";
+    } else if (banner) {
+      banner.style.display = "none";
+    }
+
+    renderVistaSorteoCliente();
+    if (document.getElementById("modalAdminSorteo")?.style.display === "flex") {
+      renderEstadoAdminSorteo();
+    }
+  } catch (e) {}
+}
+
+function renderVistaSorteoCliente() {
+  const cont = document.getElementById("sorteoClienteContainer");
+  if (!cont) return;
+
+  if (!sorteoActivoData) {
+    cont.innerHTML = `
+      <div style="text-align:center;padding:34px 14px;">
+        <div style="font-size:42px;margin-bottom:10px;">🎁</div>
+        <h3 style="color:var(--gold);font-size:17px;font-weight:900;">Sin Sorteos Especiales Activos Ahora</h3>
+        <p style="color:var(--muted);font-size:13px;max-width:420px;margin:8px auto 16px;line-height:1.45;">
+          Cuando activemos un sorteo gratis en taquilla, aparecerá aquí el tablero completo del 0 al 36 para que elijas tu animalito y ganes saldo al instante.
+        </p>
+        <button class="pill green" onclick="switchTab('jugar', document.querySelectorAll('nav.tabs button')[4])">💬 Ir a Jugar en Taquilla</button>
+      </div>
+    `;
+    return;
+  }
+
+  const s = sorteoActivoData;
+  const premioFmt = Number(s.premioTotal || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
+  const tipoTxt = s.tipoPremio === "retirable" ? "Saldo Retirable" : "Saldo Promo / Bot";
+
+  // Combinar salidosHoy del backend + los de loteriasData en pantalla
+  const salidosSet = new Set((s.salidosHoy || []).map(x => String(x.numero)));
+  const lotLocal = loteriasData.find(l => l.nombre.toUpperCase() === String(s.loteria).toUpperCase());
+  if (lotLocal && Array.isArray(lotLocal.sorteos)) {
+    lotLocal.sorteos.forEach(item => {
+      if (item.numero && item.numero !== "--" && item.animal !== "PENDIENTE") {
+        salidosSet.add(String(item.numero));
+      }
+    });
+  }
+
+  // Contar votos por animalito
+  const conteoVotos = {};
+  (s.participantes || []).forEach(p => {
+    conteoVotos[p.numero] = (conteoVotos[p.numero] || 0) + 1;
+  });
+
+  // Verificar si el usuario actual ya votó
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  const miVoto = ses?.telefono ? (s.participantes || []).find(p => p.telefono === ses.telefono) : null;
+
+  let ganadorBannerHtml = "";
+  if (s.resultadoHoraObjetivo) {
+    const rObj = s.resultadoHoraObjetivo;
+    const gList = s.ganadores || [];
+    if (gList.length > 0) {
+      const tocaFmt = Number(s.premioPorGanador || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
+      ganadorBannerHtml = `
+        <div style="margin-top:12px;background:rgba(34,197,94,.16);border:1.5px solid #22c55e;border-radius:12px;padding:11px 12px;">
+          <div style="font-size:12px;font-weight:900;color:#4ade80;">🏆 RESULTADO OFICIAL (${s.horaSorteoLabel}): ${rObj.numero} - ${rObj.animal}</div>
+          <div style="font-size:12.5px;color:#fff;margin-top:4px;">
+            ¡Tenemos <strong>${gList.length} ganador(es)</strong>! A cada uno le corresponde <strong>Bs. ${tocaFmt}</strong>:
+          </div>
+          <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;">
+            ${gList.map(g => `<span class="pill green">🎉 ${g.nombre} (${g.telefono.slice(0,4)}***${g.telefono.slice(-3)})</span>`).join("")}
+          </div>
+        </div>
+      `;
+    } else {
+      ganadorBannerHtml = `
+        <div style="margin-top:12px;background:rgba(245,158,11,.14);border:1px solid #f59e0b;border-radius:12px;padding:10px 12px;font-size:12px;color:#fde047;">
+          🕒 Resultado oficial de las <strong>${s.horaSorteoLabel}</strong>: <strong>${rObj.numero} - ${rObj.animal}</strong>. Nadie eligió este animalito en esta ronda.
+        </div>
+      `;
+    }
+  }
+
+  const tilesHtml = ANIMALITOS_CATALOGO.map(a => {
+    const yaSalio = salidosSet.has(a.num);
+    const votos = conteoVotos[a.num] || 0;
+    const imgUrl = obtenerImagenAnimalitoParaLoteria(s.loteria, a.num, a.slug);
+    const clickAttr = (!yaSalio && !s.votosCerrados) ? `onclick="abrirModalParticiparSorteo('${a.num}')"` : "";
+    return `
+      <div class="ani-tile ${yaSalio ? "salio" : ""}" ${clickAttr}>
+        ${votos > 0 ? `<span class="ani-tile-votes">${votos} 👤</span>` : ""}
+        <img src="${imgUrl}" onerror="this.onerror=null;this.src='logo.png';" alt="${a.nombre}" />
+        <div class="ani-tile-num">${a.num}</div>
+        <div class="ani-tile-name">${a.nombre}</div>
+        <div class="ani-tile-tag">${yaSalio ? "✖ YA SALIÓ" : "DISPONIBLE"}</div>
+      </div>
+    `;
+  }).join("");
+
+  cont.innerHTML = `
+    <div class="sorteo-hero-card">
+      <div class="sorteo-hero-top">
+        <div>
+          <div style="font-size:11px;font-weight:900;color:var(--gold);text-transform:uppercase;">📣 ${s.titulo}</div>
+          <div class="sorteo-lot-pill">🎰 ${s.loteria} • 🕒 SORTEO ${s.horaSorteoLabel}</div>
+        </div>
+        <span class="sorteo-status-badge ${s.votosCerrados ? "closed" : ""}">${s.votosCerrados ? "🔒 VOTACIONES CERRADAS" : "🟢 ACTIVA"}</span>
+      </div>
+
+      <div class="sorteo-premio-row">
+        <div>
+          <div style="font-size:11px;color:var(--muted);font-weight:700;">Premio a ${tipoTxt} (Bolsa a repartir):</div>
+          <div class="sorteo-premio-val">Bs. ${premioFmt}</div>
+          <div style="font-size:11px;color:#93c5fd;margin-top:2px;">⏳ Cierre de votos: <strong>${s.horaCierreLabel}</strong> • 👥 Participantes: <strong>${s.totalParticipantes}</strong></div>
+        </div>
+        ${!s.votosCerrados ? `<button class="btn-participar-pill" onclick="abrirModalParticiparSorteo()">🎯 ELEGIR MI ANIMALITO</button>` : ""}
+      </div>
+
+      ${miVoto ? `
+        <div style="margin-top:10px;background:rgba(37,99,235,.2);border:1px solid #60a5fa;border-radius:10px;padding:8px 11px;font-size:12px;color:#bfdbfe;">
+          ✅ <strong>Tu participación registrada:</strong> Elegiste el <strong>${miVoto.numero} - ${miVoto.animal}</strong> (${miVoto.nombre}).
+        </div>
+      ` : ""}
+
+      ${ganadorBannerHtml}
+    </div>
+
+    <div style="font-size:12.5px;color:var(--text);font-weight:700;margin-bottom:4px;">
+      🎯 Toca un animalito <strong>DISPONIBLE</strong> para participar (1 solo voto por teléfono registrado):
+    </div>
+    <div class="animalitos-board">${tilesHtml}</div>
+  `;
+}
+
+function abrirModalParticiparSorteo(numPreseleccionado = "") {
+  if (!sorteoActivoData) return alert("No hay un sorteo activo en este momento.");
+  if (sorteoActivoData.votosCerrados) return alert("Las votaciones para este sorteo ya cerraron.");
+
+  const s = sorteoActivoData;
+  const salidosSet = new Set((s.salidosHoy || []).map(x => String(x.numero)));
+  const lotLocal = loteriasData.find(l => l.nombre.toUpperCase() === String(s.loteria).toUpperCase());
+  if (lotLocal && Array.isArray(lotLocal.sorteos)) {
+    lotLocal.sorteos.forEach(item => {
+      if (item.numero && item.numero !== "--" && item.animal !== "PENDIENTE") {
+        salidosSet.add(String(item.numero));
+      }
+    });
+  }
+
+  const disponibles = ANIMALITOS_CATALOGO.filter(a => !salidosSet.has(a.num));
+  const sel = document.getElementById("selSorteoAnimalito");
+  sel.innerHTML = `<option value="">-- Selecciona tu animalito --</option>` +
+    disponibles.map(a => `<option value="${a.num}|${a.nombre}" ${a.num === numPreseleccionado ? "selected" : ""}>${a.num} - ${a.nombre}</option>`).join("");
+
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (ses?.role === "client") {
+    document.getElementById("inpSorteoTelefono").value = ses.telefono || "";
+    document.getElementById("inpSorteoNombre").value = ses.nombre || "";
+  }
+
+  const premioFmt = Number(s.premioTotal || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
+  document.getElementById("resumenSorteoModal").innerHTML = `
+    <div style="font-weight:900;color:var(--gold);">${s.titulo}</div>
+    <div style="margin-top:3px;">🎰 <strong>${s.loteria}</strong> • 🕒 Hora sorteo: <strong>${s.horaSorteoLabel}</strong></div>
+    <div>💰 Bolsa a repartir: <strong>Bs. ${premioFmt}</strong></div>
+  `;
+
+  document.getElementById("modalParticiparSorteo").style.display = "flex";
+}
+
+async function enviarVotoSorteo() {
+  const telefono = (document.getElementById("inpSorteoTelefono")?.value || "").replace(/\D/g, "");
+  const nombre = (document.getElementById("inpSorteoNombre")?.value || "").trim();
+  const valSel = document.getElementById("selSorteoAnimalito")?.value || "";
+
+  if (!/^0(412|422|414|424|416|426)\d{7}$/.test(telefono)) {
+    return alert("Ingresa tu número de teléfono venezolano registrado (11 dígitos, ej: 04121234567).");
+  }
+  if (nombre.length < 2) {
+    return alert("Escribe tu nombre.");
+  }
+  if (!valSel) {
+    return alert("Selecciona el animalito con el que vas a participar.");
+  }
+
+  const [numero, animal] = valSel.split("|");
+  try {
+    const r = await fetch(`${API_BASE}/sorteo/participar`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telefono, nombre, numero, animal })
+    });
+    const d = await r.json();
+    if (!d.ok) {
+      if (d.noRegistrado) {
+        if (confirm(d.error + "\n\n¿Quieres ir a registrarte ahora en 1 minuto?")) {
+          document.getElementById("modalParticiparSorteo").style.display = "none";
+          switchTab("jugar", document.querySelectorAll("nav.tabs button")[4]);
+          abrirAsistenteRegistro();
+        }
+        return;
+      }
+      return alert(d.error || "No se pudo registrar tu voto.");
+    }
+
+    alert(d.mensaje || "¡Participación registrada con éxito!");
+    document.getElementById("modalParticiparSorteo").style.display = "none";
+    await cargarEstadoSorteo();
+    switchTab("sorteos", document.getElementById("btnTabSorteos"));
+  } catch (e) {
+    alert("Error de conexión con la taquilla.");
+  }
+}
+
+function abrirModalAdminSorteo() {
+  const selLot = document.getElementById("admSorteoLoteria");
+  const listaLots = loteriasData.length > 0
+    ? loteriasData.map(l => l.nombre)
+    : Array.from(document.querySelectorAll("#gacetaChips .gaceta-chip")).map(b => b.textContent.trim());
+
+  selLot.innerHTML = listaLots.map(nom => `<option value="${nom}">${nom}</option>`).join("");
+
+  if (sorteoActivoData) {
+    document.getElementById("admSorteoTitulo").value = sorteoActivoData.titulo || "";
+    selLot.value = sorteoActivoData.loteria || listaLots[0];
+    if (sorteoActivoData.horaSorteo24) document.getElementById("admSorteoHora").value = sorteoActivoData.horaSorteo24;
+    if (sorteoActivoData.horaCierre24) document.getElementById("admSorteoCierre").value = sorteoActivoData.horaCierre24;
+    document.getElementById("admSorteoPremio").value = sorteoActivoData.premioTotal || 1000;
+    document.getElementById("admSorteoTipoPremio").value = sorteoActivoData.tipoPremio || "promo";
+  }
+
+  renderEstadoAdminSorteo();
+  document.getElementById("modalAdminSorteo").style.display = "flex";
+}
+
+function renderEstadoAdminSorteo() {
+  const box = document.getElementById("admSorteoEstadoVivo");
+  if (!box) return;
+  if (!sorteoActivoData) {
+    box.innerHTML = `<div style="font-size:12px;color:var(--muted);">No hay ningún sorteo activo actualmente. Configura uno arriba y pulsa <strong>ACTIVAR SORTEO AHORA</strong>.</div>`;
+    return;
+  }
+
+  const s = sorteoActivoData;
+  const gList = s.ganadores || [];
+  const tocaFmt = Number(s.premioPorGanador || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
+
+  let ganadoresHtml = "";
+  if (s.resultadoHoraObjetivo) {
+    ganadoresHtml = `
+      <div style="background:rgba(34,197,94,.14);border:1px solid #22c55e;border-radius:10px;padding:10px;margin-bottom:8px;">
+        <div style="font-size:12px;font-weight:900;color:#4ade80;">🏆 Salió: ${s.resultadoHoraObjetivo.numero} - ${s.resultadoHoraObjetivo.animal} (${s.horaSorteoLabel})</div>
+        <div style="font-size:12px;color:#fff;margin-top:3px;">Ganadores: <strong>${gList.length}</strong> • Premio por ganador: <strong>Bs. ${tocaFmt}</strong></div>
+        ${gList.map(g => `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;background:#0b141a;padding:6px 8px;border-radius:8px;font-size:11.5px;">
+            <span>🎉 <strong>${g.nombre}</strong> (${g.telefono})</span>
+            ${g.pagado
+              ? `<span class="pill green">✅ Acreditado</span>`
+              : `<button class="btn-approve-ocr" style="width:auto;margin:0;padding:5px 10px;" onclick="acreditarGanadorSorteo('${g.telefono}', ${s.premioPorGanador})">💰 Acreditar Bs. ${tocaFmt}</button>`
+            }
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  const listaPart = (s.participantes || []).map(p => `
+    <div style="display:flex;justify-content:space-between;font-size:11.5px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.06);">
+      <span>👤 <strong>${p.nombre}</strong> (${p.telefono})</span>
+      <span style="color:var(--gold);font-weight:800;">${p.numero} - ${p.animal}</span>
+    </div>
+  `).join("");
+
+  box.innerHTML = `
+    <div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">
+      📊 Sorteo en curso: ${s.loteria} (${s.horaSorteoLabel}) • Participantes: ${s.totalParticipantes}
+    </div>
+    ${ganadoresHtml}
+    <div style="max-height:170px;overflow-y:auto;background:#0b141a;border:1px solid var(--border);border-radius:10px;padding:8px;">
+      ${listaPart || `<span style="font-size:11.5px;color:var(--muted);">Aún no hay votos registrados.</span>`}
+    </div>
+  `;
+}
+
+async function guardarActivarSorteoAdmin() {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin") return;
+
+  const titulo = document.getElementById("admSorteoTitulo").value.trim() || "¡ADIVINA EL ANIMALITO GANADOR!";
+  const loteria = document.getElementById("admSorteoLoteria").value;
+  const horaSorteo = document.getElementById("admSorteoHora").value;
+  const horaCierre = document.getElementById("admSorteoCierre").value || horaSorteo;
+  const premioTotal = parseFloat(document.getElementById("admSorteoPremio").value);
+  const tipoPremio = document.getElementById("admSorteoTipoPremio").value;
+
+  if (!loteria || !horaSorteo || isNaN(premioTotal) || premioTotal <= 0) {
+    return alert("Completa la lotería, hora exacta y el monto total del premio.");
+  }
+
+  const r = await fetch(`${API_BASE}/sorteo/admin`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({
+      accion: "activar",
+      titulo,
+      loteria,
+      horaSorteo,
+      horaSorteoLabel: formatearHora12(horaSorteo),
+      horaCierre,
+      horaCierreLabel: formatearHora12(horaCierre),
+      premioTotal,
+      tipoPremio
+    })
+  });
+  const d = await r.json();
+  if (!d.ok) return alert(d.error || "No se pudo activar el sorteo.");
+
+  alert("✅ ¡Sorteo activado y publicado en toda la app!");
+  await cargarEstadoSorteo();
+}
+
+async function accionAdminSorteo(accion) {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin") return;
+  if (accion === "desactivar" && !confirm("¿Finalizar y quitar el sorteo activo de la pantalla de los clientes?")) return;
+
+  await fetch(`${API_BASE}/sorteo/admin`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({ accion })
+  });
+  await cargarEstadoSorteo();
+}
+
+async function acreditarGanadorSorteo(telefono, monto) {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin") return;
+  if (!confirm(`¿Acreditar ${monto} Bs. al cliente ${telefono} y enviarle notificación al chat?`)) return;
+
+  const r = await fetch(`${API_BASE}/sorteo/admin`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({ accion: "acreditar_ganador", telefono, monto })
+  });
+  const d = await r.json();
+  if (!d.ok) return alert(d.error || "Error al acreditar.");
+  alert("✅ Premio acreditado al saldo del cliente.");
+  await cargarEstadoSorteo();
+}
+
+// =========================================================================
+// GACETA OFICIAL + GENERADOR DE AFICHE CON FONDOS TEMÁTICOS POR LOTERÍA
+// =========================================================================
 function moverBarraGaceta(dx) {
   const row = document.getElementById("gacetaChips");
   if (row) row.scrollBy({ left: dx, behavior: "smooth" });
@@ -1628,9 +2410,6 @@ async function cargarGacetaWinbig(loteria) {
   }
 }
 
-// =========================================================================
-// GENERADOR DE AFICHE ESTILO REVISTA/CASINO CON FONDOS TEMÁTICOS POR LOTERÍA
-// =========================================================================
 function cargarImagenSegura(url) {
   return new Promise((resolve) => {
     if (!url) return resolve(null);
@@ -1658,43 +2437,15 @@ function roundRectCanvas(ctx, x, y, w, h, r, fill, stroke, lineWidth = 2) {
 function obtenerTemaVisualLoteria(nombreLoteria) {
   const n = (nombreLoteria || "").toUpperCase();
   if (/SELVA|GUACA|GUACHAR|ZOOLOGICO|PANDA|GRANJ|FRUIT|TROPIGANA/.test(n)) {
-    return {
-      tipo: "selva",
-      c1: "#062b16",
-      c2: "#0d5228",
-      c3: "#041b0e",
-      cardBg: "rgba(7, 36, 18, 0.88)",
-      ribbonBg: "#991b1b"
-    };
+    return { tipo: "selva", c1: "#062b16", c2: "#0d5228", c3: "#041b0e", cardBg: "rgba(7, 36, 18, 0.88)", ribbonBg: "#991b1b" };
   }
   if (/RULETA|ROYAL|LOTTOMAX|RICACHONA|MILLONARI|MONJE/.test(n)) {
-    return {
-      tipo: "casino",
-      c1: "#2a0815",
-      c2: "#581129",
-      c3: "#14040a",
-      cardBg: "rgba(32, 8, 18, 0.89)",
-      ribbonBg: "#b91c1c"
-    };
+    return { tipo: "casino", c1: "#2a0815", c2: "#581129", c3: "#14040a", cardBg: "rgba(32, 8, 18, 0.89)", ribbonBg: "#b91c1c" };
   }
   if (/CONDOR|REAL|QUINTA|CENTENA|CHAIMA/.test(n)) {
-    return {
-      tipo: "cielo",
-      c1: "#071d3d",
-      c2: "#0f3d7a",
-      c3: "#041024",
-      cardBg: "rgba(9, 25, 52, 0.89)",
-      ribbonBg: "#b45309"
-    };
+    return { tipo: "cielo", c1: "#071d3d", c2: "#0f3d7a", c3: "#041024", cardBg: "rgba(9, 25, 52, 0.89)", ribbonBg: "#b45309" };
   }
-  return {
-    tipo: "vip",
-    c1: "#082924",
-    c2: "#0f4c3a",
-    c3: "#051815",
-    cardBg: "rgba(9, 32, 28, 0.89)",
-    ribbonBg: "#991b1b"
-  };
+  return { tipo: "vip", c1: "#082924", c2: "#0f4c3a", c3: "#051815", cardBg: "rgba(9, 32, 28, 0.89)", ribbonBg: "#991b1b" };
 }
 
 function pintarFondoTematico(ctx, W, H, tema) {
@@ -1708,12 +2459,9 @@ function pintarFondoTematico(ctx, W, H, tema) {
   ctx.save();
   if (tema.tipo === "selva") {
     const hojas = [
-      { x: 0, y: 120, ang: 0.4, esc: 1.35 },
-      { x: W, y: 180, ang: -0.4, esc: 1.35 },
-      { x: 0, y: 650, ang: 0.25, esc: 1.55 },
-      { x: W, y: 720, ang: -0.3, esc: 1.55 },
-      { x: 0, y: 1250, ang: 0.35, esc: 1.45 },
-      { x: W, y: 1320, ang: -0.35, esc: 1.45 }
+      { x: 0, y: 120, ang: 0.4, esc: 1.35 }, { x: W, y: 180, ang: -0.4, esc: 1.35 },
+      { x: 0, y: 650, ang: 0.25, esc: 1.55 }, { x: W, y: 720, ang: -0.3, esc: 1.55 },
+      { x: 0, y: 1250, ang: 0.35, esc: 1.45 }, { x: W, y: 1320, ang: -0.35, esc: 1.45 }
     ];
     hojas.forEach(h => {
       ctx.save();
@@ -1870,7 +2618,6 @@ async function descargarImagenGaceta() {
 
     pintarFondoTematico(ctx, W, H, tema);
 
-    // 1. ENCABEZADO: TU LOGO A LA IZQUIERDA + TÍTULO GACETA OFICIAL A LA DERECHA
     dibujarAvatarFicha(ctx, mapaImgs["logo.png"], 155, 112, 86, "#fbbf24");
     roundRectCanvas(ctx, 42, 182, 226, 30, 15, "#15803d", "#fbbf24", 2);
     ctx.fillStyle = "#ffffff";
@@ -1905,7 +2652,6 @@ async function descargarImagenGaceta() {
     const fechaCapital = fechaLarga.charAt(0).toUpperCase() + fechaLarga.slice(1);
     ctx.fillText(fechaCapital, 365, 181);
 
-    // 2. BARRA SUPERIOR: ÚLTIMO SORTEO + RADAR JUEGA AHORA
     dibujarMarcoDorado(ctx, 30, 232, W - 60, 152, 22, tema.cardBg);
     const u = d.ultimoSorteo || {};
     dibujarAvatarFicha(ctx, mapaImgs[u.img] || mapaImgs["logo.png"], 108, 308, 48, "#fbbf24");
@@ -1944,7 +2690,6 @@ async function descargarImagenGaceta() {
     });
     ctx.textAlign = "left";
 
-    // 3. LA PIRÁMIDE DE LA FECHA + FICHAS RESULTANTES
     dibujarMarcoDorado(ctx, 30, 412, 515, 515, 20, tema.cardBg, "🔺 LA PIRÁMIDE DE LA FECHA", tema.ribbonBg);
 
     const filas = d.piramideFilas || [];
@@ -1988,7 +2733,6 @@ async function descargarImagenGaceta() {
     });
     ctx.textAlign = "left";
 
-    // 4. LA CRUZ DE LA SUERTE + CANDADO DE LA JAULA
     dibujarMarcoDorado(ctx, 565, 412, 485, 385, 20, tema.cardBg, "🍀 LA CRUZ DE LA SUERTE", "#15803d");
 
     const cruz = d.cruz || {};
@@ -2055,7 +2799,6 @@ async function descargarImagenGaceta() {
       ctx.fillText(`${d.candado.extra || "12 DÍAS SIN SALIR"} (OFICIAL)`, 690, 904);
     }
 
-    // 5. LA TRIPLETA MILLONARIA
     const blueGrad = ctx.createLinearGradient(30, 945, W - 30, 1085);
     blueGrad.addColorStop(0, "#1e3a8a");
     blueGrad.addColorStop(0.5, "#1d4ed8");
@@ -2083,7 +2826,6 @@ async function descargarImagenGaceta() {
     });
     ctx.textAlign = "left";
 
-    // 6. ANIMALITOS EN RACHA
     dibujarMarcoDorado(ctx, 30, 1106, W - 60, 145, 20, tema.cardBg, "🔥 ANIMALITOS EN RACHA (MAYOR FRECUENCIA 7 DÍAS)", tema.ribbonBg);
 
     (d.racha || []).slice(0, 3).forEach((it, idx) => {
@@ -2101,7 +2843,6 @@ async function descargarImagenGaceta() {
       ctx.fillText("(Últimos 7 días)", rx + 98, 1218);
     });
 
-    // 7. LOS 4 ELEMENTOS DEL DÍA
     dibujarMarcoDorado(ctx, 30, 1276, W - 60, 140, 20, tema.cardBg, "⭐ LOS 4 ELEMENTOS DEL DÍA (INFLUENCIA ASTRAL)", "#15803d");
 
     (d.elementos || []).slice(0, 4).forEach((it, idx) => {
@@ -2116,7 +2857,6 @@ async function descargarImagenGaceta() {
       ctx.fillText(`${it.numero} - ${String(it.animal || "").slice(0, 8)}`, ex + 86, 1372);
     });
 
-    // 8. PIE DE PÁGINA OFICIAL DE CENTRO DE APUESTAS HAROLD JOSÉ
     roundRectCanvas(ctx, 30, 1434, W - 60, 82, 16, "#091318", "#fbbf24", 2.5);
     dibujarAvatarFicha(ctx, mapaImgs["logo.png"], 76, 1475, 28, "#fbbf24");
 
@@ -2179,7 +2919,7 @@ async function cargarFlyers() {
 }
 
 function jugarDesdePromo(titulo) {
-  const btnJugar = document.querySelectorAll("nav.tabs button")[3];
+  const btnJugar = document.querySelectorAll("nav.tabs button")[4];
   switchTab("jugar", btnJugar);
   const inp = document.getElementById("txtClientMsg");
   if (inp) inp.value = `Quiero jugar: ${titulo} - `;
@@ -2356,7 +3096,7 @@ async function wizFinalizarRegistro() {
 }
 
 // =========================================================================
-// ACCESO DIRECTO PARA CLIENTES YA REGISTRADOS (TELÉFONO + CÉDULA)
+// ACCESO DIRECTO Y PANEL ADMINISTRADOR
 // =========================================================================
 async function entrarDirectoChat() {
   const telefono = (document.getElementById("inpLoginTelefono")?.value || "").replace(/\D/g, "");
@@ -2806,6 +3546,7 @@ document.addEventListener("visibilitychange", () => {
     const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
     if (ses?.role === "client") cargarHistorialCliente(true);
     if (ses?.role === "admin" && window.activeAdminChatId) cargarHistorialAdmin(window.activeAdminChatId, true);
+    cargarEstadoSorteo();
   }
 });
 
@@ -2824,14 +3565,16 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   if (new URLSearchParams(window.location.search).get("admin") === "1") {
-    const btnJugar = document.querySelectorAll("nav.tabs button")[3];
+    const btnJugar = document.querySelectorAll("nav.tabs button")[4];
     switchTab("jugar", btnJugar);
     const box = document.getElementById("secretAdminBox");
     if (box) box.style.display = "block";
   }
 
   cargarResultados();
+  cargarEstadoSorteo();
   setInterval(cargarResultados, 60000);
+  setInterval(cargarEstadoSorteo, 25000);
   iniciarVistaSesion();
 });
 </script>
