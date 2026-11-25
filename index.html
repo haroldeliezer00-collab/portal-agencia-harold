@@ -1569,45 +1569,45 @@ const API_BASE = "https://api-resultados-harold.agharoldjose.workers.dev";
 const BOT_USERNAME = "AgenciaHaroldRegistroBot";
 const ROLLERCOIN_REF = "https://rollercoin.com/?r=kqmow2ag";
 
-const ANIMALITOS_CATALOGO = [
-  { num: "0", nombre: "DELFÍN", slug: "0-delfin" },
-  { num: "00", nombre: "BALLENA", slug: "00-ballena" },
-  { num: "01", nombre: "CARNERO", slug: "01-carnero" },
-  { num: "02", nombre: "TORO", slug: "02-toro" },
-  { num: "03", nombre: "CIEMPIÉS", slug: "03-ciempies" },
-  { num: "04", nombre: "ALACRÁN", slug: "04-alacran" },
-  { num: "05", nombre: "LEÓN", slug: "05-leon" },
-  { num: "06", nombre: "RANA", slug: "06-rana" },
-  { num: "07", nombre: "PERICO", slug: "07-perico" },
-  { num: "08", nombre: "RATÓN", slug: "08-raton" },
-  { num: "09", nombre: "ÁGUILA", slug: "09-aguila" },
-  { num: "10", nombre: "TIGRE", slug: "10-tigre" },
-  { num: "11", nombre: "GATO", slug: "11-gato" },
-  { num: "12", nombre: "CABALLO", slug: "12-caballo" },
-  { num: "13", nombre: "MONO", slug: "13-mono" },
-  { num: "14", nombre: "PALOMA", slug: "14-paloma" },
-  { num: "15", nombre: "ZORRO", slug: "15-zorro" },
-  { num: "16", nombre: "OSO", slug: "16-oso" },
-  { num: "17", nombre: "PAVO", slug: "17-pavo" },
-  { num: "18", nombre: "BURRO", slug: "18-burro" },
-  { num: "19", nombre: "CHIVO", slug: "19-chivo" },
-  { num: "20", nombre: "COCHINO", slug: "20-cochino" },
-  { num: "21", nombre: "GALLO", slug: "21-gallo" },
-  { num: "22", nombre: "CAMELLO", slug: "22-camello" },
-  { num: "23", nombre: "CEBRA", slug: "23-cebra" },
-  { num: "24", nombre: "IGUANA", slug: "24-iguana" },
-  { num: "25", nombre: "GALLINA", slug: "25-gallina" },
-  { num: "26", nombre: "VACA", slug: "26-vaca" },
-  { num: "27", nombre: "PERRO", slug: "27-perro" },
-  { num: "28", nombre: "ZAMURO", slug: "28-zamuro" },
-  { num: "29", nombre: "ELEFANTE", slug: "29-elefante" },
-  { num: "30", nombre: "CAIMÁN", slug: "30-caiman" },
-  { num: "31", nombre: "LAPA", slug: "31-lapa" },
-  { num: "32", nombre: "ARDILLA", slug: "32-ardilla" },
-  { num: "33", nombre: "PESCADO", slug: "33-pescado" },
-  { num: "34", nombre: "VENADO", slug: "34-venado" },
-  { num: "35", nombre: "JIRAFA", slug: "35-jirafa" },
-  { num: "36", nombre: "CULEBRA", slug: "36-culebra" }
+const ANIMALITOS_CATALOGO_FALLBACK = [
+  { numero: "0", animal: "DELFÍN", slug: "0-delfin" },
+  { numero: "00", animal: "BALLENA", slug: "00-ballena" },
+  { numero: "01", animal: "CARNERO", slug: "01-carnero" },
+  { numero: "02", animal: "TORO", slug: "02-toro" },
+  { numero: "03", animal: "CIEMPIÉS", slug: "03-ciempies" },
+  { numero: "04", animal: "ALACRÁN", slug: "04-alacran" },
+  { numero: "05", animal: "LEÓN", slug: "05-leon" },
+  { numero: "06", animal: "RANA", slug: "06-rana" },
+  { numero: "07", animal: "PERICO", slug: "07-perico" },
+  { numero: "08", animal: "RATÓN", slug: "08-raton" },
+  { numero: "09", animal: "ÁGUILA", slug: "09-aguila" },
+  { numero: "10", animal: "TIGRE", slug: "10-tigre" },
+  { numero: "11", animal: "GATO", slug: "11-gato" },
+  { numero: "12", animal: "CABALLO", slug: "12-caballo" },
+  { numero: "13", animal: "MONO", slug: "13-mono" },
+  { numero: "14", animal: "PALOMA", slug: "14-paloma" },
+  { numero: "15", animal: "ZORRO", slug: "15-zorro" },
+  { numero: "16", animal: "OSO", slug: "16-oso" },
+  { numero: "17", animal: "PAVO", slug: "17-pavo" },
+  { numero: "18", animal: "BURRO", slug: "18-burro" },
+  { numero: "19", animal: "CHIVO", slug: "19-chivo" },
+  { numero: "20", animal: "COCHINO", slug: "20-cochino" },
+  { numero: "21", animal: "GALLO", slug: "21-gallo" },
+  { numero: "22", animal: "CAMELLO", slug: "22-camello" },
+  { numero: "23", animal: "CEBRA", slug: "23-cebra" },
+  { numero: "24", animal: "IGUANA", slug: "24-iguana" },
+  { numero: "25", animal: "GALLINA", slug: "25-gallina" },
+  { numero: "26", animal: "VACA", slug: "26-vaca" },
+  { numero: "27", animal: "PERRO", slug: "27-perro" },
+  { numero: "28", animal: "ZAMURO", slug: "28-zamuro" },
+  { numero: "29", animal: "ELEFANTE", slug: "29-elefante" },
+  { numero: "30", animal: "CAIMÁN", slug: "30-caiman" },
+  { numero: "31", animal: "LAPA", slug: "31-lapa" },
+  { numero: "32", animal: "ARDILLA", slug: "32-ardilla" },
+  { numero: "33", animal: "PESCADO", slug: "33-pescado" },
+  { numero: "34", animal: "VENADO", slug: "34-venado" },
+  { numero: "35", animal: "JIRAFA", slug: "35-jirafa" },
+  { numero: "36", animal: "CULEBRA", slug: "36-culebra" }
 ];
 
 let loteriasData = [];
@@ -1820,20 +1820,39 @@ function renderLoterias() {
 }
 
 // =========================================================================
-// MÓDULO DE SORTEOS ESPECIALES DE TAQUILLA (CLIENTE + ADMINISTRADOR)
+// MÓDULO DE SORTEOS ESPECIALES DE TAQUILLA (RULETA COMPLETA 36/38/75/100)
 // =========================================================================
-function obtenerImagenAnimalitoParaLoteria(loteriaNombre, numStr, slugFallback) {
+function obtenerCatalogoActivoSorteo(s) {
+  if (s && Array.isArray(s.catalogo) && s.catalogo.length > 0) {
+    return s.catalogo.map(item => ({
+      numero: String(item.numero).trim(),
+      animal: String(item.animal || "").trim().toUpperCase(),
+      img: item.img || "logo.png"
+    }));
+  }
+  return ANIMALITOS_CATALOGO_FALLBACK.map(a => ({
+    numero: a.numero,
+    animal: a.animal,
+    img: obtenerImagenFallbackLocal(s?.loteria, a.numero, a.slug)
+  }));
+}
+
+function obtenerImagenFallbackLocal(loteriaNombre, numStr, slugFallback) {
   const lot = loteriasData.find(l => l.nombre.toUpperCase() === String(loteriaNombre || "").toUpperCase());
   if (lot && Array.isArray(lot.sorteos)) {
-    const match = lot.sorteos.find(s => String(s.numero) === String(numStr) && s.img);
+    const match = lot.sorteos.find(s => String(s.numero) === String(numStr) && s.img && s.img !== "logo.png");
     if (match) return match.img;
-    const baseSample = lot.sorteos.find(s => s.img && s.img.includes("/"));
+    const baseSample = lot.sorteos.find(s => s.img && s.img.includes("/img/"));
     if (baseSample) {
-      const carpeta = baseSample.img.substring(0, baseSample.img.lastIndexOf("/") + 1);
-      return `${carpeta}${slugFallback}.png`;
+      const m = baseSample.img.match(/url=([^&]+)/);
+      if (m) {
+        const decoded = decodeURIComponent(m[1]);
+        const dir = decoded.substring(0, decoded.lastIndexOf("/") + 1);
+        return `${API_BASE}/img-proxy?url=${encodeURIComponent(dir + numStr + ".webp")}&num=${encodeURIComponent(numStr)}`;
+      }
     }
   }
-  return `https://lottoactivo.com/assets/images/animalitos/${slugFallback}.png`;
+  return slugFallback ? `https://lottoactivo.com/assets/images/animalitos/${slugFallback}.png` : "logo.png";
 }
 
 async function cargarEstadoSorteo() {
@@ -1880,7 +1899,7 @@ function renderVistaSorteoCliente() {
         <div style="font-size:42px;margin-bottom:10px;">🎁</div>
         <h3 style="color:var(--gold);font-size:17px;font-weight:900;">Sin Sorteos Especiales Activos Ahora</h3>
         <p style="color:var(--muted);font-size:13px;max-width:420px;margin:8px auto 16px;line-height:1.45;">
-          Cuando activemos un sorteo gratis en taquilla, aparecerá aquí el tablero completo del 0 al 36 para que elijas tu animalito y ganes saldo al instante.
+          Cuando activemos un sorteo gratis en taquilla, aparecerá aquí la ruleta completa de la lotería seleccionada para que elijas tu animalito y ganes saldo al instante.
         </p>
         <button class="pill green" onclick="switchTab('jugar', document.querySelectorAll('nav.tabs button')[4])">💬 Ir a Jugar en Taquilla</button>
       </div>
@@ -1889,16 +1908,17 @@ function renderVistaSorteoCliente() {
   }
 
   const s = sorteoActivoData;
+  const catalogoRuleta = obtenerCatalogoActivoSorteo(s);
   const premioFmt = Number(s.premioTotal || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
   const tipoTxt = s.tipoPremio === "retirable" ? "Saldo Retirable" : "Saldo Promo / Bot";
 
   // Combinar salidosHoy del backend + los de loteriasData en pantalla
-  const salidosSet = new Set((s.salidosHoy || []).map(x => String(x.numero)));
+  const salidosSet = new Set((s.salidosHoy || []).map(x => String(x.numero).trim()));
   const lotLocal = loteriasData.find(l => l.nombre.toUpperCase() === String(s.loteria).toUpperCase());
   if (lotLocal && Array.isArray(lotLocal.sorteos)) {
     lotLocal.sorteos.forEach(item => {
       if (item.numero && item.numero !== "--" && item.animal !== "PENDIENTE") {
-        salidosSet.add(String(item.numero));
+        salidosSet.add(String(item.numero).trim());
       }
     });
   }
@@ -1939,17 +1959,16 @@ function renderVistaSorteoCliente() {
     }
   }
 
-  const tilesHtml = ANIMALITOS_CATALOGO.map(a => {
-    const yaSalio = salidosSet.has(a.num);
-    const votos = conteoVotos[a.num] || 0;
-    const imgUrl = obtenerImagenAnimalitoParaLoteria(s.loteria, a.num, a.slug);
-    const clickAttr = (!yaSalio && !s.votosCerrados) ? `onclick="abrirModalParticiparSorteo('${a.num}')"` : "";
+  const tilesHtml = catalogoRuleta.map(a => {
+    const yaSalio = salidosSet.has(a.numero);
+    const votos = conteoVotos[a.numero] || 0;
+    const clickAttr = (!yaSalio && !s.votosCerrados) ? `onclick="abrirModalParticiparSorteo('${a.numero}')"` : "";
     return `
       <div class="ani-tile ${yaSalio ? "salio" : ""}" ${clickAttr}>
         ${votos > 0 ? `<span class="ani-tile-votes">${votos} 👤</span>` : ""}
-        <img src="${imgUrl}" onerror="this.onerror=null;this.src='logo.png';" alt="${a.nombre}" />
-        <div class="ani-tile-num">${a.num}</div>
-        <div class="ani-tile-name">${a.nombre}</div>
+        <img src="${a.img}" loading="lazy" onerror="this.onerror=null;this.src='logo.png';" alt="${a.animal}" />
+        <div class="ani-tile-num">${a.numero}</div>
+        <div class="ani-tile-name">${a.animal}</div>
         <div class="ani-tile-tag">${yaSalio ? "✖ YA SALIÓ" : "DISPONIBLE"}</div>
       </div>
     `;
@@ -1960,7 +1979,7 @@ function renderVistaSorteoCliente() {
       <div class="sorteo-hero-top">
         <div>
           <div style="font-size:11px;font-weight:900;color:var(--gold);text-transform:uppercase;">📣 ${s.titulo}</div>
-          <div class="sorteo-lot-pill">🎰 ${s.loteria} • 🕒 SORTEO ${s.horaSorteoLabel}</div>
+          <div class="sorteo-lot-pill">🎰 ${s.loteria} (${catalogoRuleta.length} fichas) • 🕒 SORTEO ${s.horaSorteoLabel}</div>
         </div>
         <span class="sorteo-status-badge ${s.votosCerrados ? "closed" : ""}">${s.votosCerrados ? "🔒 VOTACIONES CERRADAS" : "🟢 ACTIVA"}</span>
       </div>
@@ -1995,20 +2014,21 @@ function abrirModalParticiparSorteo(numPreseleccionado = "") {
   if (sorteoActivoData.votosCerrados) return alert("Las votaciones para este sorteo ya cerraron.");
 
   const s = sorteoActivoData;
-  const salidosSet = new Set((s.salidosHoy || []).map(x => String(x.numero)));
+  const catalogoRuleta = obtenerCatalogoActivoSorteo(s);
+  const salidosSet = new Set((s.salidosHoy || []).map(x => String(x.numero).trim()));
   const lotLocal = loteriasData.find(l => l.nombre.toUpperCase() === String(s.loteria).toUpperCase());
   if (lotLocal && Array.isArray(lotLocal.sorteos)) {
     lotLocal.sorteos.forEach(item => {
       if (item.numero && item.numero !== "--" && item.animal !== "PENDIENTE") {
-        salidosSet.add(String(item.numero));
+        salidosSet.add(String(item.numero).trim());
       }
     });
   }
 
-  const disponibles = ANIMALITOS_CATALOGO.filter(a => !salidosSet.has(a.num));
+  const disponibles = catalogoRuleta.filter(a => !salidosSet.has(a.numero));
   const sel = document.getElementById("selSorteoAnimalito");
   sel.innerHTML = `<option value="">-- Selecciona tu animalito --</option>` +
-    disponibles.map(a => `<option value="${a.num}|${a.nombre}" ${a.num === numPreseleccionado ? "selected" : ""}>${a.num} - ${a.nombre}</option>`).join("");
+    disponibles.map(a => `<option value="${a.numero}|${a.animal}" ${a.numero === numPreseleccionado ? "selected" : ""}>${a.numero} - ${a.animal}</option>`).join("");
 
   const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
   if (ses?.role === "client") {
