@@ -395,7 +395,7 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    border: 2px solid rgba(239, 68, 68, 0.65);
+    border: 2px solid rgba(245, 185, 66, 0.65);
     object-fit: cover;
     background: #0b141a;
     margin-bottom: 4px;
@@ -1403,4 +1403,2115 @@
         </div>
         <div class="fin-bar" id="adminFinBar" style="display:none;">
           <span id="lblAdminFinStats" style="color:#fff;font-weight:700;"></span>
-          <button id="btnAdminBono1000" class
+          <button id="btnAdminBono1000" class="btn-bono-admin" style="display:none;" onclick="accionFinanciera('bono_bienvenida')">🎁 Bono 1.000 Bs.</button>
+          <button onclick="accionFinanciera('aprobar_deposito')">+ Depósito</button>
+          <button onclick="accionFinanciera('jugada')">- Jugada</button>
+          <button onclick="accionFinanciera('premio')">+ Premio</button>
+          <button onclick="accionFinanciera('retiro')">- Retiro</button>
+          <button onclick="accionFinanciera('cashea_sumar')">+ Promo</button>
+          <button onclick="accionFinanciera('enviar_estado')">📊 Estado</button>
+        </div>
+        <div id="adminMessages" class="messages-area"></div>
+        <div class="chat-input-bar">
+          <input type="text" id="txtAdminMsg" placeholder="Responder al cliente..." autocomplete="off" onkeydown="if(event.key==='Enter') enviarMensajeAdmin()" />
+          <button class="icon-btn send" onclick="enviarMensajeAdmin()">➤</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- MODAL PARTICIPAR EN EL SORTEO (CLIENTE) -->
+<div id="modalParticiparSorteo" class="modal-bg" onclick="if(event.target===this) this.style.display='none'">
+  <div class="modal-card" style="max-width:430px;">
+    <div class="modal-head">
+      <span>🎯 Participar en el Sorteo</span>
+      <button class="pill red" onclick="document.getElementById('modalParticiparSorteo').style.display='none'">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="resumenSorteoModal" style="background:var(--panel2);border:1px solid rgba(245,185,66,.4);border-radius:12px;padding:10px;font-size:12px;"></div>
+
+      <div>
+        <div class="field-label-row"><label>Teléfono registrado en la app</label><span>1 voto por teléfono</span></div>
+        <div class="input-icon-box" style="margin-bottom:0;">
+          <span>📱</span>
+          <input type="tel" id="inpSorteoTelefono" placeholder="Ej: 04121234567" maxlength="11" />
+        </div>
+      </div>
+
+      <div>
+        <div class="field-label-row"><label>Tu Nombre</label></div>
+        <div class="input-icon-box" style="margin-bottom:0;">
+          <span>👤</span>
+          <input type="text" id="inpSorteoNombre" placeholder="Ej: Carlos Pérez" />
+        </div>
+      </div>
+
+      <div>
+        <div class="field-label-row"><label>Animalito que vas a elegir</label><span>Solo disponibles</span></div>
+        <div class="input-icon-box" style="margin-bottom:0;">
+          <span>🦁</span>
+          <select id="selSorteoAnimalito"></select>
+        </div>
+      </div>
+
+      <button class="btn-direct-chat" style="background:linear-gradient(90deg,#16a34a,#22c55e);color:#041b15;margin-top:4px;" onclick="enviarVotoSorteo()">✅ CONFIRMAR MI ANIMALITO</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONFIGURAR SORTEO (ADMINISTRADOR) -->
+<div id="modalAdminSorteo" class="modal-bg" onclick="if(event.target===this) this.style.display='none'">
+  <div class="modal-card" style="max-width:620px;">
+    <div class="modal-head">
+      <span>🎁 Gestión de Sorteos Especiales • Taquilla</span>
+      <button class="pill red" onclick="document.getElementById('modalAdminSorteo').style.display='none'">Cerrar</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="grid-column:1/-1;">
+          <div class="field-label-row"><label>Título del Sorteo (Editable)</label></div>
+          <div class="input-icon-box" style="margin-bottom:0;">
+            <span>📣</span>
+            <input type="text" id="admSorteoTitulo" placeholder="Ej: ¡ADIVINA EL ANIMALITO DE LAS 5 PM!" />
+          </div>
+        </div>
+
+        <div>
+          <div class="field-label-row"><label>Lotería</label></div>
+          <div class="input-icon-box" style="margin-bottom:0;">
+            <span>🎰</span>
+            <select id="admSorteoLoteria"></select>
+          </div>
+        </div>
+
+        <div>
+          <div class="field-label-row"><label>Hora Exacta del Sorteo</label></div>
+          <div class="input-icon-box" style="margin-bottom:0;">
+            <span>🕒</span>
+            <input type="time" id="admSorteoHora" value="17:00" style="color-scheme:dark;" />
+          </div>
+        </div>
+
+        <div>
+          <div class="field-label-row"><label>Cierre de Votos</label><span>Opcional</span></div>
+          <div class="input-icon-box" style="margin-bottom:0;">
+            <span>⏳</span>
+            <input type="time" id="admSorteoCierre" value="16:55" style="color-scheme:dark;" />
+          </div>
+        </div>
+
+        <div>
+          <div class="field-label-row"><label>Premio Total a Repartir (Bs.)</label></div>
+          <div class="input-icon-box" style="margin-bottom:0;">
+            <span>💰</span>
+            <input type="number" id="admSorteoPremio" value="1000" min="1" step="1" />
+          </div>
+        </div>
+
+        <div style="grid-column:1/-1;">
+          <div class="field-label-row"><label>Tipo de Acreditación</label></div>
+          <div class="input-icon-box" style="margin-bottom:0;">
+            <span>🏦</span>
+            <select id="admSorteoTipoPremio">
+              <option value="promo">Saldo Promo / Bot (Para jugar en taquilla)</option>
+              <option value="retirable">Saldo Retirable (Bs.)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+        <button class="btn-direct-chat" style="flex:1;background:linear-gradient(90deg,#16a34a,#22c55e);color:#041b15;" onclick="guardarActivarSorteoAdmin()">🚀 ACTIVAR SORTEO AHORA</button>
+        <button class="pill gold" style="padding:10px 14px;" onclick="accionAdminSorteo('cerrar_votos')">🔒 Cerrar Votos</button>
+        <button class="pill red" style="padding:10px 14px;" onclick="accionAdminSorteo('desactivar')">🗑️ Finalizar / Ocultar</button>
+      </div>
+
+      <div id="admSorteoEstadoVivo" style="margin-top:8px;border-top:1px solid var(--border);padding-top:10px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ASISTENTE DE REGISTRO TIPO CHAT -->
+<div id="modalAsistente" class="modal-bg" onclick="if(event.target===this) cerrarAsistenteRegistro()">
+  <div class="wizard-card">
+    <div class="wizard-head">
+      <div style="display:flex;align-items:center;gap:9px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;font-size:18px;">💎</div>
+        <div>
+          <div style="font-size:13px;font-weight:900;color:#fff;">Asistente Harold José <span style="background:rgba(37,99,235,.3);color:#93c5fd;font-size:9px;padding:2px 6px;border-radius:999px;">OFICIAL</span></div>
+          <div style="font-size:10.5px;color:#60a5fa;font-weight:700;">Verificación Segura vía Telegram</div>
+        </div>
+      </div>
+      <button class="pill" onclick="cerrarAsistenteRegistro()">✕</button>
+    </div>
+    <div class="wizard-body" id="wizMessages"></div>
+    <div class="wiz-footer" id="wizFooter"></div>
+  </div>
+</div>
+
+<!-- MODAL HISTORIAL DE PAGOS -->
+<div id="modalPagos" class="modal-bg" onclick="if(event.target===this) this.style.display='none'">
+  <div class="modal-card">
+    <div class="modal-head">
+      <span>📒 Historial Global de Comprobantes Aprobados</span>
+      <button class="pill red" onclick="document.getElementById('modalPagos').style.display='none'">Cerrar</button>
+    </div>
+    <div style="padding:10px 12px;border-bottom:1px solid var(--border);">
+      <input type="search" id="inpBuscarRef" placeholder="🔍 Filtrar por referencia, cliente o teléfono..." oninput="filtrarHistorialPagos()" style="width:100%;background:var(--panel2);border:1px solid var(--border);color:#fff;padding:8px 10px;border-radius:8px;" />
+    </div>
+    <div class="modal-body" id="listaHistorialPagos"></div>
+  </div>
+</div>
+
+<script>
+const API_BASE = "https://api-resultados-harold.agharoldjose.workers.dev";
+const BOT_USERNAME = "AgenciaHaroldRegistroBot";
+const ROLLERCOIN_REF = "https://rollercoin.com/?r=kqmow2ag";
+
+const ANIMALITOS_CATALOGO_FALLBACK = [
+  { numero: "0", animal: "DELFÍN", slug: "0-delfin" },
+  { numero: "00", animal: "BALLENA", slug: "00-ballena" },
+  { numero: "01", animal: "CARNERO", slug: "01-carnero" },
+  { numero: "02", animal: "TORO", slug: "02-toro" },
+  { numero: "03", animal: "CIEMPIÉS", slug: "03-ciempies" },
+  { numero: "04", animal: "ALACRÁN", slug: "04-alacran" },
+  { numero: "05", animal: "LEÓN", slug: "05-leon" },
+  { numero: "06", animal: "RANA", slug: "06-rana" },
+  { numero: "07", animal: "PERICO", slug: "07-perico" },
+  { numero: "08", animal: "RATÓN", slug: "08-raton" },
+  { numero: "09", animal: "ÁGUILA", slug: "09-aguila" },
+  { numero: "10", animal: "TIGRE", slug: "10-tigre" },
+  { numero: "11", animal: "GATO", slug: "11-gato" },
+  { numero: "12", animal: "CABALLO", slug: "12-caballo" },
+  { numero: "13", animal: "MONO", slug: "13-mono" },
+  { numero: "14", animal: "PALOMA", slug: "14-paloma" },
+  { numero: "15", animal: "ZORRO", slug: "15-zorro" },
+  { numero: "16", animal: "OSO", slug: "16-oso" },
+  { numero: "17", animal: "PAVO", slug: "17-pavo" },
+  { numero: "18", animal: "BURRO", slug: "18-burro" },
+  { numero: "19", animal: "CHIVO", slug: "19-chivo" },
+  { numero: "20", animal: "COCHINO", slug: "20-cochino" },
+  { numero: "21", animal: "GALLO", slug: "21-gallo" },
+  { numero: "22", animal: "CAMELLO", slug: "22-camello" },
+  { numero: "23", animal: "CEBRA", slug: "23-cebra" },
+  { numero: "24", animal: "IGUANA", slug: "24-iguana" },
+  { numero: "25", animal: "GALLINA", slug: "25-gallina" },
+  { numero: "26", animal: "VACA", slug: "26-vaca" },
+  { numero: "27", animal: "PERRO", slug: "27-perro" },
+  { numero: "28", animal: "ZAMURO", slug: "28-zamuro" },
+  { numero: "29", animal: "ELEFANTE", slug: "29-elefante" },
+  { numero: "30", animal: "CAIMÁN", slug: "30-caiman" },
+  { numero: "31", animal: "LAPA", slug: "31-lapa" },
+  { numero: "32", animal: "ARDILLA", slug: "32-ardilla" },
+  { numero: "33", animal: "PESCADO", slug: "33-pescado" },
+  { numero: "34", animal: "VENADO", slug: "34-venado" },
+  { numero: "35", animal: "JIRAFA", slug: "35-jirafa" },
+  { numero: "36", animal: "CULEBRA", slug: "36-culebra" }
+];
+
+let loteriasData = [];
+let sorteoActivoData = null;
+let gacetaActualLoteria = "LOTTO ACTIVO";
+let gacetaActualData = null;
+let fechaSeleccionadaISO = "";
+let soundOn = true;
+let pollTimer = null;
+let toquesLogoAdmin = 0;
+let timerToquesAdmin = null;
+let historialPagosCache = [];
+let ultimoConteoCliente = -1;
+let ultimoConteoAdmin = -1;
+let deferredInstallPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+});
+
+function instalarAccesoDirecto() {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt = null;
+  } else {
+    alert("Para instalar Centro de Apuestas Harold José en tu teléfono:\n\n1. Toca los 3 puntos (⋮) arriba a la derecha en Chrome.\n2. Selecciona 'Agregar a la pantalla principal' o 'Instalar aplicación'.");
+  }
+}
+
+function registrarToqueAdmin() {
+  toquesLogoAdmin++;
+  clearTimeout(timerToquesAdmin);
+  timerToquesAdmin = setTimeout(() => { toquesLogoAdmin = 0; }, 2500);
+  if (toquesLogoAdmin >= 5) {
+    toquesLogoAdmin = 0;
+    const btnJugar = document.getElementById("btnTabJugar") || document.querySelectorAll("nav.tabs button")[4];
+    switchTab("jugar", btnJugar);
+    const box = document.getElementById("secretAdminBox");
+    if (box) {
+      box.style.display = "block";
+      document.getElementById("inpAdminPass")?.focus();
+    }
+  }
+}
+
+function getHoyVenezuelaISO() {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Caracas",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date());
+  const y = parts.find(p => p.type === "year")?.value || "2026";
+  const m = parts.find(p => p.type === "month")?.value || "11";
+  const d = parts.find(p => p.type === "day")?.value || "25";
+  return `${y}-${m}-${d}`;
+}
+
+function formatearFechaLargaES(iso) {
+  try {
+    const [y, m, d] = (iso || getHoyVenezuelaISO()).split("-").map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+    return dt.toLocaleDateString("es-VE", {
+      timeZone: "America/Caracas",
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+  } catch (e) {
+    return iso;
+  }
+}
+
+function formatearHora12(hora24) {
+  if (!hora24 || !hora24.includes(":")) return hora24 || "";
+  const [hh, mm] = hora24.split(":").map(Number);
+  const ampm = hh >= 12 ? "PM" : "AM";
+  const h12 = hh % 12 === 0 ? 12 : hh % 12;
+  return `${String(h12).padStart(2, "0")}:${String(mm).padStart(2, "0")} ${ampm}`;
+}
+
+function getDeviceId() {
+  let id = localStorage.getItem("hj_device_id");
+  if (!id) {
+    id = "dev_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem("hj_device_id", id);
+  }
+  return id;
+}
+
+function bajarAlFinalChat(container) {
+  if (!container) return;
+  const mover = () => { container.scrollTop = container.scrollHeight; };
+  mover();
+  requestAnimationFrame(mover);
+  setTimeout(mover, 120);
+  setTimeout(mover, 380);
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById("btnSound").textContent = soundOn ? "🔔 Sonido ON" : "🔕 Sonido OFF";
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll("nav.tabs button").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  document.querySelectorAll("main .view").forEach(v => v.classList.remove("active"));
+  document.getElementById("tab-" + tab).classList.add("active");
+  if (tab === "promos") cargarFlyers();
+  if (tab === "datos") cargarGacetaWinbig(gacetaActualLoteria);
+  if (tab === "sorteos") cargarEstadoSorteo();
+  if (tab === "jugar") {
+    bajarAlFinalChat(document.getElementById("clientMessages"));
+    bajarAlFinalChat(document.getElementById("adminMessages"));
+  }
+}
+
+function irAFecha() {
+  const inp = document.getElementById("inpFechaResultados");
+  if (!inp || !inp.value) return;
+  fechaSeleccionadaISO = inp.value;
+  cargarResultados();
+  if (document.getElementById("tab-datos")?.classList.contains("active")) {
+    cargarGacetaWinbig(gacetaActualLoteria);
+  }
+}
+
+async function cargarResultados() {
+  const hoyISO = getHoyVenezuelaISO();
+  const fechaUse = fechaSeleccionadaISO || hoyISO;
+  try {
+    const url = fechaUse && fechaUse !== hoyISO
+      ? `${API_BASE}/?fecha=${encodeURIComponent(fechaUse)}`
+      : `${API_BASE}/`;
+    const r = await fetch(url);
+    const d = await r.json();
+    if (d.ok && Array.isArray(d.loterias)) {
+      loteriasData = d.loterias;
+      const tagHist = d.desdeHistorial ? ` (${fechaUse})` : "";
+      document.getElementById("badgeCount").textContent = `• ${loteriasData.length} LOTERÍAS${tagHist}`;
+      renderTicker();
+      renderLoterias();
+      if (sorteoActivoData) renderVistaSorteoCliente();
+    }
+  } catch (e) {}
+}
+
+function renderTicker() {
+  const track = document.getElementById("tickerTrack");
+  if (!track) return;
+  const ultimos = [];
+  for (const lot of loteriasData) {
+    const salidos = (lot.sorteos || []).filter(s => s.animal && s.animal !== "PENDIENTE" && s.numero !== "--");
+    if (salidos.length > 0) {
+      const ultimo = salidos[salidos.length - 1];
+      ultimos.push({
+        loteria: lot.nombre,
+        numero: ultimo.numero,
+        animal: ultimo.animal,
+        hora: ultimo.hora,
+        img: ultimo.img
+      });
+    }
+  }
+  if (ultimos.length === 0) {
+    track.innerHTML = `<span style="font-size:12px;color:var(--muted);">Esperando primeros resultados oficiales del día...</span>`;
+    return;
+  }
+  const itemsHtml = ultimos.slice(0, 18).map(u => `
+    <div class="ticker-item">
+      <img src="${u.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${u.animal}" />
+      <span class="ticker-lot">${u.loteria}:</span>
+      <span class="ticker-res">${u.numero} - ${u.animal}</span>
+      <span class="ticker-hr">${u.hora}</span>
+    </div>
+  `).join("");
+  track.innerHTML = itemsHtml + itemsHtml;
+}
+
+function renderLoterias() {
+  const inp = document.getElementById("searchLoteria");
+  const q = (inp ? inp.value : "").toLowerCase().trim();
+  const grid = document.getElementById("gridLoterias");
+  const filtradas = q ? loteriasData.filter(l => l.nombre.toLowerCase().includes(q)) : loteriasData;
+
+  grid.innerHTML = filtradas.map(lot => `
+    <div class="card-loteria">
+      <div class="card-loteria-head">
+        <h3>${lot.nombre}</h3>
+        <span class="badge-activa">• ACTIVA</span>
+      </div>
+      <div class="sorteos-grid">
+        ${lot.sorteos.map(s => {
+          const pend = s.animal === "PENDIENTE" || s.numero === "--";
+          return `
+            <div class="sorteo-item">
+              ${!pend ? `<span class="sorteo-num-badge">${s.numero}</span>` : ""}
+              <img src="${s.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${s.animal}" />
+              <div class="sorteo-hora">${s.hora}</div>
+              <div class="sorteo-ani ${pend ? "pendiente" : ""}">${pend ? "POR SALIR" : `${s.numero} - ${s.animal}`}</div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+  `).join("");
+}
+
+// =========================================================================
+// MÓDULO DE SORTEOS ESPECIALES DE TAQUILLA (RULETA COMPLETA 36/38/75/100)
+// =========================================================================
+function obtenerCatalogoActivoSorteo(s) {
+  if (s && Array.isArray(s.catalogo) && s.catalogo.length > 0) {
+    return s.catalogo.map(item => ({
+      numero: String(item.numero).trim(),
+      animal: String(item.animal || "").trim().toUpperCase(),
+      img: item.img || "logo.png"
+    }));
+  }
+  return ANIMALITOS_CATALOGO_FALLBACK.map(a => ({
+    numero: a.numero,
+    animal: a.animal,
+    img: obtenerImagenFallbackLocal(s?.loteria, a.numero, a.slug)
+  }));
+}
+
+function obtenerImagenFallbackLocal(loteriaNombre, numStr, slugFallback) {
+  const lot = loteriasData.find(l => l.nombre.toUpperCase() === String(loteriaNombre || "").toUpperCase());
+  if (lot && Array.isArray(lot.sorteos)) {
+    const match = lot.sorteos.find(s => String(s.numero) === String(numStr) && s.img && s.img !== "logo.png");
+    if (match) return match.img;
+    const baseSample = lot.sorteos.find(s => s.img && s.img.includes("/img/"));
+    if (baseSample) {
+      const m = baseSample.img.match(/url=([^&]+)/);
+      if (m) {
+        const decoded = decodeURIComponent(m[1]);
+        const dir = decoded.substring(0, decoded.lastIndexOf("/") + 1);
+        return `${API_BASE}/img-proxy?url=${encodeURIComponent(dir + numStr + ".webp")}&num=${encodeURIComponent(numStr)}`;
+      }
+    }
+  }
+  return slugFallback ? `https://lottoactivo.com/assets/images/animalitos/${slugFallback}.png` : "logo.png";
+}
+
+async function cargarEstadoSorteo() {
+  try {
+    const r = await fetch(`${API_BASE}/sorteo/estado`);
+    const d = await r.json();
+    const banner = document.getElementById("sorteoFloatBanner");
+    const dot = document.getElementById("dotSorteoLive");
+
+    if (!d.ok || !d.activo || !d.sorteo) {
+      sorteoActivoData = null;
+      if (banner) banner.style.display = "none";
+      if (dot) dot.style.display = "none";
+      renderVistaSorteoCliente();
+      return;
+    }
+
+    sorteoActivoData = d.sorteo;
+    if (dot) dot.style.display = "inline-block";
+
+    const premioFmt = Number(sorteoActivoData.premioTotal || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
+    if (banner && !sorteoActivoData.votosCerrados) {
+      document.getElementById("floatSorteoTitulo").textContent = `¡${sorteoActivoData.titulo}!`;
+      document.getElementById("floatSorteoSub").textContent = `${sorteoActivoData.loteria} (${sorteoActivoData.horaSorteoLabel}) • Bolsa Bs. ${premioFmt}`;
+      banner.style.display = "flex";
+    } else if (banner) {
+      banner.style.display = "none";
+    }
+
+    renderVistaSorteoCliente();
+    if (document.getElementById("modalAdminSorteo")?.style.display === "flex") {
+      renderEstadoAdminSorteo();
+    }
+  } catch (e) {}
+}
+
+function renderVistaSorteoCliente() {
+  const cont = document.getElementById("sorteoClienteContainer");
+  if (!cont) return;
+
+  if (!sorteoActivoData) {
+    cont.innerHTML = `
+      <div style="text-align:center;padding:34px 14px;">
+        <div style="font-size:42px;margin-bottom:10px;">🎁</div>
+        <h3 style="color:var(--gold);font-size:17px;font-weight:900;">Sin Sorteos Especiales Activos Ahora</h3>
+        <p style="color:var(--muted);font-size:13px;max-width:420px;margin:8px auto 16px;line-height:1.45;">
+          Cuando activemos un sorteo gratis en taquilla, aparecerá aquí la ruleta completa de la lotería seleccionada para que elijas tu animalito y ganes saldo al instante.
+        </p>
+        <button class="pill green" onclick="switchTab('jugar', document.querySelectorAll('nav.tabs button')[4])">💬 Ir a Jugar en Taquilla</button>
+      </div>
+    `;
+    return;
+  }
+
+  const s = sorteoActivoData;
+  const catalogoRuleta = obtenerCatalogoActivoSorteo(s);
+  const premioFmt = Number(s.premioTotal || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
+  const tipoTxt = s.tipoPremio === "retirable" ? "Saldo Retirable" : "Saldo Promo / Bot";
+
+  const salidosSet = new Set((s.salidosHoy || []).map(x => String(x.numero).trim()));
+  const lotLocal = loteriasData.find(l => l.nombre.toUpperCase() === String(s.loteria).toUpperCase());
+  if (lotLocal && Array.isArray(lotLocal.sorteos)) {
+    lotLocal.sorteos.forEach(item => {
+      if (item.numero && item.numero !== "--" && item.animal !== "PENDIENTE") {
+        salidosSet.add(String(item.numero).trim());
+      }
+    });
+  }
+
+  const conteoVotos = {};
+  (s.participantes || []).forEach(p => {
+    conteoVotos[p.numero] = (conteoVotos[p.numero] || 0) + 1;
+  });
+
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  const miVoto = ses?.telefono ? (s.participantes || []).find(p => p.telefono === ses.telefono) : null;
+
+  let ganadorBannerHtml = "";
+  if (s.resultadoHoraObjetivo) {
+    const rObj = s.resultadoHoraObjetivo;
+    const gList = s.ganadores || [];
+    if (gList.length > 0) {
+      const tocaFmt = Number(s.premioPorGanador || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
+      ganadorBannerHtml = `
+        <div style="margin-top:12px;background:rgba(34,197,94,.16);border:1.5px solid #22c55e;border-radius:12px;padding:11px 12px;">
+          <div style="font-size:12px;font-weight:900;color:#4ade80;">🏆 RESULTADO OFICIAL (${s.horaSorteoLabel}): ${rObj.numero} - ${rObj.animal}</div>
+          <div style="font-size:12.5px;color:#fff;margin-top:4px;">
+            ¡Tenemos <strong>${gList.length} ganador(es)</strong>! A cada uno le corresponde <strong>Bs. ${tocaFmt}</strong>:
+          </div>
+          <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;">
+            ${gList.map(g => `<span class="pill green">🎉 ${g.nombre} (${g.telefono.slice(0,4)}***${g.telefono.slice(-3)})</span>`).join("")}
+          </div>
+        </div>
+      `;
+    } else {
+      ganadorBannerHtml = `
+        <div style="margin-top:12px;background:rgba(245,158,11,.14);border:1px solid #f59e0b;border-radius:12px;padding:10px 12px;font-size:12px;color:#fde047;">
+          🕒 Resultado oficial de las <strong>${s.horaSorteoLabel}</strong>: <strong>${rObj.numero} - ${rObj.animal}</strong>. Nadie eligió este animalito en esta ronda.
+        </div>
+      `;
+    }
+  }
+
+  const tilesHtml = catalogoRuleta.map(a => {
+    const yaSalio = salidosSet.has(a.numero);
+    const votos = conteoVotos[a.numero] || 0;
+    const clickAttr = (!yaSalio && !s.votosCerrados) ? `onclick="abrirModalParticiparSorteo('${a.numero}')"` : "";
+    return `
+      <div class="ani-tile ${yaSalio ? "salio" : ""}" ${clickAttr}>
+        ${votos > 0 ? `<span class="ani-tile-votes">${votos} 👤</span>` : ""}
+        <img src="${a.img}" loading="lazy" onerror="this.onerror=null;this.src='logo.png';" alt="${a.animal}" />
+        <div class="ani-tile-num">${a.numero}</div>
+        <div class="ani-tile-name">${a.animal}</div>
+        <div class="ani-tile-tag">${yaSalio ? "✖ YA SALIÓ" : "DISPONIBLE"}</div>
+      </div>
+    `;
+  }).join("");
+
+  cont.innerHTML = `
+    <div class="sorteo-hero-card">
+      <div class="sorteo-hero-top">
+        <div>
+          <div style="font-size:11px;font-weight:900;color:var(--gold);text-transform:uppercase;">📣 ${s.titulo}</div>
+          <div class="sorteo-lot-pill">🎰 ${s.loteria} (${catalogoRuleta.length} fichas) • 🕒 SORTEO ${s.horaSorteoLabel}</div>
+        </div>
+        <span class="sorteo-status-badge ${s.votosCerrados ? "closed" : ""}">${s.votosCerrados ? "🔒 VOTACIONES CERRADAS" : "🟢 ACTIVA"}</span>
+      </div>
+
+      <div class="sorteo-premio-row">
+        <div>
+          <div style="font-size:11px;color:var(--muted);font-weight:700;">Premio a ${tipoTxt} (Bolsa a repartir):</div>
+          <div class="sorteo-premio-val">Bs. ${premioFmt}</div>
+          <div style="font-size:11px;color:#93c5fd;margin-top:2px;">⏳ Cierre de votos: <strong>${s.horaCierreLabel}</strong> • 👥 Participantes: <strong>${s.totalParticipantes}</strong></div>
+        </div>
+        ${!s.votosCerrados ? `<button class="btn-participar-pill" onclick="abrirModalParticiparSorteo()">🎯 ELEGIR MI ANIMALITO</button>` : ""}
+      </div>
+
+      ${miVoto ? `
+        <div style="margin-top:10px;background:rgba(37,99,235,.2);border:1px solid #60a5fa;border-radius:10px;padding:8px 11px;font-size:12px;color:#bfdbfe;">
+          ✅ <strong>Tu participación registrada:</strong> Elegiste el <strong>${miVoto.numero} - ${miVoto.animal}</strong> (${miVoto.nombre}).
+        </div>
+      ` : ""}
+
+      ${ganadorBannerHtml}
+    </div>
+
+    <div style="font-size:12.5px;color:var(--text);font-weight:700;margin-bottom:4px;">
+      🎯 Toca un animalito <strong>DISPONIBLE</strong> para participar (1 solo voto por teléfono registrado):
+    </div>
+    <div class="animalitos-board">${tilesHtml}</div>
+  `;
+}
+
+function abrirModalParticiparSorteo(numPreseleccionado = "") {
+  if (!sorteoActivoData) return alert("No hay un sorteo activo en este momento.");
+  if (sorteoActivoData.votosCerrados) return alert("Las votaciones para este sorteo ya cerraron.");
+
+  const s = sorteoActivoData;
+  const catalogoRuleta = obtenerCatalogoActivoSorteo(s);
+  const salidosSet = new Set((s.salidosHoy || []).map(x => String(x.numero).trim()));
+  const lotLocal = loteriasData.find(l => l.nombre.toUpperCase() === String(s.loteria).toUpperCase());
+  if (lotLocal && Array.isArray(lotLocal.sorteos)) {
+    lotLocal.sorteos.forEach(item => {
+      if (item.numero && item.numero !== "--" && item.animal !== "PENDIENTE") {
+        salidosSet.add(String(item.numero).trim());
+      }
+    });
+  }
+
+  const disponibles = catalogoRuleta.filter(a => !salidosSet.has(a.numero));
+  const sel = document.getElementById("selSorteoAnimalito");
+  sel.innerHTML = `<option value="">-- Selecciona tu animalito --</option>` +
+    disponibles.map(a => `<option value="${a.numero}|${a.animal}" ${a.numero === numPreseleccionado ? "selected" : ""}>${a.numero} - ${a.animal}</option>`).join("");
+
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (ses?.role === "client") {
+    document.getElementById("inpSorteoTelefono").value = ses.telefono || "";
+    document.getElementById("inpSorteoNombre").value = ses.nombre || "";
+  }
+
+  const premioFmt = Number(s.premioTotal || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
+  document.getElementById("resumenSorteoModal").innerHTML = `
+    <div style="font-weight:900;color:var(--gold);">${s.titulo}</div>
+    <div style="margin-top:3px;">🎰 <strong>${s.loteria}</strong> • 🕒 Hora sorteo: <strong>${s.horaSorteoLabel}</strong></div>
+    <div>💰 Bolsa a repartir: <strong>Bs. ${premioFmt}</strong></div>
+  `;
+
+  document.getElementById("modalParticiparSorteo").style.display = "flex";
+}
+
+async function enviarVotoSorteo() {
+  const telefono = (document.getElementById("inpSorteoTelefono")?.value || "").replace(/\D/g, "");
+  const nombre = (document.getElementById("inpSorteoNombre")?.value || "").trim();
+  const valSel = document.getElementById("selSorteoAnimalito")?.value || "";
+
+  if (!/^0(412|422|414|424|416|426)\d{7}$/.test(telefono)) {
+    return alert("Ingresa tu número de teléfono venezolano registrado (11 dígitos, ej: 04121234567).");
+  }
+  if (nombre.length < 2) {
+    return alert("Escribe tu nombre.");
+  }
+  if (!valSel) {
+    return alert("Selecciona el animalito con el que vas a participar.");
+  }
+
+  const [numero, animal] = valSel.split("|");
+  try {
+    const r = await fetch(`${API_BASE}/sorteo/participar`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telefono, nombre, numero, animal })
+    });
+    const d = await r.json();
+    if (!d.ok) {
+      if (d.noRegistrado) {
+        if (confirm(d.error + "\n\n¿Quieres ir a registrarte ahora en 1 minuto?")) {
+          document.getElementById("modalParticiparSorteo").style.display = "none";
+          switchTab("jugar", document.querySelectorAll("nav.tabs button")[4]);
+          abrirAsistenteRegistro();
+        }
+        return;
+      }
+      return alert(d.error || "No se pudo registrar tu voto.");
+    }
+
+    alert(d.mensaje || "¡Participación registrada con éxito!");
+    document.getElementById("modalParticiparSorteo").style.display = "none";
+    await cargarEstadoSorteo();
+    switchTab("sorteos", document.getElementById("btnTabSorteos"));
+  } catch (e) {
+    alert("Error de conexión con la taquilla.");
+  }
+}
+
+function abrirModalAdminSorteo() {
+  const selLot = document.getElementById("admSorteoLoteria");
+  const listaLots = loteriasData.length > 0
+    ? loteriasData.map(l => l.nombre)
+    : Array.from(document.querySelectorAll("#gacetaChips .gaceta-chip")).map(b => b.textContent.trim());
+
+  selLot.innerHTML = listaLots.map(nom => `<option value="${nom}">${nom}</option>`).join("");
+
+  if (sorteoActivoData) {
+    document.getElementById("admSorteoTitulo").value = sorteoActivoData.titulo || "";
+    selLot.value = sorteoActivoData.loteria || listaLots[0];
+    if (sorteoActivoData.horaSorteo24) document.getElementById("admSorteoHora").value = sorteoActivoData.horaSorteo24;
+    if (sorteoActivoData.horaCierre24) document.getElementById("admSorteoCierre").value = sorteoActivoData.horaCierre24;
+    document.getElementById("admSorteoPremio").value = sorteoActivoData.premioTotal || 1000;
+    document.getElementById("admSorteoTipoPremio").value = sorteoActivoData.tipoPremio || "promo";
+  }
+
+  renderEstadoAdminSorteo();
+  document.getElementById("modalAdminSorteo").style.display = "flex";
+}
+
+function renderEstadoAdminSorteo() {
+  const box = document.getElementById("admSorteoEstadoVivo");
+  if (!box) return;
+  if (!sorteoActivoData) {
+    box.innerHTML = `<div style="font-size:12px;color:var(--muted);">No hay ningún sorteo activo actualmente. Configura uno arriba y pulsa <strong>ACTIVAR SORTEO AHORA</strong>.</div>`;
+    return;
+  }
+
+  const s = sorteoActivoData;
+  const gList = s.ganadores || [];
+  const tocaFmt = Number(s.premioPorGanador || 0).toLocaleString("es-VE", { minimumFractionDigits: 2 });
+
+  let ganadoresHtml = "";
+  if (s.resultadoHoraObjetivo) {
+    ganadoresHtml = `
+      <div style="background:rgba(34,197,94,.14);border:1px solid #22c55e;border-radius:10px;padding:10px;margin-bottom:8px;">
+        <div style="font-size:12px;font-weight:900;color:#4ade80;">🏆 Salió: ${s.resultadoHoraObjetivo.numero} - ${s.resultadoHoraObjetivo.animal} (${s.horaSorteoLabel})</div>
+        <div style="font-size:12px;color:#fff;margin-top:3px;">Ganadores: <strong>${gList.length}</strong> • Premio por ganador: <strong>Bs. ${tocaFmt}</strong></div>
+        ${gList.map(g => `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;background:#0b141a;padding:6px 8px;border-radius:8px;font-size:11.5px;">
+            <span>🎉 <strong>${g.nombre}</strong> (${g.telefono})</span>
+            ${g.pagado
+              ? `<span class="pill green">✅ Acreditado</span>`
+              : `<button class="btn-approve-ocr" style="width:auto;margin:0;padding:5px 10px;" onclick="acreditarGanadorSorteo('${g.telefono}', ${s.premioPorGanador})">💰 Acreditar Bs. ${tocaFmt}</button>`
+            }
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  const listaPart = (s.participantes || []).map(p => `
+    <div style="display:flex;justify-content:space-between;font-size:11.5px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.06);">
+      <span>👤 <strong>${p.nombre}</strong> (${p.telefono})</span>
+      <span style="color:var(--gold);font-weight:800;">${p.numero} - ${p.animal}</span>
+    </div>
+  `).join("");
+
+  box.innerHTML = `
+    <div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">
+      📊 Sorteo en curso: ${s.loteria} (${s.horaSorteoLabel}) • Participantes: ${s.totalParticipantes}
+    </div>
+    ${ganadoresHtml}
+    <div style="max-height:170px;overflow-y:auto;background:#0b141a;border:1px solid var(--border);border-radius:10px;padding:8px;">
+      ${listaPart || `<span style="font-size:11.5px;color:var(--muted);">Aún no hay votos registrados.</span>`}
+    </div>
+  `;
+}
+
+async function guardarActivarSorteoAdmin() {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin") return;
+
+  const titulo = document.getElementById("admSorteoTitulo").value.trim() || "¡ADIVINA EL ANIMALITO GANADOR!";
+  const loteria = document.getElementById("admSorteoLoteria").value;
+  const horaSorteo = document.getElementById("admSorteoHora").value;
+  const horaCierre = document.getElementById("admSorteoCierre").value || horaSorteo;
+  const premioTotal = parseFloat(document.getElementById("admSorteoPremio").value);
+  const tipoPremio = document.getElementById("admSorteoTipoPremio").value;
+
+  if (!loteria || !horaSorteo || isNaN(premioTotal) || premioTotal <= 0) {
+    return alert("Completa la lotería, hora exacta y el monto total del premio.");
+  }
+
+  const r = await fetch(`${API_BASE}/sorteo/admin`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({
+      accion: "activar",
+      titulo,
+      loteria,
+      horaSorteo,
+      horaSorteoLabel: formatearHora12(horaSorteo),
+      horaCierre,
+      horaCierreLabel: formatearHora12(horaCierre),
+      premioTotal,
+      tipoPremio
+    })
+  });
+  const d = await r.json();
+  if (!d.ok) return alert(d.error || "No se pudo activar el sorteo.");
+
+  alert("✅ ¡Sorteo activado y publicado en toda la app!");
+  await cargarEstadoSorteo();
+}
+
+async function accionAdminSorteo(accion) {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin") return;
+  if (accion === "desactivar" && !confirm("¿Finalizar y quitar el sorteo activo de la pantalla de los clientes?")) return;
+
+  await fetch(`${API_BASE}/sorteo/admin`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({ accion })
+  });
+  await cargarEstadoSorteo();
+}
+
+async function acreditarGanadorSorteo(telefono, monto) {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin") return;
+  if (!confirm(`¿Acreditar ${monto} Bs. al cliente ${telefono} y enviarle notificación al chat?`)) return;
+
+  const r = await fetch(`${API_BASE}/sorteo/admin`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({ accion: "acreditar_ganador", telefono, monto })
+  });
+  const d = await r.json();
+  if (!d.ok) return alert(d.error || "Error al acreditar.");
+  alert("✅ Premio acreditado al saldo del cliente.");
+  await cargarEstadoSorteo();
+}
+
+// =========================================================================
+// GACETA OFICIAL + GENERADOR DE AFICHE CON FONDOS TEMÁTICOS POR LOTERÍA
+// =========================================================================
+function moverBarraGaceta(dx) {
+  const row = document.getElementById("gacetaChips");
+  if (row) row.scrollBy({ left: dx, behavior: "smooth" });
+}
+
+function seleccionarGaceta(loteria, btn) {
+  gacetaActualLoteria = loteria;
+  document.querySelectorAll("#gacetaChips .gaceta-chip").forEach(b => b.classList.remove("active"));
+  if (btn) {
+    btn.classList.add("active");
+    btn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+  cargarGacetaWinbig(loteria);
+}
+
+function renderCruzNodo(item, esCentro = false) {
+  if (!item) return `<div></div>`;
+  const salioCls = item.salio ? "ficha-acertada" : "";
+  const selloHtml = item.salio ? `<div class="sello-salio">${item.salioLabel || "¡SALIÓ!"}</div>` : "";
+  return `
+    <div class="cruz-nodo ${esCentro ? "centro" : ""} ${salioCls}">
+      ${esCentro ? `<div class="cruz-rey-tag">★ REY ★</div>` : ""}
+      ${selloHtml}
+      <img src="${item.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${item.animal}" />
+      <div class="cruz-val">${item.numero} - ${item.animal}</div>
+    </div>
+  `;
+}
+
+async function cargarGacetaWinbig(loteria) {
+  const cont = document.getElementById("gacetaContenido");
+  const fechaUse = fechaSeleccionadaISO || getHoyVenezuelaISO();
+  cont.innerHTML = `<p style="font-size:12px;color:var(--muted);">Cargando Gaceta Oficial de ${loteria} (${fechaUse})...</p>`;
+  try {
+    const r = await fetch(`${API_BASE}/gaceta?loteria=${encodeURIComponent(loteria)}&fecha=${encodeURIComponent(fechaUse)}`);
+    const d = await r.json();
+    gacetaActualData = d;
+
+    const u = d.ultimoSorteo || {};
+    const heroHtml = `
+      <div class="hero-gaceta-bar">
+        <div class="hero-ultimo">
+          <div class="hero-ultimo-avatar">
+            <img src="${u.img || "logo.png"}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${u.animal || ""}" />
+            <span class="hero-ultimo-num">${u.numero || "--"}</span>
+          </div>
+          <div>
+            <span class="hero-tag">🕒 ÚLTIMO SORTEO (${u.hora || "HOY"})</span>
+            <div class="hero-title">${u.numero || "--"} - ${u.animal || "POR ABRIR"}</div>
+            <div class="hero-sub">En vivo • ${loteria}</div>
+          </div>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-jala-wrap">
+          <div class="hero-jala-label">🧲 RADAR DE ATRACCIÓN<br/>JALA AHORA</div>
+          <div class="hero-jala-cards">
+            ${(d.radar || []).map(it => `
+              <div class="mini-ficha ${it.salio ? "ficha-acertada" : ""}" style="flex-direction:column;text-align:center;padding:7px 4px;gap:4px;">
+                ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
+                <img src="${it.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+                <div class="dato-num" style="font-size:12px;">${it.numero}</div>
+                <div class="dato-ani" style="font-size:9.5px;max-width:100%;">${it.animal}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      </div>
+    `;
+
+    const filasPir = (d.piramideFilas || []).map(fila => {
+      const esPunta = fila.length === 1;
+      return `<div class="piramide-row">${fila.map(dig => `<div class="piramide-cell ${esPunta ? "punta" : ""}">${dig}</div>`).join("")}</div>`;
+    }).join("");
+
+    const fichasPirHtml = (d.piramideFichas || []).map(it => `
+      <div class="dato-item ${it.salio ? "ficha-acertada" : ""}">
+        <img src="${it.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <div style="min-width:0;">
+          ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
+          <div class="dato-num">${it.numero} - ${it.animal}</div>
+          <div class="dato-sub">Gaceta Oficial</div>
+        </div>
+      </div>
+    `).join("");
+
+    const cruzObj = d.cruz || {};
+    const cruzHtml = `
+      <div class="cruz-modern-wrap">
+        <div class="cruz-grid">
+          <div></div>
+          ${renderCruzNodo(cruzObj.norte)}
+          <div></div>
+          ${renderCruzNodo(cruzObj.oeste)}
+          ${renderCruzNodo(cruzObj.centro, true)}
+          ${renderCruzNodo(cruzObj.este)}
+          <div></div>
+          ${renderCruzNodo(cruzObj.sur)}
+          <div></div>
+        </div>
+      </div>
+    `;
+
+    const candadoHtml = d.candado ? `
+      <div class="dato-item ${d.candado.salio ? "ficha-acertada" : ""}" style="margin-top:10px;border-color:rgba(245,158,11,.45);">
+        <img src="${d.candado.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${d.candado.animal}" />
+        <div style="min-width:0;">
+          ${d.candado.salio ? `<span class="sello-salio">${d.candado.salioLabel || "¡SALIÓ!"}</span>` : ""}
+          <div class="dato-sub">🔒 CANDADO DE LA JAULA</div>
+          <div class="dato-num">${d.candado.numero} - ${d.candado.animal}</div>
+          <div style="font-size:10px;color:var(--muted);">${d.candado.extra || "Por reventar"}</div>
+        </div>
+      </div>
+    ` : "";
+
+    const listaTripleta = Array.isArray(d.tripleta) ? d.tripleta : [];
+    const tripletaHtml = listaTripleta.map(it => `
+      <div class="mini-ficha ${it.salio ? "ficha-acertada" : ""}">
+        <img src="${it.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <div>
+          ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
+          <div class="dato-num">${it.numero}</div>
+          <div class="dato-ani">${it.animal}</div>
+        </div>
+      </div>
+    `).join("");
+
+    const rachaHtml = (d.racha || []).map(it => `
+      <div class="dato-item ${it.salio ? "ficha-acertada" : ""}">
+        <img src="${it.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <div style="min-width:0;">
+          ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
+          <div class="dato-num">${it.numero} - ${it.animal}</div>
+          <div class="dato-sub">${it.extra || "Gaceta Oficial"}</div>
+        </div>
+      </div>
+    `).join("");
+
+    const elemHtml = (d.elementos || []).map(it => `
+      <div class="dato-item ${it.salio ? "ficha-acertada" : ""}">
+        <img src="${it.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${it.animal}" />
+        <div style="min-width:0;">
+          ${it.salio ? `<span class="sello-salio">${it.salioLabel || "¡SALIÓ!"}</span>` : ""}
+          <div class="dato-sub">${it.elemento || "ELEMENTO"}</div>
+          <div class="dato-num">${it.numero} - ${it.animal}</div>
+        </div>
+      </div>
+    `).join("");
+
+    cont.innerHTML = `
+      <div class="gaceta-sheet" id="hojaGacetaExport">
+        ${heroHtml}
+        <div class="gaceta-mid-row">
+          <div class="gaceta-box">
+            <div class="gaceta-box-title">
+              <span>🔺 La Pirámide de la Fecha</span>
+              <span class="gaceta-badge-pill">CÁLCULO MATEMÁTICO</span>
+            </div>
+            <div class="piramide-rows">${filasPir}</div>
+            <div class="gaceta-box-title" style="margin-top:8px;"><span>✦ Fichas Resultantes de la Pirámide ✦</span></div>
+            <div class="fichas-piramide-grid">${fichasPirHtml}</div>
+          </div>
+          <div class="gaceta-box">
+            <div class="gaceta-box-title">
+              <span>✨ La Cruz de la Suerte</span>
+              <span class="gaceta-badge-pill">GACETA OFICIAL</span>
+            </div>
+            ${cruzHtml}
+            ${candadoHtml}
+          </div>
+        </div>
+        ${tripletaHtml ? `
+        <div class="tripleta-banner">
+          <div>
+            <div style="font-size:10.5px;color:#38bdf8;font-weight:800;">👑 JUGADA MAESTRA DEL DÍA • GACETA OFICIAL</div>
+            <div style="font-size:15px;font-weight:900;color:#fff;">La Tripleta Millonaria</div>
+          </div>
+          <div class="tripleta-cards">${tripletaHtml}</div>
+        </div>` : ""}
+        ${rachaHtml ? `
+        <div class="gaceta-box">
+          <div class="gaceta-box-title">
+            <span>🔥 Los Más Calientes de la Semana</span>
+            <span class="gaceta-badge-pill">ESTADÍSTICA 7 DÍAS</span>
+          </div>
+          <div class="datos-grid-3">${rachaHtml}</div>
+        </div>` : ""}
+        ${elemHtml ? `
+        <div class="gaceta-box">
+          <div class="gaceta-box-title">
+            <span>⚡ Energía de los 4 Elementos</span>
+            <span class="gaceta-badge-pill">INFLUENCIA DE HOY</span>
+          </div>
+          <div class="datos-grid-4">${elemHtml}</div>
+        </div>` : ""}
+      </div>
+    `;
+  } catch (e) {
+    cont.innerHTML = `<div class="dato-item"><div>No se pudo cargar la Gaceta Oficial en este momento.</div></div>`;
+  }
+}
+
+function cargarImagenSegura(url) {
+  return new Promise((resolve) => {
+    if (!url) return resolve(null);
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    const t = setTimeout(() => resolve(null), 3500);
+    img.onload = () => { clearTimeout(t); resolve(img); };
+    img.onerror = () => { clearTimeout(t); resolve(null); };
+    img.src = url;
+  });
+}
+
+function roundRectCanvas(ctx, x, y, w, h, r, fill, stroke, lineWidth = 2) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.lineWidth = lineWidth; ctx.strokeStyle = stroke; ctx.stroke(); }
+}
+
+function obtenerTemaVisualLoteria(nombreLoteria) {
+  const n = (nombreLoteria || "").toUpperCase();
+  if (/SELVA|GUACA|GUACHAR|ZOOLOGICO|PANDA|GRANJ|FRUIT|TROPIGANA/.test(n)) {
+    return { tipo: "selva", c1: "#062b16", c2: "#0d5228", c3: "#041b0e", cardBg: "rgba(7, 36, 18, 0.88)", ribbonBg: "#991b1b" };
+  }
+  if (/RULETA|ROYAL|LOTTOMAX|RICACHONA|MILLONARI|MONJE/.test(n)) {
+    return { tipo: "casino", c1: "#2a0815", c2: "#581129", c3: "#14040a", cardBg: "rgba(32, 8, 18, 0.89)", ribbonBg: "#b91c1c" };
+  }
+  if (/CONDOR|REAL|QUINTA|CENTENA|CHAIMA/.test(n)) {
+    return { tipo: "cielo", c1: "#071d3d", c2: "#0f3d7a", c3: "#041024", cardBg: "rgba(9, 25, 52, 0.89)", ribbonBg: "#b45309" };
+  }
+  return { tipo: "vip", c1: "#082924", c2: "#0f4c3a", c3: "#051815", cardBg: "rgba(9, 32, 28, 0.89)", ribbonBg: "#991b1b" };
+}
+
+function pintarFondoTematico(ctx, W, H, tema) {
+  const grad = ctx.createRadialGradient(W * 0.5, H * 0.25, 80, W * 0.5, H * 0.5, H * 0.9);
+  grad.addColorStop(0, tema.c2);
+  grad.addColorStop(0.55, tema.c1);
+  grad.addColorStop(1, tema.c3);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.save();
+  if (tema.tipo === "selva") {
+    const hojas = [
+      { x: 0, y: 120, ang: 0.4, esc: 1.35 }, { x: W, y: 180, ang: -0.4, esc: 1.35 },
+      { x: 0, y: 650, ang: 0.25, esc: 1.55 }, { x: W, y: 720, ang: -0.3, esc: 1.55 },
+      { x: 0, y: 1250, ang: 0.35, esc: 1.45 }, { x: W, y: 1320, ang: -0.35, esc: 1.45 }
+    ];
+    hojas.forEach(h => {
+      ctx.save();
+      ctx.translate(h.x, h.y);
+      ctx.rotate(h.ang);
+      for (let i = -3; i <= 3; i++) {
+        ctx.save();
+        ctx.rotate(i * 0.22);
+        ctx.beginPath();
+        ctx.ellipse(h.x === 0 ? 115 : -115, 0, 135 * h.esc, 28 * h.esc, 0, 0, Math.PI * 2);
+        ctx.fillStyle = i % 2 === 0 ? "rgba(34, 197, 94, 0.25)" : "rgba(21, 128, 61, 0.32)";
+        ctx.fill();
+        ctx.restore();
+      }
+      ctx.restore();
+    });
+  } else if (tema.tipo === "casino") {
+    ctx.translate(W * 0.5, 420);
+    for (let r = 470; r >= 160; r -= 60) {
+      ctx.beginPath();
+      ctx.arc(0, 0, r, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(251, 191, 36, 0.16)";
+      ctx.lineWidth = 14;
+      ctx.stroke();
+    }
+    for (let a = 0; a < Math.PI * 2; a += Math.PI / 12) {
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(Math.cos(a) * 470, Math.sin(a) * 470);
+      ctx.strokeStyle = "rgba(251, 191, 36, 0.11)";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    }
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    [[70, 320], [W - 70, 480], [65, 1120], [W - 65, 1240]].forEach(([fx, fy]) => {
+      ctx.beginPath();
+      ctx.arc(fx, fy, 48, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(245, 158, 11, 0.22)";
+      ctx.fill();
+      ctx.setLineDash([10, 8]);
+      ctx.strokeStyle = "rgba(253, 224, 71, 0.42)";
+      ctx.lineWidth = 5;
+      ctx.stroke();
+      ctx.setLineDash([]);
+    });
+  } else if (tema.tipo === "cielo") {
+    ctx.translate(W * 0.5, 220);
+    for (let a = 0; a < Math.PI * 2; a += Math.PI / 10) {
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, 960, a, a + 0.11);
+      ctx.closePath();
+      ctx.fillStyle = "rgba(251, 191, 36, 0.08)";
+      ctx.fill();
+    }
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+  } else {
+    for (let y = 120; y < H; y += 220) {
+      for (let x = 80; x < W; x += 240) {
+        ctx.fillStyle = "rgba(251, 191, 36, 0.08)";
+        ctx.font = "900 46px system-ui, sans-serif";
+        ctx.fillText((x + y) % 440 === 0 ? "♣" : "♦", x, y);
+      }
+    }
+  }
+
+  for (let i = 0; i < 48; i++) {
+    const sx = (i * 197) % W;
+    const sy = (i * 313) % H;
+    const sr = (i % 3) + 1.5;
+    ctx.beginPath();
+    ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(253, 224, 71, 0.38)";
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function dibujarMarcoDorado(ctx, x, y, w, h, r, fill, ribbonText = null, ribbonColor = "#991b1b") {
+  ctx.save();
+  ctx.shadowColor = "rgba(0,0,0,0.6)";
+  ctx.shadowBlur = 14;
+  ctx.shadowOffsetY = 5;
+  roundRectCanvas(ctx, x, y, w, h, r, fill, "#fbbf24", 3);
+  ctx.restore();
+
+  roundRectCanvas(ctx, x + 5, y + 5, w - 10, h - 10, Math.max(4, r - 4), null, "rgba(253, 224, 71, 0.38)", 1.2);
+
+  if (ribbonText) {
+    ctx.font = "900 15px system-ui, sans-serif";
+    const rw = Math.min(w - 28, ctx.measureText(ribbonText).width + 36);
+    const rx = x + 16;
+    const ry = y - 14;
+    roundRectCanvas(ctx, rx, ry, rw, 30, 10, ribbonColor, "#fbbf24", 2);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(ribbonText, rx + 14, ry + 20);
+  }
+}
+
+function dibujarAvatarFicha(ctx, img, cx, cy, radio, bordeColor = "#fbbf24") {
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, radio, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.fillStyle = "#0b141a";
+  ctx.fill();
+  ctx.lineWidth = 3.5;
+  ctx.strokeStyle = bordeColor;
+  ctx.stroke();
+  ctx.clip();
+  if (img && img.naturalWidth > 0) {
+    ctx.drawImage(img, cx - radio, cy - radio, radio * 2, radio * 2);
+  }
+  ctx.restore();
+}
+
+async function descargarImagenGaceta() {
+  const d = gacetaActualData;
+  const btn = document.getElementById("btnDescargarGaceta");
+  if (!d) return alert("Espera un momento a que cargue la Gaceta Oficial.");
+
+  const txtOrig = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = "⏳ Diseñando Afiche...";
+
+  try {
+    const fechaUse = fechaSeleccionadaISO || getHoyVenezuelaISO();
+    const fechaLarga = formatearFechaLargaES(fechaUse);
+    const tema = obtenerTemaVisualLoteria(gacetaActualLoteria);
+
+    const urls = new Set(["logo.png"]);
+    if (d.ultimoSorteo?.img) urls.add(d.ultimoSorteo.img);
+    (d.radar || []).forEach(it => it?.img && urls.add(it.img));
+    (d.piramideFichas || []).forEach(it => it?.img && urls.add(it.img));
+    if (d.cruz) {
+      [d.cruz.norte, d.cruz.sur, d.cruz.este, d.cruz.oeste, d.cruz.centro].forEach(it => it?.img && urls.add(it.img));
+    }
+    if (d.candado?.img) urls.add(d.candado.img);
+    (d.tripleta || []).forEach(it => it?.img && urls.add(it.img));
+    (d.racha || []).forEach(it => it?.img && urls.add(it.img));
+    (d.elementos || []).forEach(it => it?.img && urls.add(it.img));
+
+    const mapaImgs = {};
+    await Promise.all(Array.from(urls).map(async (u) => {
+      mapaImgs[u] = await cargarImagenSegura(u);
+    }));
+
+    const W = 1080;
+    const H = 1540;
+    const canvas = document.createElement("canvas");
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext("2d");
+
+    pintarFondoTematico(ctx, W, H, tema);
+
+    dibujarAvatarFicha(ctx, mapaImgs["logo.png"], 155, 112, 86, "#fbbf24");
+    roundRectCanvas(ctx, 42, 182, 226, 30, 15, "#15803d", "#fbbf24", 2);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "900 13px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(gacetaActualLoteria.slice(0, 22), 155, 202);
+    ctx.textAlign = "left";
+
+    const titleGrad = ctx.createLinearGradient(300, 30, 300, 105);
+    titleGrad.addColorStop(0, "#fef08a");
+    titleGrad.addColorStop(0.5, "#f59e0b");
+    titleGrad.addColorStop(1, "#b45309");
+    ctx.save();
+    ctx.shadowColor = "rgba(0,0,0,0.85)";
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetY = 4;
+    ctx.fillStyle = titleGrad;
+    ctx.font = "900 72px system-ui, sans-serif";
+    ctx.fillText("GACETA OFICIAL", 300, 96);
+    ctx.restore();
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "900 20px system-ui, sans-serif";
+    ctx.fillText("BOLETÍN DIARIO DE PROBABILIDADES & TENDENCIAS", 305, 128);
+
+    roundRectCanvas(ctx, 305, 144, 735, 56, 14, "#ffffff", "#fbbf24", 3);
+    ctx.fillStyle = "#dc2626";
+    ctx.font = "900 26px system-ui, sans-serif";
+    ctx.fillText("📅", 322, 181);
+    ctx.fillStyle = "#111827";
+    ctx.font = "900 26px system-ui, sans-serif";
+    const fechaCapital = fechaLarga.charAt(0).toUpperCase() + fechaLarga.slice(1);
+    ctx.fillText(fechaCapital, 365, 181);
+
+    dibujarMarcoDorado(ctx, 30, 232, W - 60, 152, 22, tema.cardBg);
+    const u = d.ultimoSorteo || {};
+    dibujarAvatarFicha(ctx, mapaImgs[u.img] || mapaImgs["logo.png"], 108, 308, 48, "#fbbf24");
+
+    roundRectCanvas(ctx, 172, 250, 250, 26, 13, "rgba(251,191,36,0.2)", "#fbbf24", 1.5);
+    ctx.fillStyle = "#fde047";
+    ctx.font = "900 13px system-ui, sans-serif";
+    ctx.fillText(`ÚLTIMO SORTEO (${u.hora || "HOY"})`, 184, 268);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "900 31px system-ui, sans-serif";
+    ctx.fillText(`${u.numero || "--"} - ${u.animal || "POR ABRIR"}`, 172, 308);
+
+    ctx.fillStyle = "#86efac";
+    ctx.font = "700 16px system-ui, sans-serif";
+    ctx.fillText(`Acaba de salir en ${gacetaActualLoteria}`, 172, 336);
+
+    ctx.fillStyle = "#fde047";
+    ctx.font = "900 17px system-ui, sans-serif";
+    ctx.fillText("RADAR DE ATRACCIÓN", 475, 294);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "900 18px system-ui, sans-serif";
+    ctx.fillText("➡ JUEGA AHORA ➡", 475, 322);
+
+    (d.radar || []).slice(0, 3).forEach((it, idx) => {
+      const cx = 735 + idx * 125;
+      dibujarAvatarFicha(ctx, mapaImgs[it.img], cx, 294, 42, it.salio ? "#ef4444" : "#fbbf24");
+      roundRectCanvas(ctx, cx - 24, 322, 48, 22, 8, "#000000", "#fbbf24", 1.5);
+      ctx.fillStyle = "#fde047";
+      ctx.font = "900 15px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(String(it.numero || ""), cx, 338);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 13px system-ui, sans-serif";
+      ctx.fillText(String(it.animal || "").slice(0, 10), cx, 362);
+    });
+    ctx.textAlign = "left";
+
+    dibujarMarcoDorado(ctx, 30, 412, 515, 515, 20, tema.cardBg, "🔺 LA PIRÁMIDE DE LA FECHA", tema.ribbonBg);
+
+    const filas = d.piramideFilas || [];
+    filas.forEach((fila, rIdx) => {
+      const cellSize = 35;
+      const gap = 6;
+      const rowW = fila.length * (cellSize + gap) - gap;
+      const startX = 287 - rowW / 2;
+      const y = 442 + rIdx * 40;
+      const esPunta = fila.length === 1;
+      fila.forEach((dig, cIdx) => {
+        const cx = startX + cIdx * (cellSize + gap);
+        roundRectCanvas(ctx, cx, y, cellSize, cellSize, 8, esPunta ? "#dc2626" : "#fffbeb", "#f59e0b", 2);
+        ctx.fillStyle = esPunta ? "#ffffff" : "#111827";
+        ctx.font = "900 19px system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(String(dig), cx + cellSize / 2, y + 25);
+      });
+    });
+    ctx.textAlign = "left";
+
+    roundRectCanvas(ctx, 50, 770, 475, 28, 10, tema.ribbonBg, "#fbbf24", 2);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "900 14px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("✦ FICHAS RESULTANTES DE LA PIRÁMIDE ✦", 287, 789);
+    ctx.textAlign = "left";
+
+    (d.piramideFichas || []).slice(0, 4).forEach((it, idx) => {
+      const fx = 48 + idx * 121;
+      const fy = 808;
+      roundRectCanvas(ctx, fx, fy, 113, 104, 14, "#fffbeb", it.salio ? "#ef4444" : "#f59e0b", 2.5);
+      dibujarAvatarFicha(ctx, mapaImgs[it.img], fx + 56, fy + 34, 26, "#f59e0b");
+      ctx.fillStyle = "#111827";
+      ctx.font = "900 20px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(String(it.numero || ""), fx + 56, fy + 80);
+      ctx.fillStyle = "#374151";
+      ctx.font = "900 12px system-ui, sans-serif";
+      ctx.fillText(String(it.animal || "").slice(0, 10), fx + 56, fy + 96);
+    });
+    ctx.textAlign = "left";
+
+    dibujarMarcoDorado(ctx, 565, 412, 485, 515, 20, tema.cardBg, "✨ LA CRUZ DE LA SUERTE", tema.ribbonBg);
+
+    ctx.strokeStyle = "rgba(251, 191, 36, 0.55)";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(807, 485); ctx.lineTo(807, 745);
+    ctx.moveTo(645, 615); ctx.lineTo(969, 615);
+    ctx.stroke();
+
+    const nodosCruz = [
+      { item: d.cruz?.norte, cx: 807, cy: 492, r: 36, rey: false },
+      { item: d.cruz?.oeste, cx: 665, cy: 615, r: 36, rey: false },
+      { item: d.cruz?.centro, cx: 807, cy: 615, r: 44, rey: true },
+      { item: d.cruz?.este, cx: 949, cy: 615, r: 36, rey: false },
+      { item: d.cruz?.sur, cx: 807, cy: 738, r: 36, rey: false }
+    ];
+
+    nodosCruz.forEach(n => {
+      if (!n.item) return;
+      dibujarAvatarFicha(ctx, mapaImgs[n.item.img], n.cx, n.cy, n.r, n.rey ? "#ef4444" : "#fbbf24");
+      roundRectCanvas(ctx, n.cx - 48, n.cy + n.r - 12, 96, 22, 8, n.rey ? "#b91c1c" : "#111827", "#fbbf24", 1.5);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 11.5px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(`${n.item.numero} ${String(n.item.animal || "").slice(0, 8)}`, n.cx, n.cy + n.r + 3);
+      if (n.rey) {
+        roundRectCanvas(ctx, n.cx - 32, n.cy - n.r - 14, 64, 18, 8, "#fbbf24", "#111827", 1.5);
+        ctx.fillStyle = "#111827";
+        ctx.font = "900 11px system-ui, sans-serif";
+        ctx.fillText("★ REY ★", n.cx, n.cy - n.r - 1);
+      }
+    });
+    ctx.textAlign = "left";
+
+    if (d.candado) {
+      roundRectCanvas(ctx, 588, 795, 438, 114, 16, "#78350f", "#fbbf24", 2.5);
+      dibujarAvatarFicha(ctx, mapaImgs[d.candado.img], 646, 852, 42, "#fbbf24");
+      ctx.fillStyle = "#fde047";
+      ctx.font = "900 14px system-ui, sans-serif";
+      ctx.fillText("🔒 CANDADO DE LA JAULA", 704, 824);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 26px system-ui, sans-serif";
+      ctx.fillText(`${d.candado.numero} - ${d.candado.animal}`, 704, 858);
+      ctx.fillStyle = "#fed7aa";
+      ctx.font = "800 14px system-ui, sans-serif";
+      ctx.fillText(String(d.candado.extra || "POR REVENTAR").slice(0, 32), 704, 886);
+    }
+
+    dibujarMarcoDorado(ctx, 30, 952, W - 60, 146, 20, "#0c4a6e", "👑 JUGADA MAESTRA DEL DÍA", "#0369a1");
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "900 34px system-ui, sans-serif";
+    ctx.fillText("La Tripleta", 58, 1025);
+    ctx.fillStyle = "#fde047";
+    ctx.fillText("Millonaria", 58, 1068);
+
+    (d.tripleta || []).slice(0, 3).forEach((it, idx) => {
+      const tx = 310 + idx * 242;
+      const ty = 972;
+      roundRectCanvas(ctx, tx, ty, 226, 108, 16, "#fffbeb", "#fbbf24", 2.5);
+      dibujarAvatarFicha(ctx, mapaImgs[it.img], tx + 52, ty + 54, 38, "#f59e0b");
+      ctx.fillStyle = "#111827";
+      ctx.font = "900 32px system-ui, sans-serif";
+      ctx.fillText(String(it.numero || ""), tx + 102, ty + 52);
+      ctx.fillStyle = "#374151";
+      ctx.font = "900 15px system-ui, sans-serif";
+      ctx.fillText(String(it.animal || "").slice(0, 11), tx + 102, ty + 78);
+    });
+
+    dibujarMarcoDorado(ctx, 30, 1126, W - 60, 146, 20, tema.cardBg, "🔥 LOS MÁS CALIENTES DE LA SEMANA", tema.ribbonBg);
+    (d.racha || []).slice(0, 3).forEach((it, idx) => {
+      const rx = 50 + idx * 332;
+      const ry = 1152;
+      roundRectCanvas(ctx, rx, ry, 316, 102, 16, "#fffbeb", "#f59e0b", 2.5);
+      dibujarAvatarFicha(ctx, mapaImgs[it.img], rx + 50, ry + 51, 36, "#dc2626");
+      ctx.fillStyle = "#111827";
+      ctx.font = "900 22px system-ui, sans-serif";
+      ctx.fillText(`${it.numero} - ${String(it.animal || "").slice(0, 9)}`, rx + 98, ry + 48);
+      ctx.fillStyle = "#b91c1c";
+      ctx.font = "800 13px system-ui, sans-serif";
+      ctx.fillText("Gaceta Oficial Winbig", rx + 98, ry + 74);
+    });
+
+    dibujarMarcoDorado(ctx, 30, 1300, W - 60, 148, 20, tema.cardBg, "⚡ ENERGÍA DE LOS 4 ELEMENTOS", "#15803d");
+    const coloresElem = ["#dc2626", "#15803d", "#0284c7", "#1d4ed8"];
+    (d.elementos || []).slice(0, 4).forEach((it, idx) => {
+      const ex = 48 + idx * 248;
+      const ey = 1326;
+      roundRectCanvas(ctx, ex, ey, 234, 104, 16, "#fffbeb", "#fbbf24", 2.5);
+      roundRectCanvas(ctx, ex + 82, ey + 8, 140, 22, 8, coloresElem[idx % 4], null, 0);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 12px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(String(it.elemento || "ELEMENTO").toUpperCase(), ex + 152, ey + 23);
+      ctx.textAlign = "left";
+
+      dibujarAvatarFicha(ctx, mapaImgs[it.img], ex + 42, ey + 54, 32, coloresElem[idx % 4]);
+      ctx.fillStyle = "#111827";
+      ctx.font = "900 21px system-ui, sans-serif";
+      ctx.fillText(`${it.numero} - ${String(it.animal || "").slice(0, 8)}`, ex + 82, ey + 64);
+    });
+
+    roundRectCanvas(ctx, 30, 1464, W - 60, 52, 16, "#090d16", "#fbbf24", 2.5);
+    ctx.fillStyle = "#fde047";
+    ctx.font = "900 22px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("🏆 CENTRO DE APUESTAS HAROLD JOSÉ • ¡JUEGA Y COBRA AL INSTANTE! 🏆", W / 2, 1498);
+
+    const link = document.createElement("a");
+    link.download = `Gaceta_${gacetaActualLoteria.replace(/\s+/g, "_")}_${fechaUse}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  } catch (e) {
+    alert("No se pudo generar el afiche en este momento.");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = txtOrig;
+  }
+}
+
+// =========================================================================
+// PROMOS / FLYERS
+// =========================================================================
+async function cargarFlyers() {
+  const grid = document.getElementById("flyersGrid");
+  try {
+    const r = await fetch(`${API_BASE}/flyers`);
+    const d = await r.json();
+    if (d.ok && Array.isArray(d.flyers)) {
+      grid.innerHTML = d.flyers.map(f => {
+        const esRoller = /rollercoin/i.test(f.titulo);
+        const btnHtml = esRoller
+          ? `<a href="${ROLLERCOIN_REF}" target="_blank" class="pill green" style="text-decoration:none;">🚀 Registrarme Gratis</a>`
+          : `<button class="pill green" onclick="jugarDesdeFlyer('${f.titulo.replace(/'/g, "")}')">💬 Jugar Ahora</button>`;
+        return `
+          <div class="flyer-card">
+            <img src="${f.img}" crossorigin="anonymous" onerror="this.onerror=null;this.src='logo.png';" alt="${f.titulo}" />
+            <div class="flyer-body">
+              <div><h4>${f.titulo}</h4><p>${f.horario}</p></div>
+              ${btnHtml}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+  } catch (e) {}
+}
+
+function jugarDesdeFlyer(titulo) {
+  switchTab("jugar", document.querySelectorAll("nav.tabs button")[4]);
+  setTimeout(() => insertarTexto(`Quiero jugar en: ${titulo} - `), 120);
+}
+
+// =========================================================================
+// PORTAL DE ACCESO + ASISTENTE DE REGISTRO TIPO CHAT
+// =========================================================================
+let wizState = { step: 0, nombre: "", telefono: "", cedula: "" };
+
+function abrirAsistenteRegistro() {
+  wizState = { step: 1, nombre: "", telefono: "", cedula: "" };
+  const body = document.getElementById("wizMessages");
+  body.innerHTML = `
+    <div class="wiz-bubble-bot">
+      👋 ¡Hola! Soy tu asistente virtual de <strong>Centro de Apuestas Harold José</strong>.<br/><br/>
+      Te guiaré paso a paso para crear tu cuenta oficial y obtener acceso a tus sorteos y pagos al instante. ¿Comenzamos?
+    </div>
+  `;
+  document.getElementById("wizFooter").innerHTML = `
+    <div class="wiz-btn-pair">
+      <button class="pill" style="padding:11px;border-radius:10px;" onclick="cerrarAsistenteRegistro()">Ahora no</button>
+      <button class="btn-direct-chat" style="margin:0;padding:11px;" onclick="avanzarWizard(2)">¡Sí, comenzar!</button>
+    </div>
+  `;
+  document.getElementById("modalAsistente").style.display = "flex";
+}
+
+function cerrarAsistenteRegistro() {
+  document.getElementById("modalAsistente").style.display = "none";
+}
+
+function agregarBurbujaWizard(texto, tipo = "bot") {
+  const body = document.getElementById("wizMessages");
+  const div = document.createElement("div");
+  div.className = tipo === "user" ? "wiz-bubble-user" : "wiz-bubble-bot";
+  div.innerHTML = texto;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+function avanzarWizard(paso) {
+  wizState.step = paso;
+  const footer = document.getElementById("wizFooter");
+
+  if (paso === 2) {
+    agregarBurbujaWizard("¡Sí, comenzar!", "user");
+    agregarBurbujaWizard("Excelente 🚀. Primero dime, <strong>¿cuál es tu Nombre y Apellido?</strong>");
+    footer.innerHTML = `
+      <div class="wiz-input-row">
+        <input type="text" id="wizInpNombre" placeholder="Ej: Carlos Pérez" onkeydown="if(event.key==='Enter') enviarPasoNombre()" />
+        <button onclick="enviarPasoNombre()">Enviar</button>
+      </div>
+    `;
+    setTimeout(() => document.getElementById("wizInpNombre")?.focus(), 80);
+  } else if (paso === 3) {
+    agregarBurbujaWizard(`Mucho gusto, <strong>${wizState.nombre}</strong> 🤝.<br/><br/>Ahora escribe tu <strong>número de teléfono venezolano</strong> (11 dígitos, ej: <code>04121234567</code>):`);
+    footer.innerHTML = `
+      <div class="wiz-input-row">
+        <input type="tel" id="wizInpTelefono" placeholder="04121234567" maxlength="11" onkeydown="if(event.key==='Enter') enviarPasoTelefono()" />
+        <button onclick="enviarPasoTelefono()">Enviar</button>
+      </div>
+    `;
+    setTimeout(() => document.getElementById("wizInpTelefono")?.focus(), 80);
+  } else if (paso === 4) {
+    agregarBurbujaWizard("Perfecto 📱. Por último, escribe tu <strong>número de Cédula de Identidad</strong> (solo números):");
+    footer.innerHTML = `
+      <div class="wiz-input-row">
+        <input type="tel" id="wizInpCedula" placeholder="Ej: 18274410" maxlength="10" onkeydown="if(event.key==='Enter') enviarPasoCedula()" />
+        <button onclick="enviarPasoCedula()">Continuar</button>
+      </div>
+    `;
+    setTimeout(() => document.getElementById("wizInpCedula")?.focus(), 80);
+  }
+}
+
+function enviarPasoNombre() {
+  const val = (document.getElementById("wizInpNombre")?.value || "").trim();
+  if (val.length < 3) return alert("Escribe tu nombre y apellido completo.");
+  wizState.nombre = val;
+  agregarBurbujaWizard(val, "user");
+  avanzarWizard(3);
+}
+
+function enviarPasoTelefono() {
+  let tlf = (document.getElementById("wizInpTelefono")?.value || "").replace(/\D/g, "");
+  if (tlf.startsWith("58") && tlf.length === 12) tlf = "0" + tlf.slice(2);
+  if (!/^0(412|422|414|424|416|426)\d{7}$/.test(tlf)) {
+    return alert("Ingresa un número venezolano válido de 11 dígitos (ej: 04121234567).");
+  }
+  wizState.telefono = tlf;
+  agregarBurbujaWizard(tlf, "user");
+  avanzarWizard(4);
+}
+
+async function enviarPasoCedula() {
+  const ced = (document.getElementById("wizInpCedula")?.value || "").replace(/\D/g, "");
+  if (ced.length < 6) return alert("Ingresa una cédula válida.");
+  wizState.cedula = ced;
+  agregarBurbujaWizard(`V-${ced}`, "user");
+  agregarBurbujaWizard("⏳ Preparando tu enlace seguro de verificación con Telegram...");
+
+  try {
+    const r = await fetch(`${API_BASE}/auth/prepare-tg`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nombre: wizState.nombre,
+        telefono: wizState.telefono,
+        cedula: wizState.cedula
+      })
+    });
+    const d = await r.json();
+    if (!d.ok) return alert(d.error || "Error preparando verificación.");
+
+    agregarBurbujaWizard(
+      `🔐 <strong>Último paso de seguridad:</strong><br/>1. Toca el botón azul de abajo y pulsa <strong>INICIAR</strong> en Telegram.<br/>2. Copia el código de 6 dígitos que te enviará el bot y pégalo aquí:` +
+      `<a href="${d.telegramUrl}" target="_blank" class="btn-tg-verify">📲 Abrir Bot Oficial de Telegram</a>`
+    );
+
+    document.getElementById("wizFooter").innerHTML = `
+      <div class="wiz-input-row">
+        <input type="text" id="wizInpCodigo" placeholder="Código de 6 dígitos" maxlength="6" onkeydown="if(event.key==='Enter') finalizarRegistroWizard()" />
+        <button style="background:#22c55e;color:#041b15;" onclick="finalizarRegistroWizard()">Activar</button>
+      </div>
+    `;
+  } catch (e) {
+    alert("Error de conexión con la taquilla.");
+  }
+}
+
+async function finalizarRegistroWizard() {
+  const codigo = (document.getElementById("wizInpCodigo")?.value || "").trim();
+  if (codigo.length < 6) return alert("Ingresa el código de 6 dígitos enviado por Telegram.");
+
+  try {
+    const r = await fetch(`${API_BASE}/auth/verify-otp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nombre: wizState.nombre,
+        telefono: wizState.telefono,
+        cedula: wizState.cedula,
+        codigo,
+        deviceId: getDeviceId()
+      })
+    });
+    const d = await r.json();
+    if (!d.ok) return alert(d.error || "Código incorrecto.");
+
+    localStorage.setItem("hj_session", JSON.stringify({
+      role: "client",
+      chatId: d.chatId,
+      clientToken: d.clientToken,
+      nombre: d.nombre,
+      telefono: d.telefono,
+      cedula: d.cedula
+    }));
+    cerrarAsistenteRegistro();
+    iniciarSesionUI();
+  } catch (e) {
+    alert("No se pudo activar la cuenta.");
+  }
+}
+
+async function entrarDirectoChat() {
+  let telefono = (document.getElementById("inpLoginTelefono")?.value || "").replace(/\D/g, "");
+  if (telefono.startsWith("58") && telefono.length === 12) telefono = "0" + telefono.slice(2);
+  const cedula = (document.getElementById("inpLoginCedula")?.value || "").replace(/\D/g, "");
+
+  if (!/^0(412|422|414|424|416|426)\d{7}$/.test(telefono)) {
+    return alert("Ingresa un número de teléfono venezolano válido de 11 dígitos.");
+  }
+  if (cedula.length < 6) {
+    return alert("Ingresa tu número de cédula.");
+  }
+
+  try {
+    const r = await fetch(`${API_BASE}/auth/login-direct`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ telefono, cedula, deviceId: getDeviceId() })
+    });
+    const d = await r.json();
+    if (!d.ok) {
+      if (d.noRegistrado) {
+        if (confirm("Este número aún no está registrado.\n\n¿Deseas registrarte ahora mismo con el Asistente Oficial?")) {
+          abrirAsistenteRegistro();
+        }
+        return;
+      }
+      return alert(d.error || "No se pudo iniciar sesión.");
+    }
+
+    localStorage.setItem("hj_session", JSON.stringify({
+      role: "client",
+      chatId: d.chatId,
+      clientToken: d.clientToken,
+      nombre: d.nombre,
+      telefono: d.telefono,
+      cedula: d.cedula
+    }));
+    iniciarSesionUI();
+  } catch (e) {
+    alert("Error de conexión con el servidor.");
+  }
+}
+
+async function entrarAdmin() {
+  const pass = document.getElementById("inpAdminPass").value.trim();
+  const r = await fetch(`${API_BASE}/auth/admin`, {
+    method: "POST",
+    headers: { "X-Admin-Key": pass }
+  });
+  const d = await r.json();
+  if (!d.ok) return alert(d.error || "Clave incorrecta");
+  localStorage.setItem("hj_session", JSON.stringify({ role: "admin", adminKey: pass }));
+  iniciarSesionUI();
+}
+
+function cerrarSesion() {
+  localStorage.removeItem("hj_session");
+  clearInterval(pollTimer);
+  ultimoConteoCliente = -1;
+  ultimoConteoAdmin = -1;
+  document.getElementById("btnLogout").style.display = "none";
+  document.getElementById("loginBox").style.display = "block";
+  document.getElementById("clientChatBox").style.display = "none";
+  document.getElementById("adminPanelBox").style.display = "none";
+  renderVistaSorteoCliente();
+}
+
+function iniciarSesionUI() {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses) return;
+  document.getElementById("btnLogout").style.display = "inline-block";
+  document.getElementById("loginBox").style.display = "none";
+
+  if (ses.role === "admin") {
+    document.getElementById("adminPanelBox").style.display = "grid";
+    cargarListaChatsAdmin();
+    pollTimer = setInterval(cargarListaChatsAdmin, 4500);
+  } else {
+    document.getElementById("clientChatBox").style.display = "flex";
+    document.getElementById("lblClientHeader").textContent = `Taquilla • ${ses.nombre}`;
+    cargarHistorialCliente(true);
+    pollTimer = setInterval(() => cargarHistorialCliente(false), 4500);
+  }
+}
+
+function formatearTextoChat(txt) {
+  return String(txt || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\*([^*]+)\*/g, "<strong>$1</strong>")
+    .replace(/`([^`]+)`/g, "<code style='background:#0b141a;padding:2px 5px;border-radius:4px;'>$1</code>");
+}
+
+function insertarTexto(t) {
+  const inp = document.getElementById("txtClientMsg");
+  inp.value = t;
+  inp.focus();
+}
+
+async function cargarHistorialCliente(forzarBajar = false) {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "client") return;
+  try {
+    const r = await fetch(`${API_BASE}/chat/history?chatId=${encodeURIComponent(ses.chatId)}&viewer=client`);
+    const d = await r.json();
+    if (!d.ok || !d.hilo) return;
+
+    const fin = d.hilo.finanzas || {};
+    const disp = Number(fin.disponible || 0);
+    const cashea = Number(fin.cashea || 0);
+    const lblSaldo = document.getElementById("lblSaldoCliente");
+    lblSaldo.innerHTML = disp < 0
+      ? `<span class="saldo-negativo-txt">Negativo: ${disp.toFixed(2)} Bs.</span> | Promo: ${cashea.toFixed(2)} Bs.`
+      : `Retirable: ${disp.toFixed(2)} Bs. | Promo: ${cashea.toFixed(2)} Bs.`;
+
+    const box = document.getElementById("clientMessages");
+    const msgs = d.hilo.mensajes || [];
+    const hayNuevos = msgs.length !== ultimoConteoCliente;
+    ultimoConteoCliente = msgs.length;
+
+    const estabaAbajo = (box.scrollHeight - box.scrollTop - box.clientHeight) < 120;
+
+    box.innerHTML = msgs.map(m => `
+      <div class="msg ${m.sender}">
+        ${m.imagen ? `<img src="${m.imagen}" onclick="window.open(this.src)" />` : ""}
+        <div>${formatearTextoChat(m.texto)}</div>
+        <div class="msg-meta">${m.hora}</div>
+      </div>
+    `).join("");
+
+    if (forzarBajar || hayNuevos || estabaAbajo) {
+      bajarAlFinalChat(box);
+    }
+  } catch (e) {}
+}
+
+async function enviarMensajeCliente(textoOverride = null) {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "client") return;
+  const inp = document.getElementById("txtClientMsg");
+  const texto = textoOverride !== null ? textoOverride : inp.value.trim();
+  if (!texto) return;
+  if (textoOverride === null) inp.value = "";
+
+  await fetch(`${API_BASE}/chat/send`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Device-Id": getDeviceId() },
+    body: JSON.stringify({
+      chatId: ses.chatId,
+      sender: "client",
+      nombre: ses.nombre,
+      telefono: ses.telefono,
+      cedula: ses.cedula || "",
+      deviceId: getDeviceId(),
+      texto
+    })
+  });
+  await cargarHistorialCliente(true);
+}
+
+function comprimirImagenBase64(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const maxW = 1000;
+        const scale = img.width > maxW ? maxW / img.width : 1;
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", 0.8));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function subirCapture(ev) {
+  const file = ev.target.files[0];
+  if (!file) return;
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "client") return;
+
+  const btn = document.getElementById("btnAttachCapture");
+  btn.textContent = "⏳";
+  try {
+    const base64 = await comprimirImagenBase64(file);
+    await fetch(`${API_BASE}/chat/send`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Device-Id": getDeviceId() },
+      body: JSON.stringify({
+        chatId: ses.chatId,
+        sender: "client",
+        nombre: ses.nombre,
+        telefono: ses.telefono,
+        cedula: ses.cedula || "",
+        deviceId: getDeviceId(),
+        texto: "📷 Comprobante adjunto",
+        imagen: base64
+      })
+    });
+    await cargarHistorialCliente(true);
+  } finally {
+    btn.textContent = "📎";
+    ev.target.value = "";
+  }
+}
+
+let activeAdminChatId = null;
+
+async function cargarListaChatsAdmin() {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin") return;
+  const r = await fetch(`${API_BASE}/chat/list`, { headers: { "X-Admin-Key": ses.adminKey } });
+  const d = await r.json();
+  if (!d.ok) return;
+
+  const list = document.getElementById("adminChatList");
+  list.innerHTML = d.chats.map(c => `
+    <div class="chat-row ${c.chatId === activeAdminChatId ? "active" : ""}" onclick="abrirChatAdmin('${c.chatId}', false)">
+      <div>
+        <div style="font-weight:800;font-size:13px;">${c.nombre} ${c.elegibleBono ? "🎁" : ""}</div>
+        <div style="font-size:11px;color:var(--muted);">${c.ultimoMsg}</div>
+      </div>
+      ${c.sinLeer ? `<span class="badge-unread">${c.sinLeerCount}</span>` : `<span style="font-size:10px;color:var(--muted);">${c.hora}</span>`}
+    </div>
+  `).join("");
+
+  if (activeAdminChatId) abrirChatAdmin(activeAdminChatId, false);
+}
+
+async function abrirChatAdmin(chatId, forzarBajar = true) {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin") return;
+  const cambioDeChat = activeAdminChatId !== chatId;
+  activeAdminChatId = chatId;
+
+  const r = await fetch(`${API_BASE}/chat/history?chatId=${encodeURIComponent(chatId)}&viewer=admin`, {
+    headers: { "X-Admin-Key": ses.adminKey }
+  });
+  const d = await r.json();
+  if (!d.ok || !d.hilo) return;
+
+  document.getElementById("lblAdminActiveChat").textContent = `${d.hilo.nombre} (${d.hilo.telefono})`;
+  const finBar = document.getElementById("adminFinBar");
+  finBar.style.display = "flex";
+  const fin = d.hilo.finanzas || {};
+  const disp = Number(fin.disponible || 0);
+  const cashea = Number(fin.cashea || 0);
+
+  document.getElementById("lblAdminFinStats").innerHTML = disp < 0
+    ? `<span class="saldo-negativo-txt">🔴 Negativo: ${disp.toFixed(2)} Bs.</span> | Promo: ${cashea.toFixed(2)} Bs.`
+    : `Retirable: ${disp.toFixed(2)} Bs. | Promo: ${cashea.toFixed(2)} Bs.`;
+
+  const btnBono = document.getElementById("btnAdminBono1000");
+  if (btnBono) {
+    btnBono.style.display = d.elegibleBono ? "inline-block" : "none";
+  }
+
+  const box = document.getElementById("adminMessages");
+  const msgs = d.hilo.mensajes || [];
+  const hayNuevos = msgs.length !== ultimoConteoAdmin;
+  ultimoConteoAdmin = msgs.length;
+  const estabaAbajo = (box.scrollHeight - box.scrollTop - box.clientHeight) < 120;
+
+  box.innerHTML = msgs.map(m => {
+    let auditHtml = "";
+    if (m.analisisPago) {
+      const a = m.analisisPago;
+      const cls = a.duplicada || a.rechazadoDestino ? "bad" : (a.alertaFecha || !a.referencia ? "warn" : "ok");
+      const btnAprobar = (!a.aprobado && !a.duplicada)
+        ? `<button class="btn-approve-ocr" onclick="aprobarDesdeOcr(${m.id}, ${a.montoNumerico || 0}, '${a.referencia || ""}', '${(a.destino || "").replace(/'/g, "")}', '${(a.fecha || "").replace(/'/g, "")}')">✅ Aprobar ${a.montoNumerico > 0 ? a.montoNumerico.toFixed(2) + " Bs." : "Depósito"}</button>`
+        : (a.aprobado ? `<div style="color:#22c55e;font-weight:800;margin-top:4px;">✔ ACREDITADO</div>` : "");
+      auditHtml = `
+        <div class="audit-card ${cls}">
+          <div class="audit-title">🛡️ Auditoría Automática</div>
+          <div><strong>Monto:</strong> ${a.monto}</div>
+          <div><strong>Ref:</strong> ${a.referencia || "No detectada"} ${a.duplicada ? `<span style="color:#fca5a5;">(🚨 DUPLICADA: ${a.infoDuplicada})</span>` : ""}</div>
+          <div><strong>Fecha:</strong> ${a.fecha} ${a.alertaFecha ? `<span style="color:#fbbf24;">(⚠️ ${a.alertaFecha})</span>` : ""}</div>
+          <div><strong>Destino:</strong> ${a.destino}</div>
+          ${btnAprobar}
+        </div>
+      `;
+    }
+    return `
+      <div class="msg ${m.sender}">
+        ${m.imagen ? `<img src="${m.imagen}" onclick="window.open(this.src)" />` : ""}
+        <div>${formatearTextoChat(m.texto)}</div>
+        ${auditHtml}
+        <div class="msg-meta">${m.hora}</div>
+      </div>
+    `;
+  }).join("");
+
+  if (forzarBajar || cambioDeChat || hayNuevos || estabaAbajo) {
+    bajarAlFinalChat(box);
+  }
+}
+
+async function enviarMensajeAdmin() {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin" || !activeAdminChatId) return;
+  const inp = document.getElementById("txtAdminMsg");
+  const texto = inp.value.trim();
+  if (!texto) return;
+  inp.value = "";
+
+  await fetch(`${API_BASE}/chat/send`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({ chatId: activeAdminChatId, sender: "admin", texto })
+  });
+  await abrirChatAdmin(activeAdminChatId, true);
+}
+
+async function aprobarDesdeOcr(msgId, montoSugerido, ref, destino, fechaCapture) {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin" || !activeAdminChatId) return;
+  const valStr = prompt("Confirma el monto en Bs. a acreditar:", montoSugerido > 0 ? montoSugerido : "");
+  if (valStr === null) return;
+  const monto = parseFloat(valStr.replace(",", "."));
+  if (isNaN(monto) || monto <= 0) return alert("Monto inválido.");
+
+  const r = await fetch(`${API_BASE}/chat/finance`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({
+      chatId: activeAdminChatId,
+      accion: "aprobar_deposito",
+      monto,
+      referencia: ref,
+      destino,
+      fechaCapture,
+      msgId
+    })
+  });
+  const d = await r.json();
+  if (!d.ok) return alert(d.error || "Error aprobando depósito");
+  await abrirChatAdmin(activeAdminChatId, true);
+}
+
+async function accionFinanciera(accion) {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin" || !activeAdminChatId) return;
+
+  if (accion === "bono_bienvenida") {
+    if (!confirm("¿Acreditar el BONO DE BIENVENIDA único de 1.000,00 Bs. (saldo promo para jugar) a este cliente?")) return;
+    const r = await fetch(`${API_BASE}/chat/finance`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+      body: JSON.stringify({ chatId: activeAdminChatId, accion: "bono_bienvenida", monto: 1000 })
+    });
+    const d = await r.json();
+    if (!d.ok) return alert(d.error || "No se pudo entregar el bono.");
+    await abrirChatAdmin(activeAdminChatId, true);
+    await cargarListaChatsAdmin();
+    return;
+  }
+
+  let monto = 0;
+  if (accion !== "enviar_estado") {
+    const valStr = prompt("Ingresa el monto en Bs.:");
+    if (valStr === null) return;
+    monto = parseFloat(valStr.replace(",", "."));
+    if (isNaN(monto) || monto <= 0) return alert("Monto inválido.");
+  }
+
+  const r = await fetch(`${API_BASE}/chat/finance`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({ chatId: activeAdminChatId, accion, monto })
+  });
+  const d = await r.json();
+  if (!d.ok) return alert(d.error || "Error en operación");
+  await abrirChatAdmin(activeAdminChatId, true);
+}
+
+async function borrarChatActual() {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin" || !activeAdminChatId) return;
+  if (!confirm("¿Limpiar historial visible de este chat en tu panel? (El saldo y datos de seguridad del cliente se conservan).")) return;
+  await fetch(`${API_BASE}/chat/delete`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Admin-Key": ses.adminKey },
+    body: JSON.stringify({ chatId: activeAdminChatId })
+  });
+  activeAdminChatId = null;
+  document.getElementById("adminFinBar").style.display = "none";
+  document.getElementById("adminMessages").innerHTML = "";
+  cargarListaChatsAdmin();
+}
+
+async function abrirHistorialPagos() {
+  const ses = JSON.parse(localStorage.getItem("hj_session") || "null");
+  if (!ses || ses.role !== "admin") return;
+  const r = await fetch(`${API_BASE}/chat/payments-history`, {
+    headers: { "X-Admin-Key": ses.adminKey }
+  });
+  const d = await r.json();
+  historialPagosCache = d.pagos || [];
+  document.getElementById("modalPagos").style.display = "flex";
+  filtrarHistorialPagos();
+}
+
+function filtrarHistorialPagos() {
+  const q = (document.getElementById("inpBuscarRef").value || "").toLowerCase().trim();
+  const filtrados = q
+    ? historialPagosCache.filter(p =>
+        String(p.referencia).toLowerCase().includes(q) ||
+        String(p.nombre).toLowerCase().includes(q) ||
+        String(p.telefono).toLowerCase().includes(q)
+      )
+    : historialPagosCache;
+
+  document.getElementById("listaHistorialPagos").innerHTML = filtrados.length
+    ? filtrados.map(p => `
+        <div class="pay-hist-row">
+          <div style="display:flex;justify-content:space-between;font-weight:800;color:var(--gold);">
+            <span>Ref: ${p.referencia}</span>
+            <span>+${Number(p.monto).toLocaleString("es-VE", { minimumFractionDigits: 2 })} Bs.</span>
+          </div>
+          <div style="margin-top:3px;">👤 ${p.nombre} (${p.telefono})</div>
+          <div style="font-size:11px;color:var(--muted);">🏦 ${p.destino} • 📅 ${p.fechaAprobado} ${p.horaAprobado}</div>
+        </div>
+      `).join("")
+    : `<div style="color:var(--muted);font-size:13px;">No hay comprobantes registrados aún.</div>`;
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const hoyISO = getHoyVenezuelaISO();
+  fechaSeleccionadaISO = hoyISO;
+  const inpFecha = document.getElementById("inpFechaResultados");
+  if (inpFecha) {
+    inpFecha.value = hoyISO;
+    inpFecha.max = hoyISO;
+  }
+  const inpBusq = document.getElementById("searchLoteria");
+  if (inpBusq) inpBusq.value = "";
+
+  cargarResultados();
+  cargarEstadoSorteo();
+  setInterval(cargarResultados, 45000);
+  setInterval(cargarEstadoSorteo, 25000);
+  iniciarSesionUI();
+});
+</script>
+</body>
+</html>
